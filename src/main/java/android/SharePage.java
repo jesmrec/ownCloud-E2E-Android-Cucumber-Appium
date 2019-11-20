@@ -2,15 +2,13 @@ package android;
 
 import org.openqa.selenium.By;
 
-import io.appium.java_client.android.AndroidDriver;
-
 public class SharePage extends CommonPage {
 
     private String addshareebutton_id = "addUserButton";
     private String addPublicLinkButton_id = "addPublicLinkButton";
 
-    public SharePage(AndroidDriver driver){
-        super(driver);
+    public SharePage() {
+        super();
     }
 
     public boolean isHeader() {

@@ -3,16 +3,14 @@ package android;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import io.appium.java_client.android.AndroidDriver;
-
 public class FileListPage extends CommonPage{
 
     private String headertext_xpath = "//*[@text='ownCloud']";
     private String documentstext_description = "LinearLayout-";
     private String sharebutton_id = "com.owncloud.android:id/action_share_file";
 
-    public FileListPage(AndroidDriver driver) {
-        super(driver);
+    public FileListPage() {
+        super();
     }
 
     public void shareAction (String itemName) throws InterruptedException {

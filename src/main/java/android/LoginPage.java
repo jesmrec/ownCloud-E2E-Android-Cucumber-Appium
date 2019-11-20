@@ -2,8 +2,6 @@ package android;
 
 import org.openqa.selenium.By;
 
-import io.appium.java_client.android.AndroidDriver;
-
 public class LoginPage extends CommonPage{
 
     private String urltext_id = "hostUrlInput";
@@ -12,12 +10,12 @@ public class LoginPage extends CommonPage{
     private String passwordtext_id = "account_password";
     private String loginbutton_id = "loginButton";
     private String errorcredentialstext_xpath = "//*[@text='Wrong username or password']";
-    private String allowbutton_xpath = "//*[@text='ALLOW']";
+    private String allowbutton_xpath = "//*[@text='Allow']";
 
     private final String serverURL = "http://10.40.40.198:17000";
 
-    public LoginPage(AndroidDriver driver){
-        super(driver);
+    public LoginPage()  {
+        super();
     }
 
     public void typeURL(){

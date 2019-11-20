@@ -2,15 +2,13 @@ package android;
 
 import org.openqa.selenium.By;
 
-import io.appium.java_client.android.AndroidDriver;
-
 public class PublicLinkPage extends CommonPage {
 
     private String namepubliclink_id = "shareViaLinkNameValue";
     private String savebutton_id = "saveButton";
 
-    public PublicLinkPage(AndroidDriver driver){
-        super(driver);
+    public PublicLinkPage() {
+        super();
     }
 
     public void createLink (String name) throws InterruptedException {

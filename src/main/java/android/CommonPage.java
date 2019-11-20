@@ -9,8 +9,9 @@ public class CommonPage {
     protected AndroidDriver driver;
     protected Actions actions;
 
-    public CommonPage(AndroidDriver driver){
-        this.driver = driver;
+    public CommonPage()  {
+        AppiumManager manager = AppiumManager.getManager();
+        driver = manager.getDriver();
         actions = new Actions(driver);
     }
 }

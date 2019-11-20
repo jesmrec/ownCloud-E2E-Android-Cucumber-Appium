@@ -8,6 +8,7 @@ import android.SearchShareePage;
 import android.SharePage;
 import android.WizardPage;
 
+import org.junit.AfterClass;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -15,7 +16,6 @@ import java.net.MalformedURLException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -28,35 +28,38 @@ import static org.junit.Assert.assertTrue;
 public class ShareSteps {
 
     //Involved pages
-    protected WizardPage wizardPage;
-    protected LoginPage loginPage;
-    protected SharePage sharePage;
-    protected FileListPage fileListPage;
-    protected SearchShareePage searchShareePage;
-    protected PublicLinkPage publicLinkPage;
+    protected WizardPage wizardPage = new WizardPage();
+    protected LoginPage loginPage = new LoginPage();
+    protected SharePage sharePage = new SharePage();
+    protected FileListPage fileListPage = new FileListPage();
+    protected SearchShareePage searchShareePage = new SearchShareePage();
+    protected PublicLinkPage publicLinkPage = new PublicLinkPage();
 
     //APIs to call
-    protected ShareAPI shareAPI;
+    protected ShareAPI shareAPI = new ShareAPI();
 
     //Appium driver
-    protected AndroidDriver driver;
+    //protected AndroidDriver driver;
 
     private String shareId;
 
     @Before
     public void setup() throws MalformedURLException {
-        AppiumManager manager = new AppiumManager();
+        /*AppiumManager manager = new AppiumManager();
         manager.init();
-        driver = manager.getDriver();
+        driver = manager.getDriver();*/
 
-        wizardPage = new WizardPage(driver);
-        loginPage = new LoginPage(driver);
-        sharePage = new SharePage(driver);
-        fileListPage = new FileListPage(driver);
-        searchShareePage = new SearchShareePage(driver);
-        publicLinkPage = new PublicLinkPage(driver);
+        System.out.println("BEFORE");
+        AppiumManager.getManager().getDriver().launchApp();
 
-        shareAPI = new ShareAPI();
+        /*wizardPage = new WizardPage();
+        loginPage = new LoginPage();
+        sharePage = new SharePage();
+        fileListPage = new FileListPage();
+        searchShareePage = new SearchShareePage();
+        publicLinkPage = new PublicLinkPage();*/
+
+        //shareAPI = new ShareAPI();
     }
 
     @Given("^I am logged$")
@@ -103,9 +106,17 @@ public class ShareSteps {
     @After
     public void tearDown() throws IOException, SAXException, ParserConfigurationException, InterruptedException{
         // Link must be removed via API
+        System.out.println("AFTER SHARE STEPS");
         shareAPI.removeShare(shareId);
 
-        driver.removeApp("com.owncloud.android");
-        driver.quit();
+        AppiumManager.getManager().getDriver().removeApp("com.owncloud.android");
+        //AppiumManager.getManager().getDriver().close();
     }
+
+    @AfterClass
+    public static void afterclass() throws MalformedURLException{
+        System.out.println("AFTER class");
+        AppiumManager.getManager().getDriver().quit();
+    }
+
 }
