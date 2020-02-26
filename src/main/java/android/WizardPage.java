@@ -11,6 +11,7 @@ public class WizardPage extends CommonPage {
     }
 
     public void skip(){
+        waitById(5, skip_id);
         driver.findElement(MobileBy.id(skip_id)).click();
     }
 

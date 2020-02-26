@@ -144,21 +144,13 @@ public class FileListPage extends CommonPage{
     }
 
     public void selectFileUpload(String itemName){
-        /*MobileElement hamburger = (MobileElement)
-                driver.findElementByAndroidUIAutomator("new UiSelector().description(\"Show roots\");");
-        actions.click(hamburger).perform();
+
         driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().description(\"Show roots\");")).click();
-        //MobileElement downloadOption = (MobileElement)
-        //driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Show roots\");")).click();
         driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Downloads\");")).click();
-                //driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Downloads\");");
-        //actions.click(downloadOption).perform();
-        AndroidElement itemToUpload = (AndroidElement)
-                driver.findElementByAndroidUIAutomator("new UiSelector().text(\""+ itemName +"\");");
-        actions.click(itemToUpload).perform();
         driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\""+ itemName +"\");")).click();
+
         //Give some seconds to perform the action to return to the file list
-        //waitByXpath(8, headertext_xpath);*/
+        waitByXpath(8, headertext_xpath);
     }
 
 }
