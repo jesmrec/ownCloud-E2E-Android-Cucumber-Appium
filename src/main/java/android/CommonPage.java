@@ -24,6 +24,9 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
+import io.appium.java_client.android.AndroidTouchAction;
+import io.appium.java_client.touch.LongPressOptions;
+import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import utils.LocProperties;
 import utils.log.Log;
@@ -95,6 +98,11 @@ public class CommonPage {
                 "new UiSelector().text(\"" + text + "\");"));
     }
 
+    public MobileElement findUIAutomatorSubText(String text){
+        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+                "new UiSelector().textContains(\"" + text + "\");"));
+    }
+
     public MobileElement findUIAutomatorDescription(String description){
         return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
                 "new UiSelector().description(\"" + description + "\");"));
@@ -128,13 +136,14 @@ public class CommonPage {
         int startX = (int) (size.width * startx);
         int endX = (int) (size.height * endx);
         TouchAction ts = new TouchAction(driver);
-        ts.longPress(PointOption.point(startX, startY))
+        ts.press(PointOption.point(startX, startY))
                 .moveTo(PointOption.point(endX, endY)).release().perform();
     }
 
     public static void longPress(MobileElement element) {
-        actions.clickAndHold(element).perform();
-        actions.clickAndHold(element).perform();
+        AndroidTouchAction touch = new AndroidTouchAction(driver);
+        touch.longPress(LongPressOptions.longPressOptions()
+                        .withElement(ElementOption.element(element))).perform();
     }
 
     public static void takeScreenshot(String name) {

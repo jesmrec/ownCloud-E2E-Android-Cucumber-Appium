@@ -28,4 +28,4 @@ Feature: Rename an item
     When Alice selects to Rename the folder Photos
     And Alice sets Documents as new name
     Then Alice should see the following error
-      | An error occurred while trying to move this file or folder |
+      | Rename could not be completed |

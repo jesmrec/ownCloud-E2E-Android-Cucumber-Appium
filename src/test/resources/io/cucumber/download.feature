@@ -16,7 +16,7 @@ Feature: Download a file in the account
     Then the item downloadMe.txt should be opened and previewed
     And the item downloadMe.txt should be marked as downloaded
 
-  @smoke
+  @ignore
   Scenario: Download a file that is not previewable
     Given the following items have been created in the account
       | file   | downloadMe.zip  |

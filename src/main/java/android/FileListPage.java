@@ -74,7 +74,7 @@ public class FileListPage extends CommonPage {
     public void refreshList() {
         Log.log(Level.FINE, "Refresh list");
         waitById(5, (MobileElement)(toolbar.get(0)));
-        swipe(0.50, 0.40, 0.50, 0.90);
+        swipe(0.50, 0.70, 0.50, 0.95);
     }
 
     public void waitToload(String itemName) {
@@ -139,7 +139,7 @@ public class FileListPage extends CommonPage {
 
     public boolean errorDisplayed(String error) {
         Log.log(Level.FINE, "Starts: Error displayed: " + error);
-        return findUIAutomatorText(error).isDisplayed();
+        return findUIAutomatorSubText(error).isDisplayed();
     }
 
     public boolean isHeader() {
@@ -154,7 +154,7 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName;
         fileName = path;
-        if (path.contains("/")) { //Brwose through
+        if (path.contains("/")) { //Browse through
             fileName = browseToFile(path);
         }
         MobileElement element = getElementFromFileList(fileName);

@@ -94,7 +94,7 @@ public class FileListSteps {
     public void select_item_to_avoffline(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        fileListPage.waitToload("Documents");
+        //fileListPage.waitToload("Documents");
         fileListPage.refreshList();
         fileListPage.executeOperation("Set as available offline", itemName);
         fileListPage.closeSelectionMode();
@@ -104,7 +104,7 @@ public class FileListSteps {
     public void select_item_to_unavoffline(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        fileListPage.waitToload("Documents");
+        //fileListPage.waitToload("Documents");
         fileListPage.refreshList();
         fileListPage.executeOperation("Unset as available offline", itemName);
         fileListPage.closeSelectionMode();
@@ -114,7 +114,7 @@ public class FileListSteps {
     public void select_item_to_some_operation(String operation, String type, String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        fileListPage.waitToload("Documents");
+        //fileListPage.waitToload("Documents");
         fileListPage.refreshList();
         if (operation.equals("Download") || operation.equals("open")) {
             fileListPage.downloadAction(itemName);
@@ -235,7 +235,7 @@ public class FileListSteps {
     public void see_the_item_in_filelist(String itemName) throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        fileListPage.waitToload("Documents");
+        //fileListPage.waitToload("Documents");
         //Get the last token of the item path
         assertTrue(fileListPage.isItemInList(itemName.substring(itemName.lastIndexOf('/') + 1)));
         assertTrue(filesAPI.itemExist(itemName));
@@ -245,7 +245,7 @@ public class FileListSteps {
     public void item_not_in_list_anymore(String itemName) throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        fileListPage.waitToload("Documents");
+        //fileListPage.waitToload("Documents");
         assertFalse(fileListPage.isItemInList(itemName));
         assertFalse(filesAPI.itemExist(itemName));
     }
@@ -271,8 +271,8 @@ public class FileListSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         //Copy keeps the selection mode. To improve.
-        fileListPage.closeSelectionMode();
-        fileListPage.waitToload("Documents");
+        //fileListPage.closeSelectionMode();
+        //fileListPage.waitToload("Documents");
         assertTrue(fileListPage.isItemInList(itemName.substring(itemName.lastIndexOf('/') + 1)));
         assertTrue(filesAPI.itemExist(itemName));
     }
@@ -306,6 +306,7 @@ public class FileListSteps {
     public void item_not_marked_as_avOffline(String type, String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
+        fileListPage.waitToload(itemName);
         assertTrue(fileListPage.itemIsMarkedAsUnAvOffline(itemName));
     }
 
@@ -321,7 +322,7 @@ public class FileListSteps {
     public void list_matches_server_list(String path) throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        fileListPage.waitToload("Documents");
+        //fileListPage.waitToload("Documents");
         fileListPage.refreshList();
         ArrayList<OCFile> listServer = filesAPI.listItems(path);
         assertTrue(fileListPage.displayedList(path, listServer));
