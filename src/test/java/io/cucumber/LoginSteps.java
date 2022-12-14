@@ -29,6 +29,7 @@ public class LoginSteps {
     private FileListPage fileListPage = new FileListPage();
     private AuthAPI authAPI = new AuthAPI();
 
+    //Class to clean up when "only basic" mode is consolidated
     public LoginSteps() throws IOException {
     }
 
@@ -38,17 +39,17 @@ public class LoginSteps {
     }
 
     @Given("app has been launched for the first time")
-    public void app_first_launch() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+    public void app_launched_for_the_first_time() {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         //In case it is installed, we remove to execute login tests
         loginPage.reinstallApp();
     }
 
     @Given("user {word} has been created with default attributes")
-    public void user_created_default_attributes(String user)
+    public void user_has_been_created_with_default_attributes(String user)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         middlewareAPI.postMiddlewareExecute(stepName);
     }
@@ -56,62 +57,62 @@ public class LoginSteps {
     @Given("user {word} is logged")
     public void user_is_logged(String user)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (loginPage.notLoggedIn()) {
             String authMethod = authAPI.checkAuthMethod();
             String username = LocProperties.getProperties().getProperty("userName1");
             String password = LocProperties.getProperties().getProperty("passw1");
             loginPage.typeURL();
-            switch (authMethod) {
-                case "Basic":
+            //switch (authMethod) {
+            //    case "Basic":
                     loginPage.typeCredentials(username, password);
-                    loginPage.submitLogin();
-                    break;
+                    loginPage.submitLogin("Basic");
+            /*        break;
                 case "Bearer":
-                    loginPage.submitLogin();
+                    loginPage.submitLogin("Bearer");
                     ChromeCustomTabPage chromeCustomTabPage = new ChromeCustomTabPage();
                     chromeCustomTabPage.enterCredentials(username, password);
                     chromeCustomTabPage.authorize();
                     break;
                 case "OIDC":
-                    loginPage.submitLogin();
+                    loginPage.submitLogin("OIDC");
                     OIDCPage OIDCPage = new OIDCPage();
                     OIDCPage.enterCredentials(username, password);
                     OIDCPage.authorize();
                     break;
                 default:
                     break;
-            }
+            }*/
         }
         loginPage.acceptCertificate();
     }
 
     @Given("server with {authtype} is available")
-    public void server_authtype_available(String authMethod) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+    public void server_authtype_is_available(String authMethod) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         loginPage.typeURL(authMethod);
     }
 
     @When("^user logins as (.+) with password (.+) as (.+) credentials$")
-    public void login_with_password_auth_method(String username, String password, String authMethod) {
+    public void login_as_with_password_as_auth_method(String username, String password, String authMethod) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         switch (authMethod) {
             case "basic auth":
             case "LDAP":
                 loginPage.typeCredentials(username, password);
-                loginPage.submitLogin();
+                loginPage.submitLogin("Basic");
                 break;
             case "OAuth2":
-                loginPage.submitLogin();
+                loginPage.submitLogin("OAuth2");
                 ChromeCustomTabPage chromeCustomTabPage = new ChromeCustomTabPage();
                 chromeCustomTabPage.enterCredentials(username, password);
                 chromeCustomTabPage.authorize();
                 break;
             case "OIDC":
-                loginPage.submitLogin();
+                loginPage.submitLogin("OIDC");
                 OIDCPage OIDCPage = new OIDCPage();
                 OIDCPage.enterCredentials(username, password);
                 OIDCPage.authorize();
@@ -122,8 +123,8 @@ public class LoginSteps {
     }
 
     @Then("user should see the main page")
-    public void screen_main_page() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+    public void user_should_see_the_main_page() {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         try {
             assertTrue(fileListPage.isHeader());
@@ -139,7 +140,7 @@ public class LoginSteps {
 
     @Then("user should see an error message")
     public void login_error_message() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         try {
             assertTrue(loginPage.isCredentialsErrorMessage());

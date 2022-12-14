@@ -76,7 +76,7 @@ Feature: Public Links
           |  Links9       |  link9   |     1       | Download / View
 
 
-    @editlink
+    @editlink @noocis
     Rule: Edit a public link
 
       Scenario Outline: Edit existing share on a folder, changing permissions

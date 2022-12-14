@@ -40,7 +40,7 @@ Feature: Private Share
           |  file   |  Share3.txt  |
           |  folder |  Share4      |
 
-      @federated @ignore
+      @federated @noocis
       Scenario Outline: Correct federated share
         Given the following items have been created in the account
           | <type>   | <item>  |
@@ -69,7 +69,7 @@ Feature: Private Share
           | file   | Share7.txt  |
         When Alice selects to share the file Share7.txt
         And Alice selects user Bob as sharee
-        And Bob has shared file Share7.txt with Charles with permissions 31
+        And Bob has reshared file Share7.txt with Charles with permissions 31
         Then user Bob should have access to Share7.txt
         And user Charles should have access to Share7.txt
         And share should be created on Share7.txt with the following fields
@@ -80,7 +80,7 @@ Feature: Private Share
         Given the following items have been created in the account
           | file   | Share8.txt  |
         And Alice has shared file Share8.txt with Bob with permissions 3
-        When Bob has shared file Share8.txt with Charles with permissions 31
+        When Bob has reshared file Share8.txt with Charles with permissions 31
         Then user Bob should have access to Share8.txt
         But Charles should not have access to Share8.txt
 
@@ -88,7 +88,7 @@ Feature: Private Share
         Given the following items have been created in the account
           | file   | Share9.txt  |
         And Alice has shared file Share9.txt with Bob with permissions 31
-        And Bob has shared file Share9.txt with Charles with permissions 31
+        And Bob has reshared file Share9.txt with Charles with permissions 31
         And Alice selects to share the file Share9.txt
         Then Alice should see Bob as recipient
         And Alice should see Charles as recipient
@@ -132,7 +132,7 @@ Feature: Private Share
           |  Share16   |   Bob     |   13        | delete, create and read
           |  Share17   |   Bob     |   17        | share and read
 
-    @deleteshare
+    @deleteshare @noocis
     Rule: Delete a share
 
       Scenario Outline: Delete existing share

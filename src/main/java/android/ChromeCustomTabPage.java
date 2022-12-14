@@ -15,6 +15,7 @@ public class ChromeCustomTabPage extends CommonPage {
     private String icon_chrome_xpath = "//android.webkit.WebView[@content-desc=\"ownCloud\"]/" +
             "android.view.View[1]/android.view.View";
 
+    //Class to deprecate. Testing with basic auth variants
     public ChromeCustomTabPage() {
         waitForWebContext();
         Log.log(Level.FINE, "Browser charged");
@@ -24,13 +25,6 @@ public class ChromeCustomTabPage extends CommonPage {
 
     public void enterCredentials(String username, String password) {
         Log.log(Level.FINE, "Starts: enter OAuth2 credentials");
-
-        //switch button to go back to credentials
-
-        if (findListXpath((String)switch_chrome_xpath).isEmpty()) {
-            Log.log(Level.FINE, "Switch user view");
-            findXpath((String)switch_chrome_xpath).click();
-        }
 
         waitByXpath(5, (String) username_chrome_xpath);
         findXpath((String) username_chrome_xpath).sendKeys(username);

@@ -17,9 +17,9 @@ Feature: Rename an item
     But Alice should not see <name> in the filelist anymore
 
     Examples:
-      | type     |  name            |  newName           |
-      | folder   |  Renamefolder    |  Renamefolder2     |
-      | file     |  Renamefile.txt  |  Renamefile2.txt   |
+      | type     |  name         |  newName       |
+      | folder   |  folder1      |  Rename1       |
+      | file     |  file1.txt    |  Rename1.txt   |
 
   Scenario: Rename an item with an existing name
     Given the following items have been created in the account

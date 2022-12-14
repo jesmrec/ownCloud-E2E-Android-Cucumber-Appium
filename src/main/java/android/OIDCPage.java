@@ -12,6 +12,7 @@ public class OIDCPage extends CommonPage {
     private final String login_xpath = "/html/body/main/div/div/div/div/form/div[3]/button/span[1]";
     private final String allow_xpath = "/html/body/main/div/div/div/div/form/div/div[2]/button/span[1]";
 
+    //Class to deprecate. Testing with basic auth variants
     public OIDCPage() {
         super();
         waitForWebContext();

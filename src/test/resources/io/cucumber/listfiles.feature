@@ -16,7 +16,6 @@ Feature: List of files is correctly retrieved from server.
         Examples:
           | path       |
           | /          |
-          | Photos     |
 
       Scenario: Check items in the list of files of a created folder
         Given the following items have been created in the account

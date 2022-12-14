@@ -3,6 +3,7 @@ package utils.log;
 import android.SharingPage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -18,9 +19,9 @@ public class Log {
 
     public static void init() {
         try {
-            //consoleHandler = new ConsoleHandler();
             Log.getLevel();
-            fileHandler = new FileHandler("logs.log", 5 * 1024000, 1, true);
+            fileHandler = new FileHandler("logs/logs_"+ LocalDateTime.now().toString()+".log",
+                    5 * 1024000, 1, true);
             fileHandler.setFormatter(new SimpleFormatter() {
                 private static final String format = "[%1$tF %1$tT] [%2$-7s] %3$s %n";
 

@@ -85,13 +85,13 @@ public class FileListPage extends CommonPage {
         } catch (Exception e) {
             Log.log(Level.FINE, "Swipe needed to get the list");
             refreshList();
-            waitByTextVisible(10, itemName);
         }
         Log.log(Level.FINE, "Loaded");
     }
 
     public void createFolder() {
         Log.log(Level.FINE, "Starts: create folder");
+        refreshList();
         fabButton.click();
         createFolder.click();
     }
@@ -177,6 +177,7 @@ public class FileListPage extends CommonPage {
 
     public void openAvOffhortcut() {
         Log.log(Level.FINE, "Starts: open av offline shortcut");
+        waitByTextInvisible(5, "Download enqueued");
         avOffShortcut.click();
     }
 

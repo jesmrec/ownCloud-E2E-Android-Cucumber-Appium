@@ -47,25 +47,9 @@ public class Hooks {
         //First, remove leftovers in root folder. Just keeping the skeleton items
         ArrayList<OCFile> filesRoot = filesAPI.listItems("");
         for (OCFile iterator: filesRoot){
-            if (!iterator.getName().equals("Documents") &&
-                    !iterator.getName().equals("Photos") &&
-                    !iterator.getName().equals("ownCloud Manual.pdf") &&
-                    !iterator.getName().equals("Alice")
-            ) {
-                Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
-                filesAPI.removeItem(iterator.getName());
-            }
+            Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
+            filesAPI.removeItem(iterator.getName());
         }
-        //Second, remove leftovers in "Documents" folder, where some stuff is created inside
-        ArrayList<OCFile> filesDocuments = filesAPI.listItems("/Documents");
-        for (OCFile iterator: filesDocuments){
-            if (!iterator.getName().equals("Example.odt") &&
-                    !iterator.getName().equals("Documents"))  {
-                Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
-                filesAPI.removeItem("Documents/"+iterator.getName());
-            }
-        }
-        //Third, empty trashbin
         trashbinAPI.emptyTrashbin();
     }
 }

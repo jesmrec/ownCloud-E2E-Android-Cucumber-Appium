@@ -75,6 +75,15 @@ public class CommonPage {
         wait.until(ExpectedConditions.textToBePresentInElement(mobileElement, text));
     }
 
+    public void waitByTextInvisible(int timeToWait, String text) {
+        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
+        MobileElement mobileElement = (MobileElement)
+                driver.findElement(MobileBy.AndroidUIAutomator
+                        ("new UiSelector().text(\"" + text + "\");"));
+        wait.until(ExpectedConditions.invisibilityOfElementWithText(MobileBy.AndroidUIAutomator(
+                "new UiSelector().textContains(\"Download enqueued\");"), "Download enqueued"));
+    }
+
     // The following method should be used only in case implicit/explicit waits are not valid for the
     // scenario. Blocking the thread is not desirable and using it is not a good solution.
     public static void wait(int seconds) {
@@ -95,7 +104,7 @@ public class CommonPage {
 
     public MobileElement findUIAutomatorText(String text){
         return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
-                "new UiSelector().text(\"" + text + "\");"));
+                "new UiSelector().textContains(\"" + text + "\");"));
     }
 
     public MobileElement findUIAutomatorSubText(String text){
@@ -110,7 +119,7 @@ public class CommonPage {
 
     public List<MobileElement> findListUIAutomatorText(String finder){
         return (List<MobileElement>) driver.findElements(MobileBy.AndroidUIAutomator(
-                "new UiSelector().text(\"" + finder + "\");"));
+                "new UiSelector().textContains(\"" + finder + "\");"));
     }
 
     public MobileElement findId(String id){

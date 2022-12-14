@@ -39,17 +39,17 @@ public class LinksSteps {
     }
 
     @Given("{word} has shared the {itemtype} {word} by link")
-    public void item_already_shared_by_link(String sharingUser, String type, String itemName)
+    public void user_has_shared_the_item_by_link(String sharingUser, String type, String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        shareAPI.createShare(sharingUser, itemName, "", "3", "1", itemName + " link");
+        shareAPI.createShare(sharingUser, itemName, "", "3", "1", itemName + " link", 0);
     }
 
     @When("Alice creates link on {word} {word} with the following fields")
-    public void create_link_with_some_fields(String type, String itemName, DataTable table)
+    public void user_creates_link_with_fields(String type, String itemName, DataTable table)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         sharingPage.addPublicLink();
         List<List<String>> listItems = table.asLists();
@@ -79,9 +79,9 @@ public class LinksSteps {
     }
 
     @When("Alice edits the link on {word} with the following fields")
-    public void edit_public_link(String itemName, DataTable table)
+    public void user_edits_public_link_with_fields(String itemName, DataTable table)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
         sharingPage.openPublicLink(itemName);
@@ -125,17 +125,17 @@ public class LinksSteps {
     }
 
     @When("Alice deletes the link on {word}")
-    public void delete_link(String itemName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+    public void user_deletes_link(String itemName) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         sharingPage.deletePublicShare();
         sharingPage.acceptDeletion();
     }
 
     @Then("link should be created on {word} with the following fields")
-    public void link_created_fields(String itemName, DataTable table)
+    public void link_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         //Asserts in UI
         Log.log(Level.FINE, "Checking UI asserts");
@@ -184,13 +184,14 @@ public class LinksSteps {
     }
 
     @Then("link on {word} should not exist anymore")
-    public void link_not_existing(String itemName)
+    public void link_should_not_exist_anymore(String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         Log.log(Level.FINE, "Checking if item exists: " + itemName);
         assertFalse(sharingPage.isItemInListPublicShares(itemName + " link"));
-        assertTrue(shareAPI.getShare(itemName) == null);
+        assertTrue(sharingPage.isListPublicLinksEmpty());
+        assertTrue(shareAPI.getSharesByDefault().size() == 0);
         filesAPI.removeItem(itemName);
     }
 }

@@ -11,7 +11,8 @@ Feature: Copy item
   @smoke
   Scenario Outline: Copy an existent item to another location
     Given the following items have been created in the account
-      | <type>   | <name>  |
+      | <type>   | <name>    |
+      | folder   | Documents |
     When Alice selects to Copy the <type> <name>
     And Alice selects <target> as target folder
     Then Alice should see <name> in the filelist as original

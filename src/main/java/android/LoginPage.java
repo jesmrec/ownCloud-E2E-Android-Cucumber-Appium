@@ -1,5 +1,6 @@
 package android;
 
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.logging.Level;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import utils.api.AuthAPI;
 import utils.log.Log;
 
 public class LoginPage extends CommonPage {
@@ -75,11 +77,13 @@ public class LoginPage extends CommonPage {
         passwordText.sendKeys(password);
     }
 
-    public void submitLogin() {
+    public void submitLogin(String method) {
         Log.log(Level.FINE, "Starts: Submit login");
         Log.log(Level.FINE, "Starts: enter OIDC credentials");
         acceptCertificate();
-        loginButton.click();
+        if (method.equals("Basic")) {
+            loginButton.click();
+        }
     }
 
     public void acceptCertificate(){

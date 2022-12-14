@@ -11,7 +11,8 @@ Feature: Move item
   @smoke
   Scenario Outline: Move an existent folder to another location
     Given the following items have been created in the account
-      | <type>   | <name>  |
+      | <type>   | <name>    |
+      | folder   | Documents |
     When Alice selects to Move the <type> <name>
     And Alice selects <target> as target folder
     Then Alice should not see <name> in the filelist anymore
