@@ -20,6 +20,7 @@ public class Log {
     public static void init() {
         try {
             Log.getLevel();
+            //Adding log files to folder called "logs", created
             fileHandler = new FileHandler("logs/logs_"+ LocalDateTime.now().toString()+".log",
                     5 * 1024000, 1, true);
             fileHandler.setFormatter(new SimpleFormatter() {

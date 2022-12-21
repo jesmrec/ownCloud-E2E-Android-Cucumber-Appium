@@ -132,7 +132,7 @@ Feature: Private Share
           |  Share16   |   Bob     |   13        | delete, create and read
           |  Share17   |   Bob     |   17        | share and read
 
-    @deleteshare @noocis
+    @deleteshare
     Rule: Delete a share
 
       Scenario Outline: Delete existing share

@@ -20,6 +20,7 @@ public class AppiumManager {
     private static AndroidDriver driver;
     private static final String driverDefect = LocProperties.getProperties().getProperty("appiumURL");
     private static final String driverURL = System.getProperty("appium");
+    private static final String device = System.getProperty("device");
     private static File app;
 
     private AppiumManager() {
@@ -57,6 +58,8 @@ public class AppiumManager {
                 driver.getCapabilities().getCapability("platformVersion"));
         Log.log(Level.FINE, "API Level: " +
                 driver.getCapabilities().getCapability("deviceApiLevel") + "\n");
+
+        Log.log(Level.FINE, "Device UDID: " + device);
 
     }
 
@@ -101,6 +104,10 @@ public class AppiumManager {
         capabilities.setCapability("uiautomator2ServerInstallTimeout", 60000);
 
         capabilities.setCapability("disableWindowAnimation", true);
+
+        if (device != null) {
+            capabilities.setCapability("udid", device);
+        }
 
     }
 }
