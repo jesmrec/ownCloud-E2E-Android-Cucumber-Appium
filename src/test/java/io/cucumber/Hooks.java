@@ -19,7 +19,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import utils.api.AuthAPI;
 import utils.api.FilesAPI;
+import utils.api.GraphAPI;
 import utils.api.TrashbinAPI;
 import utils.entities.OCFile;
 import utils.log.Log;
@@ -43,7 +45,9 @@ public class Hooks {
     private void cleanUp()
             throws IOException, ParserConfigurationException, SAXException {
         FilesAPI filesAPI = new FilesAPI();
+        AuthAPI authAPI = new AuthAPI();
         TrashbinAPI trashbinAPI = new TrashbinAPI();
+        GraphAPI graphAPI = new GraphAPI();
         //First, remove leftovers in root folder. Just keeping the skeleton items
         ArrayList<OCFile> filesRoot = filesAPI.listItems("");
         for (OCFile iterator: filesRoot){
@@ -51,5 +55,8 @@ public class Hooks {
             filesAPI.removeItem(iterator.getName());
         }
         trashbinAPI.emptyTrashbin();
+        if (authAPI.checkAuthMethod().equals("OIDC")){ //remove spaces
+            graphAPI.removeSpacesOfUser();
+        }
     }
 }

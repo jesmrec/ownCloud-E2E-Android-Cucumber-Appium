@@ -172,6 +172,7 @@ public class CommonAPI {
         if (host.isEmpty() || host == null) {
             host = urlServer.split("//")[1];
         }
+        Log.log(Level.FINE, "HOST: " + host);
         return host;
     }
 

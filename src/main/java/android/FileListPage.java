@@ -64,6 +64,9 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/nav_available_offline_files")
     private MobileElement avOffShortcut;
 
+    @AndroidFindBy (id = "nav_spaces")
+    MobileElement spacesTab;
+
     private final String listFiles_id = "com.owncloud.android:id/list_root";
 
     public FileListPage() {
@@ -179,6 +182,10 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: open av offline shortcut");
         waitByTextInvisible(5, "Download enqueued");
         avOffShortcut.click();
+    }
+
+    public void openSpaces(){
+        spacesTab.click();
     }
 
     public void closeSelectionMode() {
