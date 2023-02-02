@@ -1,6 +1,5 @@
 package android;
 
-import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.logging.Level;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import utils.api.AuthAPI;
 import utils.log.Log;
 
 public class LoginPage extends CommonPage {
@@ -32,15 +30,6 @@ public class LoginPage extends CommonPage {
     @AndroidFindBy(id = "ok")
     private MobileElement acceptCertificate;
 
-    //Only for login tests, from env variables. Needed some instances running to check
-    //whether authentication works (ftm, only basic)
-    private final String serverURL = System.getProperty("login_serverURL");
-    private final String oauth2URL = System.getProperty("login_oauth2URL");
-    private final String oidcURL = System.getProperty("login_oidcURL");
-    private final String LDAPURL = System.getProperty("login_LDAPURL");
-    private final String red301URL = System.getProperty("login_red301URL");
-    private final String red302URL = System.getProperty("login_red302URL");
-
     //For the regular tests
     private final String server = System.getProperty("server");
 
@@ -57,15 +46,7 @@ public class LoginPage extends CommonPage {
 
     public void typeURL() {
         Log.log(Level.FINE, "Starts: Type URL.");
-        waitById(15, urlServer.get(0));
         urlServer.get(0).sendKeys(server);
-        checkServerButton.click();
-    }
-
-    public void typeURL(String authMethod) {
-        Log.log(Level.FINE, "Starts: Type URL. " + authMethod);
-        waitById(15, urlServer.get(0));
-        urlServer.get(0).sendKeys(selectURL(authMethod));
         checkServerButton.click();
     }
 
@@ -77,48 +58,15 @@ public class LoginPage extends CommonPage {
         passwordText.sendKeys(password);
     }
 
-    public void submitLogin(String method) {
+    public void submitLogin(/*String method*/) {
         Log.log(Level.FINE, "Starts: Submit login");
-        Log.log(Level.FINE, "Starts: enter OIDC credentials");
         acceptCertificate();
-        if (method.equals("Basic")) {
-            loginButton.click();
-        }
+        loginButton.click();
     }
 
     public void acceptCertificate(){
         if (!findListUIAutomatorText("YES").isEmpty()){
             findListUIAutomatorText("YES").get(0).click();
-        }
-    }
-
-    public boolean isCredentialsErrorMessage() {
-        return findListXpath(errorcredentialstext_xpath).size() > 0;
-    }
-
-    private String selectURL(String authMehod) {
-        switch (authMehod) {
-            case "basic auth":
-                Log.log(Level.FINE, "URL: " + serverURL);
-                return serverURL;
-            case "OAuth2":
-                Log.log(Level.FINE, "URL: " + oauth2URL);
-                return oauth2URL;
-            case "LDAP":
-                Log.log(Level.FINE, "URL: " + LDAPURL);
-                return LDAPURL;
-            case "redirection 301":
-                Log.log(Level.FINE, "URL: " + red301URL);
-                return red301URL;
-            case "redirection 302":
-                Log.log(Level.FINE, "URL: " + red302URL);
-                return red302URL;
-            case "OIDC":
-                Log.log(Level.FINE, "URL: " + oidcURL);
-                return oidcURL;
-            default:
-                Log.log(Level.WARNING, "No URL");
-                return null;
         }
     }
 }

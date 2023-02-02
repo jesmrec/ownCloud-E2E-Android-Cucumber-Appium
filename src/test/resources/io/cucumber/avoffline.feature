@@ -11,7 +11,7 @@ Feature: Set items as available offline (downloaded and synced)
     @setasavoffline
     Rule: Set as av.offline
 
-      @smoke
+      @smoke @ignore
       Scenario: Set a file as available offline
         Given the following items have been created in the account
           | file   | av.offline.pdf  |

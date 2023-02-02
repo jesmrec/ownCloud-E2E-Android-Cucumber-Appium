@@ -105,6 +105,8 @@ public class AppiumManager {
 
         capabilities.setCapability("disableWindowAnimation", true);
 
+        capabilities.setCapability("noReset", true);
+
         if (device != null) {
             capabilities.setCapability("udid", device);
         }

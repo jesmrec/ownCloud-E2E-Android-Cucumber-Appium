@@ -1,22 +1,11 @@
 package io.cucumber;
 
-import static org.junit.Assert.assertTrue;
-
-import android.ChromeCustomTabPage;
-import android.FileListPage;
 import android.LoginPage;
-import android.OIDCPage;
 
-import java.io.IOException;
 import java.util.logging.Level;
 
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import utils.LocProperties;
-import utils.api.AuthAPI;
-import utils.api.MiddlewareAPI;
 import utils.log.Log;
 
 public class LoginSteps {
@@ -24,133 +13,20 @@ public class LoginSteps {
     //Involved pages
     protected LoginPage loginPage = new LoginPage();
 
-    //APIs to call
-    private MiddlewareAPI middlewareAPI = new MiddlewareAPI();
-    private FileListPage fileListPage = new FileListPage();
-    private AuthAPI authAPI = new AuthAPI();
-
-    //Class to clean up when "only basic" mode is consolidated
-    public LoginSteps() throws IOException {
-    }
-
-    @ParameterType("basic auth|LDAP|redirection 301|redirection 302|OAuth2|OIDC")
-    public String authtype(String type){
-        return type;
-    }
-
-    @Given("app has been launched for the first time")
-    public void app_launched_for_the_first_time() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        //In case it is installed, we remove to execute login tests
-        loginPage.reinstallApp();
-    }
-
-    @Given("user {word} has been created with default attributes")
-    public void user_has_been_created_with_default_attributes(String user)
-            throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        middlewareAPI.postMiddlewareExecute(stepName);
+    public LoginSteps() {
     }
 
     @Given("user {word} is logged")
-    public void user_is_logged(String user)
-            throws Throwable {
+    public void user_is_logged(String user) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
+        // Server and app MUST work with basic auth mode. Both required.
         if (loginPage.notLoggedIn()) {
-            String authMethod = authAPI.checkAuthMethod();
             String username = LocProperties.getProperties().getProperty("userName1");
             String password = LocProperties.getProperties().getProperty("passw1");
             loginPage.typeURL();
-            //switch (authMethod) {
-            //    case "Basic":
-                    loginPage.typeCredentials(username, password);
-                    loginPage.submitLogin("Basic");
-            /*        break;
-                case "Bearer":
-                    loginPage.submitLogin("Bearer");
-                    ChromeCustomTabPage chromeCustomTabPage = new ChromeCustomTabPage();
-                    chromeCustomTabPage.enterCredentials(username, password);
-                    chromeCustomTabPage.authorize();
-                    break;
-                case "OIDC":
-                    loginPage.submitLogin("OIDC");
-                    OIDCPage OIDCPage = new OIDCPage();
-                    OIDCPage.enterCredentials(username, password);
-                    OIDCPage.authorize();
-                    break;
-                default:
-                    break;
-            }*/
+            loginPage.typeCredentials(username, password);
+            loginPage.submitLogin();
         }
-        loginPage.acceptCertificate();
-    }
-
-    @Given("server with {authtype} is available")
-    public void server_authtype_is_available(String authMethod) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        loginPage.typeURL(authMethod);
-    }
-
-    @When("^user logins as (.+) with password (.+) as (.+) credentials$")
-    public void login_as_with_password_as_auth_method(String username, String password, String authMethod) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        switch (authMethod) {
-            case "basic auth":
-            case "LDAP":
-                loginPage.typeCredentials(username, password);
-                loginPage.submitLogin("Basic");
-                break;
-            case "OAuth2":
-                loginPage.submitLogin("OAuth2");
-                ChromeCustomTabPage chromeCustomTabPage = new ChromeCustomTabPage();
-                chromeCustomTabPage.enterCredentials(username, password);
-                chromeCustomTabPage.authorize();
-                break;
-            case "OIDC":
-                loginPage.submitLogin("OIDC");
-                OIDCPage OIDCPage = new OIDCPage();
-                OIDCPage.enterCredentials(username, password);
-                OIDCPage.authorize();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Then("user should see the main page")
-    public void user_should_see_the_main_page() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        try {
-            assertTrue(fileListPage.isHeader());
-            // In case the assertion fails, we have to remove the app to keep executing other tests
-            // After catching the error, it must be thrown again to return the correct test result.
-            // Otherwise, the test will never fail
-        } catch (AssertionError e) {
-            loginPage.removeApp();
-            throw e;
-        }
-        loginPage.removeApp();
-    }
-
-    @Then("user should see an error message")
-    public void login_error_message() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        try {
-            assertTrue(loginPage.isCredentialsErrorMessage());
-            // In case the assertion fails, we have to remove the app to keep executing other tests
-            // After catching the error, it must be thrown again to return the correct test result.
-            // Otherwise, the test will never fail
-        } catch (AssertionError e) {
-            loginPage.removeApp();
-            throw e;
-        }
-        loginPage.removeApp();
     }
 }
