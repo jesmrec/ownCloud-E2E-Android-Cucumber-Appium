@@ -45,14 +45,6 @@ public class GraphAPI extends CommonAPI {
         return body;
     }
 
-    private List<OCSpace> getCustomSpaces() throws IOException {
-        Log.log(Level.FINE, "GET all \"project\" SPACES");
-        String url = urlServer + graphPath + drives;
-        Request request = getRequest(url);
-        Response response = httpClient.newCall(request).execute();
-        return getSpacesFromResponse(response);
-    }
-
     private List<OCSpace> geyMySpaces() throws IOException {
         Log.log(Level.FINE, "GET my SPACES");
         String url = urlServer + graphPath + myDrives;
@@ -61,6 +53,7 @@ public class GraphAPI extends CommonAPI {
         return getSpacesFromResponse(response);
     }
 
+    //User "alice" by default
     public void removeSpacesOfUser() throws IOException {
         Log.log(Level.FINE, "REMOVE custom SPACES of: " + user);
         List<OCSpace> spacesOfUser = geyMySpaces();
@@ -74,6 +67,18 @@ public class GraphAPI extends CommonAPI {
                 Request requestDelete = deleteSpaceRequest(url);
                 httpClient.newCall(requestDelete).execute();
         }
+    }
+
+    public void disableSpace (String name, String description) throws IOException {
+        Log.log(Level.FINE, "DISABLE SPACE: " + name + " " + description);
+        String spaceId = getSpaceIdFromName(name, description);
+        String url = urlServer + graphPath + drives + spaceId;
+        Log.log(Level.FINE, "URL: " + url);
+        Request request = deleteRequest(url);
+        Response response = httpClient.newCall(request).execute();
+        Log.log(Level.FINE, "Response Code: " + response.code());
+        Log.log(Level.FINE, "Response Body: " + response.body().string());
+        response.close();
     }
 
     private Request deleteSpaceRequest(String url) {
@@ -105,6 +110,16 @@ public class GraphAPI extends CommonAPI {
         return id;
     }
 
+    private String getSpaceIdFromName(String name, String description) throws IOException {
+        List<OCSpace> mySpaces = geyMySpaces();
+        for (OCSpace space : mySpaces){
+            if (space.getName().trim().equals(name) && space.getDescription().trim().equals(description)){
+                return space.getId();
+            }
+        }
+        return null;
+    }
+
     private List<OCSpace> getSpacesFromResponse (Response httpResponse) throws IOException {
         String json = httpResponse.body().string();
         ArrayList<OCSpace> spaces = new ArrayList<>();
@@ -118,6 +133,7 @@ public class GraphAPI extends CommonAPI {
                 space.setType(jsonObject.getString("driveType"));
                 space.setId(jsonObject.getString("id"));
                 space.setName(jsonObject.getString("name"));
+                space.setDescription(jsonObject.getString("description"));
                 JSONObject owner = jsonObject.getJSONObject("owner");
                 JSONObject user = owner.getJSONObject("user");
                 space.setOwner(user.getString("id"));
