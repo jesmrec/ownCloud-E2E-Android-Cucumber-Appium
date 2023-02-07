@@ -1,7 +1,5 @@
 package io.cucumber;
 
-import android.LoginPage;
-
 import java.util.logging.Level;
 
 import io.cucumber.java.en.Given;
@@ -10,10 +8,10 @@ import utils.log.Log;
 
 public class LoginSteps {
 
-    //Involved pages
-    protected LoginPage loginPage = new LoginPage();
+    private World world;
 
-    public LoginSteps() {
+    public LoginSteps(World world) {
+        this.world = world;
     }
 
     @Given("user {word} is logged")
@@ -21,12 +19,12 @@ public class LoginSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         // Server and app MUST work with basic auth mode. Both required.
-        if (loginPage.notLoggedIn()) {
+        if (world.loginPage.notLoggedIn()) {
             String username = LocProperties.getProperties().getProperty("userName1");
             String password = LocProperties.getProperties().getProperty("passw1");
-            loginPage.typeURL();
-            loginPage.typeCredentials(username, password);
-            loginPage.submitLogin();
+            world.loginPage.typeURL();
+            world.loginPage.typeCredentials(username, password);
+            world.loginPage.submitLogin();
         }
     }
 }
