@@ -4,7 +4,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
 
@@ -48,7 +47,7 @@ public class SharesPage extends CommonPage {
     }
 
     public void switchEditFile() {
-        Log.log(Level.FINE, "Starts: Switch edit file button");
+        Log.log(Level.FINE, "Starts: Switch edit button");
         findId(editbox_id).click();
     }
 
@@ -64,36 +63,24 @@ public class SharesPage extends CommonPage {
         return checkSwitch(deletebox_id);
     }
 
-    public boolean isEditFileSelected() {
+    public boolean isEditFileEnabled() {
         return checkSwitch(editbox_id);
+    }
+
+    public boolean isShareEnabled() {
+        return parseIntBool(findId(sharebox_id).getAttribute("checked"));
+    }
+
+    public boolean isEditEnabled() {
+        return parseIntBool(findId(editbox_id).getAttribute("checked"));
     }
 
     private boolean checkSwitch(String id) {
         if (!findListId(id).isEmpty()) {
-            return findId(id).isEnabled();
+            return parseIntBool(findId(id).getAttribute("checked"));
         } else {
             return false;
         }
-    }
-
-    public boolean isEditPermission() {
-        return isCreateSelected() || isChangeSelected() || isDeleteSelected();
-    }
-
-    public boolean isEditFileEnabled() {
-        return isEditFileSelected();
-    }
-
-    public boolean isShareEnabled() {
-        return findId(sharebox_id).isEnabled();
-    }
-
-    public boolean isEditEnabled() {
-        return findId(changebox_id).isEnabled();
-    }
-
-    public boolean isPasswordEnabled() {
-        return true;
     }
 
     public void close() {

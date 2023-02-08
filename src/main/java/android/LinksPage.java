@@ -242,8 +242,4 @@ public class LinksPage extends CommonPage {
             return ocCapability.isPasswordEnforced();
         }
     }
-
-    private boolean parseIntBool(String s) {
-        return Boolean.parseBoolean(s);
-    }
 }

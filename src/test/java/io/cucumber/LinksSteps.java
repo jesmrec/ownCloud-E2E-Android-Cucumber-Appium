@@ -169,7 +169,6 @@ public class LinksSteps {
         Log.log(Level.FINE, "Checking API/server asserts");
         OCShare share = world.shareAPI.getShare(itemName);
         assertTrue(world.sharingPage.checkCorrectShare(share, listItems));
-        world.filesAPI.removeItem(itemName);
     }
 
     @Then("link on {word} should not exist anymore")
@@ -181,6 +180,5 @@ public class LinksSteps {
         assertFalse(world.sharingPage.isItemInListPublicShares(itemName + " link"));
         assertTrue(world.sharingPage.isListPublicLinksEmpty());
         assertTrue(world.shareAPI.getSharesByDefault().size() == 0);
-        world.filesAPI.removeItem(itemName);
     }
 }

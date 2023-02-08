@@ -227,4 +227,8 @@ public class CommonPage {
             driver.launchApp();
         }
     }
+
+    protected boolean parseIntBool(String s) {
+        return Boolean.parseBoolean(s);
+    }
 }

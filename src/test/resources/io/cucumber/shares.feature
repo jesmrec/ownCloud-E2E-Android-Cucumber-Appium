@@ -109,9 +109,9 @@ Feature: Private Share
 
         Examples:
           |  item         |   user    |  permissions | Description
-          |  Share10.txt  |   Bob     |    3         |  update and read
-          |  Share11.txt  |   Bob     |    17        |  share and read
-          |  Share12.txt  |   Bob     |    19        |  update, share and read
+          |  Share10.txt  |   Bob     |    3         |  edit
+          |  Share11.txt  |   Bob     |    17        |  share
+          |  Share12.txt  |   Bob     |    19        |  edit and share
           |  Share13.txt  |   Bob     |    1         |  only read
 
       Scenario Outline: Edit existing share on a folder, changing permissions
@@ -128,9 +128,9 @@ Feature: Private Share
         Examples:
           |  item      |   user    | permissions | Description
           |  Share14   |   Bob     |   1         | only read
-          |  Share15   |   Bob     |   9         | delete and read
-          |  Share16   |   Bob     |   13        | delete, create and read
-          |  Share17   |   Bob     |   17        | share and read
+          |  Share15   |   Bob     |   9         | delete
+          |  Share16   |   Bob     |   13        | delete and create
+          |  Share17   |   Bob     |   17        | share
 
     @deleteshare
     Rule: Delete a share

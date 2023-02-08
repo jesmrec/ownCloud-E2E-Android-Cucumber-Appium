@@ -29,10 +29,6 @@ public class SharingPage extends CommonPage {
         super();
     }
 
-    public boolean isHeader() {
-        return !findListUIAutomatorText("Share").isEmpty();
-    }
-
     public void addPrivateShare() {
         Log.log(Level.FINE, "Starts: add private share");
         waitById(15, sharefilename_id);
