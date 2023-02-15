@@ -23,6 +23,11 @@ public class FolderPickerPage extends CommonPage {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
+    public void selectSpace(String spaceName){
+        Log.log(Level.FINE, "Start: Select space from picker: " + spaceName);
+        findUIAutomatorText(spaceName).click();
+    }
+
     public void selectFolder(String targetFolder) {
         Log.log(Level.FINE, "Start: Select folder from picker: " + targetFolder);
         findUIAutomatorText(targetFolder).click();

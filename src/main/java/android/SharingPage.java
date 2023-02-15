@@ -21,7 +21,8 @@ public class SharingPage extends CommonPage {
     private final String sharefilename_id = "com.owncloud.android:id/shareFileName";
     private final String unshareprivate_id = "com.owncloud.android:id/unshareButton";
     private final String deleteprivatelink_id = "com.owncloud.android:id/deletePublicLinkButton";
-    private final String nolinks_id = "com.owncloud.android:id/shareNoPublicLinks";
+    private final String noshares_id = "com.owncloud.android:id/shareNoPublicLinks";
+    private final String nolinks_id = "com.owncloud.android:id/shareNoUsers";
     private String acceptdeletion_id = "android:id/button1";
     private String canceldeletion_id = "android:id/button3";
 
@@ -53,6 +54,7 @@ public class SharingPage extends CommonPage {
     }
 
     public boolean isItemInListPrivateShares(String sharee) {
+        waitById(5, noshares_id);
         return !findListUIAutomatorText(sharee).isEmpty();
     }
 

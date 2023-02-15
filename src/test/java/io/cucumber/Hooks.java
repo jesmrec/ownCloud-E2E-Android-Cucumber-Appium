@@ -19,14 +19,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import utils.api.AuthAPI;
-import utils.api.FilesAPI;
-import utils.api.GraphAPI;
-import utils.api.TrashbinAPI;
 import utils.entities.OCFile;
 import utils.log.Log;
 
 public class Hooks {
+
+    private World world;
+
+    public Hooks (World world){
+        this.world = world;
+    }
 
     @Before
     public void setup(Scenario scenario) {
@@ -44,19 +46,15 @@ public class Hooks {
 
     private void cleanUp()
             throws IOException, ParserConfigurationException, SAXException {
-        FilesAPI filesAPI = new FilesAPI();
-        AuthAPI authAPI = new AuthAPI();
-        TrashbinAPI trashbinAPI = new TrashbinAPI();
-        GraphAPI graphAPI = new GraphAPI();
         //First, remove leftovers in root folder. Just keeping the skeleton items
-        ArrayList<OCFile> filesRoot = filesAPI.listItems("");
+        ArrayList<OCFile> filesRoot = world.filesAPI.listItems("");
         for (OCFile iterator: filesRoot){
             Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
-            filesAPI.removeItem(iterator.getName());
+            world.filesAPI.removeItem(iterator.getName());
         }
-        trashbinAPI.emptyTrashbin();
-        if (authAPI.checkAuthMethod().equals("OIDC")){ //remove spaces
-            graphAPI.removeSpacesOfUser();
+        world.trashbinAPI.emptyTrashbin();
+        if (world.authAPI.checkAuthMethod().equals("OIDC")){ //remove spaces
+            world.graphAPI.removeSpacesOfUser();
         }
     }
 }

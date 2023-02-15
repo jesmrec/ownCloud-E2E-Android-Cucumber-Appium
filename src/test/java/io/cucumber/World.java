@@ -14,9 +14,11 @@ import android.SpacesPage;
 
 import java.io.IOException;
 
+import utils.api.AuthAPI;
 import utils.api.FilesAPI;
 import utils.api.GraphAPI;
 import utils.api.ShareAPI;
+import utils.api.TrashbinAPI;
 
 public class World {
 
@@ -37,6 +39,8 @@ public class World {
     ShareAPI shareAPI = new ShareAPI();
     FilesAPI filesAPI = new FilesAPI();
     GraphAPI graphAPI = new GraphAPI();
+    TrashbinAPI trashbinAPI = new TrashbinAPI();
+    AuthAPI authAPI = new AuthAPI();
 
     public World() throws IOException {
     }

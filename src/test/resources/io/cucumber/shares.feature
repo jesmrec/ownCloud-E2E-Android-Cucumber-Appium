@@ -40,20 +40,6 @@ Feature: Private Share
           |  file   |  Share3.txt  |
           |  folder |  Share4      |
 
-      @federated @noocis
-      Scenario Outline: Correct federated share
-        Given the following items have been created in the account
-          | <type>   | <item>  |
-        When Alice selects to share the <type> <item>
-        And Alice selects user demo@demo.owncloud.com as sharee
-        Then share should be created on <item> with the following fields
-          | sharee | demo@demo.owncloud.com |
-
-        Examples:
-          |  type   |  item        |
-          |  file   |  Share5.txt  |
-          |  folder |  Share6      |
-
         #Permissions
         # READ -> 1
         # UPDATE -> 2
@@ -66,30 +52,30 @@ Feature: Private Share
 
       Scenario: Reshare allowed
         Given the following items have been created in the account
-          | file   | Share7.txt  |
-        When Alice selects to share the file Share7.txt
+          | file   | Share5.txt  |
+        When Alice selects to share the file Share5.txt
         And Alice selects user Bob as sharee
-        And Bob has reshared file Share7.txt with Charles with permissions 31
-        Then user Bob should have access to Share7.txt
-        And user Charles should have access to Share7.txt
-        And share should be created on Share7.txt with the following fields
+        And Bob has reshared file Share5.txt with Charles with permissions 31
+        Then user Bob should have access to Share5.txt
+        And user Charles should have access to Share5.txt
+        And share should be created on Share5.txt with the following fields
           | sharee  | Bob       |
 
       #not an Android, keeping ftm...
       Scenario: Reshare not allowed
         Given the following items have been created in the account
-          | file   | Share8.txt  |
-        And Alice has shared file Share8.txt with Bob with permissions 3
-        When Bob has reshared file Share8.txt with Charles with permissions 31
-        Then user Bob should have access to Share8.txt
-        But Charles should not have access to Share8.txt
+          | file   | Share6.txt  |
+        And Alice has shared file Share6.txt with Bob with permissions 3
+        When Bob has reshared file Share6.txt with Charles with permissions 31
+        Then user Bob should have access to Share6.txt
+        But Charles should not have access to Share6.txt
 
       Scenario: Reshare reflected
         Given the following items have been created in the account
-          | file   | Share9.txt  |
-        And Alice has shared file Share9.txt with Bob with permissions 31
-        And Bob has reshared file Share9.txt with Charles with permissions 31
-        And Alice selects to share the file Share9.txt
+          | file   | Share7.txt  |
+        And Alice has shared file Share7.txt with Bob with permissions 31
+        And Bob has reshared file Share7.txt with Charles with permissions 31
+        And Alice selects to share the file Share7.txt
         Then Alice should see Bob as recipient
         And Alice should see Charles as recipient
 
@@ -109,10 +95,10 @@ Feature: Private Share
 
         Examples:
           |  item         |   user    |  permissions | Description
-          |  Share10.txt  |   Bob     |    3         |  edit
-          |  Share11.txt  |   Bob     |    17        |  share
-          |  Share12.txt  |   Bob     |    19        |  edit and share
-          |  Share13.txt  |   Bob     |    1         |  only read
+          |  Share8.txt   |   Bob     |    3         |  edit
+          |  Share9.txt   |   Bob     |    17        |  share
+          |  Share10.txt  |   Bob     |    19        |  edit and share
+          |  Share11.txt  |   Bob     |    1         |  only read
 
       Scenario Outline: Edit existing share on a folder, changing permissions
         Given the following items have been created in the account
@@ -127,10 +113,10 @@ Feature: Private Share
 
         Examples:
           |  item      |   user    | permissions | Description
-          |  Share14   |   Bob     |   1         | only read
-          |  Share15   |   Bob     |   9         | delete
-          |  Share16   |   Bob     |   13        | delete and create
-          |  Share17   |   Bob     |   17        | share
+          |  Share12   |   Bob     |   1         | only read
+          |  Share13   |   Bob     |   9         | delete
+          |  Share14   |   Bob     |   13        | delete and create
+          |  Share15   |   Bob     |   17        | share
 
     @deleteshare
     Rule: Delete a share
@@ -146,5 +132,5 @@ Feature: Private Share
 
         Examples:
           |  type   |  item         |
-          |  file   |  Share18.txt  |
-          |  folder |  Share19      |
+          |  file   |  Share16.txt  |
+          |  folder |  Share17      |

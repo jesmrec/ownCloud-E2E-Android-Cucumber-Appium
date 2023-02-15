@@ -14,19 +14,19 @@ Feature: Copy item
       | <type>   | <name>    |
       | folder   | Documents |
     When Alice selects to Copy the <type> <name>
-    And Alice selects <target> as target folder
+    And Alice selects <space> as space and <target> as target folder
     Then Alice should see <name> in the filelist as original
     And Alice should see <name> inside the folder <target>
 
     Examples:
-      | type     |  name          | target     |
-      | folder   |  Copyfolder    | Documents  |
-      | file     |  Copyfile.txt  | Documents  |
+      | type     |  name          | target     | space     |
+      | folder   |  Copyfolder    | Documents  | Personal  |
+      | file     |  Copyfile.txt  | Documents  | Personal  |
 
   Scenario: Copy a folder to itself
     Given the following items have been created in the account
       | folder   | copy2  |
     When Alice selects to Copy the folder copy2
-    And Alice selects copy2 as target folder
+    And Alice selects Personal as space and copy2 as target folder
     Then Alice should see the following error
       | It is not possible to copy a folder into a descendant |

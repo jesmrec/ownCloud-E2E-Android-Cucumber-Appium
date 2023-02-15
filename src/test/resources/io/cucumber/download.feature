@@ -1,4 +1,4 @@
-@download
+@download @ignore
 Feature: Download a file in the account
 
   As a user

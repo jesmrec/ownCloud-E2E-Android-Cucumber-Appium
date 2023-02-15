@@ -122,6 +122,17 @@ public class FileListSteps {
         world.folderPickerPage.accept();
     }
 
+    @When("Alice selects {word} as space and {word} as target folder")
+    public void user_selects_target_folder(String spaceName, String targetFolder)
+            throws IOException {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        if (world.authAPI.checkAuthMethod().equals("OIDC")) {
+            world.folderPickerPage.selectSpace(spaceName);
+        }
+        user_selects_target_folder(targetFolder);
+    }
+
     @When("Alice selects the option upload")
     public void user_selects_option_upload() {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();

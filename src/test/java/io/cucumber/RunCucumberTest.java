@@ -5,17 +5,16 @@ import android.AppiumManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-
 import java.util.logging.Level;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import utils.log.Log;
 
-//Login tests will not be lauched by default. Only in specific situations.
-
 @RunWith(Cucumber.class)
+//@RunWith(ExtendedCucumber.class)
 @CucumberOptions(plugin = {"pretty"})
+//@ExtendedCucumberOptions(retryCount = 2)
 
 public class RunCucumberTest {
 
