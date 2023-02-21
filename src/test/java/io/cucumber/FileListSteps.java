@@ -255,8 +255,20 @@ public class FileListSteps {
         assertFalse(world.fileListPage.isItemInList(itemName));
     }
 
+    //Variant with word parameter
     @Then("Alice should see {word} inside the folder {word}")
-    public void user_should_see_item_inside_folder(String itemName, String targetFolder)
+    public void user_should_see_item_inside_folder_word(String itemName, String targetFolder)
+            throws Throwable {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.fileListPage.browseInto(targetFolder);
+        world.fileListPage.isItemInList(itemName);
+        assertTrue(world.filesAPI.itemExist(targetFolder + "/" + itemName));
+    }
+
+    //Variant with string parameter, in case the itemName contain blanks
+    @Then("Alice should see {string} inside the folder {word}")
+    public void user_should_see_item_inside_folder_string(String itemName, String targetFolder)
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);

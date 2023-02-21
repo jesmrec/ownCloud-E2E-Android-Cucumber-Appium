@@ -23,10 +23,19 @@ Feature: Copy item
       | folder   |  Copyfolder    | Documents  | Personal  |
       | file     |  Copyfile.txt  | Documents  | Personal  |
 
+  Scenario: Copy a folder to another place with same item name
+    Given the following items have been created in the account
+      | folder   | copy2        |
+      | folder   | copy3        |
+      | folder   | copy2/copy3  |
+    When Alice selects to Copy the folder copy3
+    And Alice selects Personal as space and copy2 as target folder
+    Then Alice should see 'copy3 (2)' inside the folder copy2
+
   Scenario: Copy a folder to itself
     Given the following items have been created in the account
-      | folder   | copy2  |
-    When Alice selects to Copy the folder copy2
-    And Alice selects Personal as space and copy2 as target folder
+      | folder   | copy4  |
+    When Alice selects to Copy the folder copy4
+    And Alice selects Personal as space and copy4 as target folder
     Then Alice should see the following error
       | It is not possible to copy a folder into a descendant |
