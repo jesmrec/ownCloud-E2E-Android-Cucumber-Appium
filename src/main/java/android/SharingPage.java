@@ -32,19 +32,19 @@ public class SharingPage extends CommonPage {
 
     public void addPrivateShare() {
         Log.log(Level.FINE, "Starts: add private share");
-        waitById(15, sharefilename_id);
+        waitById(5, sharefilename_id);
         findId(addshareebutton_id).click();
     }
 
     public void addPublicLink() {
         Log.log(Level.FINE, "Starts: add public link");
-        waitById(15, sharefilename_id);
+        waitById(5, sharefilename_id);
         findId(addpubliclinkbutton_id).click();
     }
 
     public void openPrivateShare(String itemName) {
         Log.log(Level.FINE, "Starts: edit private share: " + itemName);
-        waitById(15, editprivateshare_id);
+        waitById(5, editprivateshare_id);
         findId(editprivateshare_id).click();
     }
 

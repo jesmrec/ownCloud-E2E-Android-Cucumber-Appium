@@ -12,9 +12,7 @@ import io.cucumber.junit.CucumberOptions;
 import utils.log.Log;
 
 @RunWith(Cucumber.class)
-//@RunWith(ExtendedCucumber.class)
 @CucumberOptions(plugin = {"pretty"})
-//@ExtendedCucumberOptions(retryCount = 2)
 
 public class RunCucumberTest {
 
