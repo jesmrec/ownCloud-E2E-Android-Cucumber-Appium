@@ -1,4 +1,4 @@
-@spaces @ocis @ignore
+@spaces @nooc10
 Feature: Spaces
 
   As a user

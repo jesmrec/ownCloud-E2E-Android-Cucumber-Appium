@@ -44,7 +44,7 @@ public class FileListPage extends CommonPage {
     private MobileElement uploadFiles;
 
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar")
-    private List<MobileElement> toolbar;
+    private MobileElement toolbar;
 
     @AndroidFindBy(id = "com.owncloud.android:id/list_root")
     private MobileElement listFiles;
@@ -76,7 +76,7 @@ public class FileListPage extends CommonPage {
 
     public void refreshList() {
         Log.log(Level.FINE, "Refresh list");
-        waitById(5, (MobileElement)(toolbar.get(0)));
+        waitById(10, toolbar);
         swipe(0.50, 0.70, 0.50, 0.95);
     }
 
@@ -143,10 +143,6 @@ public class FileListPage extends CommonPage {
     public boolean errorDisplayed(String error) {
         Log.log(Level.FINE, "Starts: Error displayed: " + error);
         return findUIAutomatorSubText(error).isDisplayed();
-    }
-
-    public boolean isHeader() {
-        return !toolbar.isEmpty();
     }
 
     /*

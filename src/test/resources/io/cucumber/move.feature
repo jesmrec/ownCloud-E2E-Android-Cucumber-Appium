@@ -30,3 +30,20 @@ Feature: Move item
     And Alice selects move2 as target folder
     Then Alice should see the following error
       | It is not possible to move a folder into a descendant |
+
+  Scenario: Move a folder to same location
+    Given the following items have been created in the account
+      | file   | move3.txt  |
+    When Alice selects to Move the file move3.txt
+    And Alice selects / as target folder
+    Then Alice should see the following error
+      | The file exists already in the destination folder |
+
+  Scenario: Move a folder to descendant
+    Given the following items have been created in the account
+      | folder   | move4        |
+      | folder   | move4/move5  |
+    When Alice selects to Move the folder move4
+    And Alice selects move4/move5 as target folder
+    Then Alice should see the following error
+      | It is not possible to move a folder into a descendant |

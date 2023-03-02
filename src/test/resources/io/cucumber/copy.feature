@@ -32,10 +32,27 @@ Feature: Copy item
     And Alice selects Personal as space and copy2 as target folder
     Then Alice should see 'copy3 (2)' inside the folder copy2
 
+  @nooc10
+  Scenario: Copy a file to same place (duplication)
+    Given the following items have been created in the account
+      | file   | copy4.txt    |
+    When Alice selects to Copy the file copy4.txt
+    And Alice selects Personal as space and / as target folder
+    Then Alice should see 'copy4 (2).txt' in the filelist as original
+
   Scenario: Copy a folder to itself
     Given the following items have been created in the account
-      | folder   | copy4  |
-    When Alice selects to Copy the folder copy4
-    And Alice selects Personal as space and copy4 as target folder
+      | folder   | copy5  |
+    When Alice selects to Copy the folder copy5
+    And Alice selects Personal as space and copy5 as target folder
+    Then Alice should see the following error
+      | It is not possible to copy a folder into a descendant |
+
+  Scenario: Copy a folder to descendant
+    Given the following items have been created in the account
+      | folder   | copy6        |
+      | folder   | copy6/copy7  |
+    When Alice selects to Copy the folder copy6
+    And Alice selects Personal as space and copy6/copy7 as target folder
     Then Alice should see the following error
       | It is not possible to copy a folder into a descendant |

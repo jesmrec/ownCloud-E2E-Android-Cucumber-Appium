@@ -113,7 +113,7 @@ Feature: Public Links
           |  folder |  Links13      |
           |  file   |  Links14.txt  |
 
-    @linkshortcut
+    @linkshortcut @noocis
     Rule: Public link Shortcut
 
       Scenario: Public link shortcut shows correct links

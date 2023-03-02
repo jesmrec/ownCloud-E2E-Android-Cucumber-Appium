@@ -80,7 +80,7 @@ public class FileListSteps {
     public void user_selects_to_set_as_avoffline_item(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        //fileListPage.waitToload("Documents");
+        world.fileListPage.waitToload(itemName);
         world.fileListPage.refreshList();
         world.fileListPage.executeOperation("Set as available offline", itemName);
         world.fileListPage.closeSelectionMode();
@@ -278,10 +278,20 @@ public class FileListSteps {
     }
 
     @Then("Alice should see {word} in the filelist as original")
-    public void user_should_see_item_in_filelist_as_original(String itemName)
+    public void user_should_see_item_in_filelist_as_original_word(String itemName)
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.fileListPage.isItemInList(itemName.substring(itemName.lastIndexOf('/') + 1)));
+        assertTrue(world.filesAPI.itemExist(itemName));
+    }
+
+    @Then("Alice should see {string} in the filelist as original")
+    public void user_should_see_item_in_filelist_as_original_string(String itemName)
+            throws Throwable {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.fileListPage.refreshList();
         assertTrue(world.fileListPage.isItemInList(itemName.substring(itemName.lastIndexOf('/') + 1)));
         assertTrue(world.filesAPI.itemExist(itemName));
     }
