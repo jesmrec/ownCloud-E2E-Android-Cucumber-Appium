@@ -185,4 +185,14 @@ public class CommonAPI {
         Log.log(Level.FINE, "Personal Drive ID: " + personalId);
         return personalId;
     }
+
+    protected String getSpaceId(String url, String spaceName) throws IOException {
+        Request request = getRequest(url + graphDrivesEndpoint);
+        Response response = httpClient.newCall(request).execute();
+        String body = response.body().string();
+        response.close();
+        String spaceId = DrivesJSONHandler.getSpaceId(body, spaceName);
+        Log.log(Level.FINE, "Space ID: " + spaceId);
+        return spaceId;
+    }
 }

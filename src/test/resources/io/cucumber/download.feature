@@ -1,4 +1,4 @@
-@download @ignore
+@download
 Feature: Download a file in the account
 
   As a user
@@ -15,13 +15,6 @@ Feature: Download a file in the account
     When Alice selects to Download the item downloadMe.txt
     Then the item downloadMe.txt should be opened and previewed
     And the item downloadMe.txt should be marked as downloaded
-
-  @ignore
-  Scenario: Download a file that is not previewable
-    Given the following items have been created in the account
-      | file   | downloadMe.zip  |
-    When Alice selects to Download the item downloadMe.zip
-    Then share sheet for the item downloadMe.zip is displayed
 
   Scenario: Download a file from Details view
     Given the following items have been created in the account

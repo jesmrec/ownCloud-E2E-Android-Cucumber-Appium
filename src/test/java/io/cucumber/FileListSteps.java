@@ -90,7 +90,6 @@ public class FileListSteps {
     public void user_selects_to_unset_as_unavoffline_item(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        //fileListPage.waitToload("Documents");
         world.fileListPage.refreshList();
         world.fileListPage.executeOperation("Unset as available offline", itemName);
         world.fileListPage.closeSelectionMode();
