@@ -1,3 +1,9 @@
+/**
+ * ownCloud Android Scenario Tests
+ *
+ * @author Jesús Recio Rincón (@jesmrec)
+ */
+
 package io.cucumber;
 
 import java.util.logging.Level;

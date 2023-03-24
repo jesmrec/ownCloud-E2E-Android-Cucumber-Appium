@@ -1,3 +1,9 @@
+/**
+ * ownCloud Android Scenario Tests
+ *
+ * @author Jesús Recio Rincón (@jesmrec)
+ */
+
 package android;
 
 import org.apache.commons.codec.binary.Base64;
