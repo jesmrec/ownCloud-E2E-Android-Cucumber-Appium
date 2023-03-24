@@ -1,3 +1,9 @@
+/**
+ * ownCloud Android Scenario Tests
+ *
+ * @author Jesús Recio Rincón (@jesmrec)
+ */
+
 package io.cucumber;
 
 import static org.junit.Assert.assertEquals;
@@ -111,13 +117,7 @@ public class FileListSteps {
     public void user_selects_target_folder(String targetFolder) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        if (!targetFolder.equals("/")) { //if it is root, nothing to do
-            if (!targetFolder.contains("/")) { //if does not contain "/", is a folder in root
-                world.folderPickerPage.selectFolder(targetFolder);
-            } else { //must browse to the file's location
-                world.fileListPage.browseToFolder(targetFolder);
-            }
-        }
+        world.folderPickerPage.selectFolder(targetFolder);
         world.folderPickerPage.accept();
     }
 

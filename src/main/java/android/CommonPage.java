@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 
 import io.appium.java_client.MobileBy;
@@ -25,6 +24,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.android.AndroidTouchAction;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
@@ -32,6 +32,9 @@ import utils.LocProperties;
 import utils.log.Log;
 
 public class CommonPage {
+
+    @AndroidFindBy(id = "com.owncloud.android:id/nav_all_files")
+    private MobileElement toRoot;
 
     protected static AndroidDriver driver = AppiumManager.getManager().getDriver();
     protected static Actions actions;
@@ -41,6 +44,54 @@ public class CommonPage {
     public CommonPage() {
         actions = new Actions(driver);
     }
+
+    /* Finders */
+
+    public MobileElement findId(String id){
+        return (MobileElement) driver.findElement(MobileBy.id(id));
+    }
+
+    public List<MobileElement> findListId(String id){
+        return (List<MobileElement>) driver.findElements(MobileBy.id(id));
+    }
+
+    public MobileElement findXpath(String xpath){
+        return (MobileElement) driver.findElement(MobileBy.xpath(xpath));
+    }
+
+    public List<MobileElement> findListXpath(String xpath){
+        return (List<MobileElement>) driver.findElements(MobileBy.xpath(xpath));
+    }
+
+    public MobileElement findUIAutomatorText(String text){
+        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+                "new UiSelector().textContains(\"" + text + "\");"));
+    }
+
+    public MobileElement findUIAutomatorSubText(String text){
+        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+                "new UiSelector().textContains(\"" + text + "\");"));
+    }
+
+    public MobileElement findUIAutomatorDescription(String description){
+        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+                "new UiSelector().description(\"" + description + "\");"));
+    }
+
+    public List<MobileElement> findListUIAutomatorText(String finder){
+        return (List<MobileElement>) driver.findElements(MobileBy.AndroidUIAutomator(
+                "new UiSelector().textContains(\"" + finder + "\");"));
+    }
+
+    public MobileElement findAccesibility(String id){
+        return (MobileElement) driver.findElement(new MobileBy.ByAccessibilityId(id));
+    }
+
+    public List<MobileElement> findListAccesibility(String id){
+        return (List<MobileElement>) driver.findElements(new MobileBy.ByAccessibilityId(id));
+    }
+
+    /* Waiters by different parameters */
 
     public static void waitByXpath(int timeToWait, String resourceXpath) {
         WebDriverWait wait = new WebDriverWait(driver, timeToWait);
@@ -94,49 +145,7 @@ public class CommonPage {
         }
     }
 
-    public MobileElement findXpath(String xpath){
-        return (MobileElement) driver.findElement(MobileBy.xpath(xpath));
-    }
-
-    public List<MobileElement> findListXpath(String xpath){
-        return (List<MobileElement>) driver.findElements(MobileBy.xpath(xpath));
-    }
-
-    public MobileElement findUIAutomatorText(String text){
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
-                "new UiSelector().textContains(\"" + text + "\");"));
-    }
-
-    public MobileElement findUIAutomatorSubText(String text){
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
-                "new UiSelector().textContains(\"" + text + "\");"));
-    }
-
-    public MobileElement findUIAutomatorDescription(String description){
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
-                "new UiSelector().description(\"" + description + "\");"));
-    }
-
-    public List<MobileElement> findListUIAutomatorText(String finder){
-        return (List<MobileElement>) driver.findElements(MobileBy.AndroidUIAutomator(
-                "new UiSelector().textContains(\"" + finder + "\");"));
-    }
-
-    public MobileElement findId(String id){
-        return (MobileElement) driver.findElement(MobileBy.id(id));
-    }
-
-    public List<MobileElement> findListId(String id){
-        return (List<MobileElement>) driver.findElements(MobileBy.id(id));
-    }
-
-    public MobileElement findAccesibility(String id){
-        return (MobileElement) driver.findElement(new MobileBy.ByAccessibilityId(id));
-    }
-
-    public List<MobileElement> findListAccesibility(String id){
-        return (List<MobileElement>) driver.findElements(new MobileBy.ByAccessibilityId(id));
-    }
+    /* Finger actions */
 
     public static void swipe(double startx, double starty, double endx, double endy) {
         Dimension size = driver.manage().window().getSize();
@@ -154,6 +163,68 @@ public class CommonPage {
         touch.longPress(LongPressOptions.longPressOptions()
                         .withElement(ElementOption.element(element))).perform();
     }
+
+    /* Browsing methods used in several pages */
+
+    /*
+     * Receives: name of the folder in the current list to browse into
+     */
+    public void browseInto(String folderName) {
+        Log.log(Level.FINE, "Starts: browse to " + folderName);
+        findUIAutomatorText(folderName).click();
+    }
+
+    /*
+     * Browses to root folder using the shortcut in the bottom bar
+     */
+    public void browseRoot() {
+        Log.log(Level.FINE, "Starts: browse to root");
+        toRoot.click();
+    }
+
+    /*
+     * Receives: path to a folder. If path does not contain "/", folder is in root.
+     * Otherwise browsing to.
+     */
+    public void browseToFolder(String path){
+        if (path.equals("/")) { //Go to Root
+            browseRoot();
+        } else if (path.contains("/")) { //browsing to the folder
+            int i = 0;
+            String[] route = path.split("/");
+            for (i = 0; i < route.length ; i++) {
+                Log.log(Level.FINE, "browsing to " + route[i]);
+                browseInto(route[i]);
+            }
+        } else { //no path to browse, just clicking
+            browseInto(path);
+        }
+    }
+
+    /*
+     * Receives: path to a file. If path does not contain "/", file is in the root folder,
+     * otherwise browsing to
+     * Returns: File name (last chunk of the path), after browsing to reach it.
+     */
+    public String browseToFile(String path) {
+        String[] route = path.split("/");
+        int i = 0;
+        if (route.length > 0) { //browse
+            for (i = 0; i < route.length -1 ; i++) {
+                Log.log(Level.FINE, "browsing to " + route[i]);
+                browseInto(route[i]);
+            }
+            Log.log(Level.FINE, "Returning: " + route[i]);
+            return route[i];
+        }
+        return path;
+    }
+
+    protected boolean parseIntBool(String s) {
+        return Boolean.parseBoolean(s);
+    }
+
+    /* Methods to help debugging */
 
     public static void takeScreenshot(String name) {
         try {
@@ -187,48 +258,4 @@ public class CommonPage {
         }
     }
 
-    /* Some methods for web authentication */
-
-    protected void waitForWebContext() {
-        Log.log(Level.FINE, "Waiting for browser");
-        //The only way found to wait till browser loads, that is valid for all browsers,
-        //emulators, devices etc... ugly
-        wait(5);
-    }
-
-    public String getContext() {
-        Log.log(Level.FINE, "Getting browser");
-        Set<String> contexts = getContexts();
-        for (Object contextName : contexts) {
-            Log.log(Level.FINE, "Context found: " + contextName);
-            if (((String) contextName).contains("chrome")) {
-                driver.context("WEBVIEW_chrome");
-                return "chrome";
-            }
-        }
-        return "";
-    }
-
-    protected Set<String> getContexts() {
-        Set<String> contextNames = driver.getContextHandles();
-        for (Object contextName : contextNames) {
-            Log.log(Level.FINE, "Context found: " + contextName);
-        }
-        return contextNames;
-    }
-
-    public void removeApp() {
-        driver.removeApp(packag);
-    }
-
-    public void reinstallApp() {
-        if (driver.isAppInstalled(packag)) {
-            driver.removeApp(LocProperties.getProperties().getProperty("appPackage"));
-            driver.launchApp();
-        }
-    }
-
-    protected boolean parseIntBool(String s) {
-        return Boolean.parseBoolean(s);
-    }
 }

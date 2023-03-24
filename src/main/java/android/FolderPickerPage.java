@@ -4,7 +4,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -30,7 +29,9 @@ public class FolderPickerPage extends CommonPage {
 
     public void selectFolder(String targetFolder) {
         Log.log(Level.FINE, "Start: Select folder from picker: " + targetFolder);
-        findUIAutomatorText(targetFolder).click();
+        if (!targetFolder.equals("/")) {
+            browseToFolder(targetFolder);
+        }
     }
 
     public void accept() {

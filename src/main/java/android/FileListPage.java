@@ -55,9 +55,6 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/Filename")
     private MobileElement fileName;
 
-    @AndroidFindBy(id = "com.owncloud.android:id/nav_all_files")
-    private MobileElement toRoot;
-
     @AndroidFindBy(id = "com.owncloud.android:id/nav_shared_by_link_files")
     private MobileElement linksShortcut;
 
@@ -274,60 +271,6 @@ public class FileListPage extends CommonPage {
 
     private boolean endList() {
         return !findListId(footer_id).isEmpty();
-    }
-
-    /*
-     * Receives: name of the folder in the current list to browse into
-     */
-    public void browseInto(String folderName) {
-        Log.log(Level.FINE, "Starts: browse to " + folderName);
-        findUIAutomatorText(folderName).click();
-    }
-
-    /*
-     * Browses to root folder using the shortcut in the bottom bar
-     */
-    public void browseRoot() {
-        Log.log(Level.FINE, "Starts: browse to root");
-        toRoot.click();
-    }
-
-    /*
-     * Receives: path to a folder. If path does not contain "/", folder is in root.
-     * Otherwise browsing to.
-     */
-    public void browseToFolder(String path){
-        if (path.equals("/")) { //Go to Root
-            browseRoot();
-        } else if (path.contains("/")) { //browsing to the folder
-            int i = 0;
-            String[] route = path.split("/");
-            for (i = 0; i < route.length ; i++) {
-                Log.log(Level.FINE, "browsing to " + route[i]);
-                browseInto(route[i]);
-            }
-        } else { //no path to browse, just clicking
-            browseInto(path);
-        }
-    }
-
-    /*
-     * Receives: path to a file. If path does not contain "/", file is in the root folder,
-     * otherwise browsing to
-     * Returns: File name (last chunk of the path), after browsing to reach it.
-     */
-    public String browseToFile(String path) {
-        String[] route = path.split("/");
-        int i = 0;
-        if (route.length > 0) { //browse
-            for (i = 0; i < route.length -1 ; i++) {
-                Log.log(Level.FINE, "browsing to " + route[i]);
-                browseInto(route[i]);
-            }
-            Log.log(Level.FINE, "Returning: " + route[i]);
-            return route[i];
-        }
-        return path;
     }
 
     /*
