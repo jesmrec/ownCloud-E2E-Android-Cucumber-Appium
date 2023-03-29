@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 
 import io.appium.java_client.MobileElement;
@@ -52,6 +51,9 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar")
     private MobileElement toolbar;
 
+    @AndroidFindBy (id = "com.owncloud.android:id/bottom_nav_view")
+    MobileElement bottomBar;
+
     @AndroidFindBy(id = "com.owncloud.android:id/list_root")
     private MobileElement listFiles;
 
@@ -79,7 +81,7 @@ public class FileListPage extends CommonPage {
 
     public void refreshList() {
         Log.log(Level.FINE, "Refresh list");
-        waitById(10, toolbar);
+        waitById(5, bottomBar);
         swipe(0.50, 0.70, 0.50, 0.95);
     }
 
@@ -87,7 +89,7 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Waiting to load");
         try {
             //if list of files is not loaded, we should swipe to get the file list
-            waitById(15, listFiles_id);
+            waitById(5, listFiles_id);
         } catch (Exception e) {
             Log.log(Level.FINE, "Swipe needed to get the list");
             refreshList();

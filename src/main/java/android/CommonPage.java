@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -149,6 +150,14 @@ public class CommonPage {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    protected HashMap turnListToHashmap(List<List<String>> dataList) {
+        HashMap<String, String> mapFields = new HashMap<String, String>();
+        for (List<String> rows : dataList) {
+            mapFields.put(rows.get(0), rows.get(1));
+        }
+        return mapFields;
     }
 
     /* Finger actions */

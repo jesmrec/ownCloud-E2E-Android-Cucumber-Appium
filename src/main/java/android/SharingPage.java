@@ -6,61 +6,83 @@
 
 package android;
 
+import org.openqa.selenium.support.PageFactory;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.date.DateUtils;
 import utils.entities.OCCapability;
 import utils.entities.OCShare;
 import utils.log.Log;
 
-/* Pending: move to Page Factory when view is refactored.*/
-
 public class SharingPage extends CommonPage {
 
-    private final String addshareebutton_id = "com.owncloud.android:id/addUserButton";
-    private final String addpubliclinkbutton_id = "com.owncloud.android:id/addPublicLinkButton";
-    private final String editprivateshare_id = "com.owncloud.android:id/editShareButton";
-    private final String editpubliclink_id = "com.owncloud.android:id/editPublicLinkButton";
+    @AndroidFindBy(id = "com.owncloud.android:id/addUserButton")
+    private MobileElement shareebutton;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/addPublicLinkButton")
+    private MobileElement publiclinkbutton;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/editShareButton")
+    private MobileElement editPrivateShare;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/editPublicLinkButton")
+    private MobileElement editPublicLink;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/unshareButton")
+    private MobileElement unshare;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/deletePublicLinkButton")
+    private MobileElement removeLink;
+
+    @AndroidFindBy(id = "android:id/button1")
+    private MobileElement acceptDeletion;
+
+    @AndroidFindBy(id = "android:id/button3")
+    private MobileElement cancelDeletion;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/shareNoUsers")
+    private MobileElement noShares;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/shareNoPublicLinks")
+    private MobileElement noLinks;
+
     private final String sharefilename_id = "com.owncloud.android:id/shareFileName";
-    private final String unshareprivate_id = "com.owncloud.android:id/unshareButton";
-    private final String deleteprivatelink_id = "com.owncloud.android:id/deletePublicLinkButton";
-    private final String noshares_id = "com.owncloud.android:id/shareNoPublicLinks";
-    private final String nolinks_id = "com.owncloud.android:id/shareNoUsers";
-    private String acceptdeletion_id = "android:id/button1";
-    private String canceldeletion_id = "android:id/button3";
 
     public SharingPage() {
         super();
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
     public void addPrivateShare() {
         Log.log(Level.FINE, "Starts: add private share");
         waitById(5, sharefilename_id);
-        findId(addshareebutton_id).click();
+        shareebutton.click();
     }
 
     public void addPublicLink() {
         Log.log(Level.FINE, "Starts: add public link");
         waitById(5, sharefilename_id);
-        findId(addpubliclinkbutton_id).click();
+        publiclinkbutton.click();
     }
 
     public void openPrivateShare(String itemName) {
         Log.log(Level.FINE, "Starts: edit private share: " + itemName);
-        waitById(5, editprivateshare_id);
-        findId(editprivateshare_id).click();
+        editPrivateShare.click();
     }
 
     public void openPublicLink(String itemName) {
         Log.log(Level.FINE, "Starts: open public link: " + itemName);
-        findId(editpubliclink_id).click();
+        editPublicLink.click();
     }
 
     public boolean isItemInListPrivateShares(String sharee) {
-        waitById(5, noshares_id);
         return !findListUIAutomatorText(sharee).isEmpty();
     }
 
@@ -69,15 +91,15 @@ public class SharingPage extends CommonPage {
     }
 
     public boolean isListPublicLinksEmpty() {
-        return findId(nolinks_id).isDisplayed();
+        return noLinks.isDisplayed();
     }
 
     public void deletePrivateShare() {
-        findId(unshareprivate_id).click();
+        unshare.click();
     }
 
     public void deletePublicShare() {
-        findId(deleteprivatelink_id).click();
+        removeLink.click();
     }
 
     public boolean checkCorrectShare(OCShare remoteShare, List<List<String>> dataList) {
@@ -168,18 +190,10 @@ public class SharingPage extends CommonPage {
     }
 
     public void acceptDeletion() {
-        findId(acceptdeletion_id).click();
+        acceptDeletion.click();
     }
 
     public void cancelDeletion() {
-        findId(canceldeletion_id).click();
-    }
-
-    private HashMap turnListToHashmap(List<List<String>> dataList) {
-        HashMap<String, String> mapFields = new HashMap<String, String>();
-        for (List<String> rows : dataList) {
-            mapFields.put(rows.get(0), rows.get(1));
-        }
-        return mapFields;
+        cancelDeletion.click();
     }
 }
