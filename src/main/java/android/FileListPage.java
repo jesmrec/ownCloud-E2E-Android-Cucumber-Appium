@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 
 import io.appium.java_client.MobileElement;
@@ -49,7 +50,7 @@ public class FileListPage extends CommonPage {
     private MobileElement uploadFiles;
 
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar")
-    private MobileElement toolbar;
+    private List<MobileElement> toolbar;
 
     @AndroidFindBy (id = "com.owncloud.android:id/bottom_nav_view")
     MobileElement bottomBar;
@@ -143,6 +144,11 @@ public class FileListPage extends CommonPage {
     public boolean isItemInList(String itemName) {
         Log.log(Level.FINE, "Starts: Check if item is in list: " + itemName);
         return !findListUIAutomatorText(itemName).isEmpty();
+    }
+
+    public boolean isFileListVisible() {
+        Log.log(Level.FINE, "Starts: is File list Visible");
+        return !toolbar.isEmpty();
     }
 
     public boolean errorDisplayed(String error) {

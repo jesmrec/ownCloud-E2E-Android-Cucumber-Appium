@@ -24,8 +24,8 @@ public class LoginSteps {
     public void user_is_logged(String user) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        // Server and app MUST work with basic auth mode. Both required.
-        if (world.loginPage.notLoggedIn()) {
+        // Server and app MUST work with basic auth mode.
+        if(!world.fileListPage.isFileListVisible()) {
             String username = LocProperties.getProperties().getProperty("userName1");
             String password = LocProperties.getProperties().getProperty("passw1");
             world.loginPage.typeURL();

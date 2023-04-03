@@ -85,7 +85,7 @@ Feature: Private Share
       Scenario Outline: Edit existing share on a file, changing permissions
         Given the following items have been created in the account
           | file   | <item>  |
-        And Alice has shared folder <item> with <user> with permissions 31
+        And Alice has shared file <item> with <user> with permissions 31
         When Alice selects to share the file <item>
         And Alice edits the share on file <item> with permissions <permissions>
         Then user <user> should have access to <item>

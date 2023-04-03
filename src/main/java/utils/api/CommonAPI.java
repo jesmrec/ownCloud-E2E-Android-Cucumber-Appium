@@ -69,14 +69,6 @@ public class CommonAPI {
         return davEndpoint;
     }
 
-    public String getSpace() {
-        return space;
-    }
-
-    public void setSpace(String space) {
-        this.space = space;
-    }
-
     public String getCapabilities()
             throws IOException {
         String urlCheck = urlServer + "/ocs/v2.php/cloud/capabilities?format=json";
