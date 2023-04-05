@@ -1,5 +1,3 @@
-<!--Build status:
-![](https://app.bitrise.io/app/d9ceab91286794be/status.svg?token=zSpveXrg9JoguUP0-dQDug)-->
 
 Scenarios contained in feature files written in Gherkin language.
 Available scenarios can be found
@@ -8,7 +6,7 @@ Available scenarios can be found
 Defined for the [ownCloud Android app](https://github.com/owncloud/android)
 
 
-## Global architecture
+## Global overview
 
 - Scenarios are defined with [Gherkin
 Syntax](https://cucumber.io/docs/gherkin/).
@@ -37,13 +35,13 @@ file](https://github.com/owncloud/android-scenario-testing/archive/master.zip)
 
 Different requirements:
 
-* `Appium` instance running and reachable
+* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium.
 
-* At least, one device attached and reachable via adb. Check command
+* At least, one device/emulator attached and reachable via adb. Check command
 `adb devices` to ensure `Appium` will get the device reference to
-interact with it
+interact with it.
 
-The environment variable `$ANDROID_HOME` needs to be correctly set up,
+* The environment variable `$ANDROID_HOME` needs to be correctly set up,
 pointing to the Android SDK folder
 
 ## How to test
@@ -53,23 +51,18 @@ The script `executeTests` will launch the tests. The following environment varia
 		$OC_SERVER_URL (mandatory): URL of ownCloud server to test against
 		$APPIUM_URL (optional): Appium server URL.
 			If Appium Server is not specified, will be used "localhost:4723/wd/hub"
+		$UDID_DEVICE (optional): ID of the device/simulator to execute the tests in.
+			This ID could be get by executing  `adb devices`
 
-The script needs some parameters:
+The script needs some parameters. Check help `executeTests -h`
 
-     -t (optional): Used to execute tagged tests. F. ex: @createfolder will send only tests tagged with such label. OR/AND operations are allowed. It is also allowed to use a classpath to execute all the test in such class
 
-	Examples:
+To execute all tests but the ignored ones (or any other tagged ones):
 
-		 ./executeTests -t "@createfolder" -> This will execute only tests with the tag @createfolder
-
-		 ./executeTests -t "'@createfolder and @copy'" -> This will execute tests tagged with both @createfolder and @copy
-
-		 ./executeTests -t "'@createfolder or @copy'" -> This will execute tests tagged with @createfolder or @copy
-
-		 ./executeTests  -> This will execute all the tests
-
-	 -h: display the help
-
+	export UDID_DEVICE=emulator-5554
+	export OC_SERVER_URL=https://my.owncloud.server
+	export APPIUM_URL=localhost:4723/wd/hub
+	./executeTests -t "not @ignore"
 
 The execution will display step by step how the scenario is being executed.
 
@@ -78,7 +71,16 @@ More info in [Cucumber reference](https://cucumber.io/docs/cucumber/api/)
 
 ## Results
 
-In the folder `target`, you will find a report with the execution results
+In the folder `target`, you will find a report with the execution results in html and json formats.
+
+Besides of that, by setting the `cucumber.properties` file allow to integrate reports with [Cucumber reports](https://cucumber.io/docs/cucumber/reporting/?lang=java). An account in such platform (integrated with GitHub) is enough to use it. A new env variable must be set in advance in order to send reports to the platform. Token is provided in the Cucumber Reports account for every collection:
+
+	export CUCUMBER_PUBLISH_TOKEN=d97...
+
+Also, in `cucumber.properties` file with the following values (disabled by default):
+
+	cucumber.publish.quiet=false
+	cucumber.publish.enabled=true
 
 **Note**: This repository was forked from [Cucumber-java
 skeleton](https://github.com/cucumber/cucumber-java-skeleton)
