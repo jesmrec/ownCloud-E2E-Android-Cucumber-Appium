@@ -23,6 +23,9 @@ public class FolderPickerPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/folder_picker_btn_cancel")
     private MobileElement cancelButton;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/view_type_selector")
+    private MobileElement createFolderButton;
+
     public FolderPickerPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
@@ -38,6 +41,11 @@ public class FolderPickerPage extends CommonPage {
         if (!targetFolder.equals("/")) {
             browseToFolder(targetFolder);
         }
+    }
+
+    public void createFolder() {
+        Log.log(Level.FINE, "Start: Create folder from picker");
+        createFolderButton.click();
     }
 
     public void accept() {

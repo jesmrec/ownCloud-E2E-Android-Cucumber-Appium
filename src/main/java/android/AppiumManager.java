@@ -84,13 +84,11 @@ public class AppiumManager {
     //Check https://appium.io/docs/en/writing-running-appium/caps/
     private static void setCapabilities(DesiredCapabilities capabilities){
 
-        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-
         capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "test");
 
         capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
 
-        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
+        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
 
         capabilities.setCapability("appPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
@@ -106,8 +104,6 @@ public class AppiumManager {
         capabilities.setCapability("unicodeKeyboard", true);
 
         capabilities.setCapability("resetKeyboard", true);
-
-        capabilities.setCapability("uiautomator2ServerInstallTimeout", 60000);
 
         capabilities.setCapability("disableWindowAnimation", true);
 

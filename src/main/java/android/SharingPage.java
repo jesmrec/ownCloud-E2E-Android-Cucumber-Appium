@@ -83,6 +83,8 @@ public class SharingPage extends CommonPage {
     }
 
     public boolean isItemInListPrivateShares(String sharee) {
+        //One second to assure the sharee is removed from UI - to improve
+        wait(1);
         return !findListUIAutomatorText(sharee).isEmpty();
     }
 

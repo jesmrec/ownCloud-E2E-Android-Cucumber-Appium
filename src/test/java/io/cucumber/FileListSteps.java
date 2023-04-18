@@ -121,15 +121,22 @@ public class FileListSteps {
         world.folderPickerPage.accept();
     }
 
-    @When("Alice selects {word} as space and {word} as target folder")
-    public void user_selects_target_folder(String spaceName, String targetFolder)
+    @When("Alice selects {word} as space")
+    public void user_selects_space(String spaceName)
             throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (world.authAPI.checkAuthMethod().equals("OIDC")) {
             world.folderPickerPage.selectSpace(spaceName);
         }
-        user_selects_target_folder(targetFolder);
+    }
+
+    @When("Alice creates new folder {word} in the folder picker")
+    public void user_creates_folder_picker(String targetFolder) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.folderPickerPage.createFolder();
+        world.inputNamePage.setItemName(targetFolder);
     }
 
     @When("Alice selects the option upload")
@@ -232,7 +239,6 @@ public class FileListSteps {
     public void user_should_see_item_in_filelist(String itemName) throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        //fileListPage.waitToload("Documents");
         world.fileListPage.refreshList();
         //Get the last token of the item path
         assertTrue(world.fileListPage.isItemInList(itemName.substring(itemName.lastIndexOf('/') + 1)));

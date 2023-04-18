@@ -23,27 +23,45 @@ Feature: Move item
       | folder   |  Movefolder    | Documents  |
       | file     |  Movefile.txt  | Documents  |
 
+  Scenario: Move a folder to another place with same item name
+    Given the following items have been created in the account
+      | folder | move1       |
+      | folder | move2       |
+      | folder | move2/move1 |
+    When Alice selects to Move the folder move1
+    And Alice selects move2 as target folder
+    Then Alice should see 'move1 (2)' inside the folder move2
+
+  Scenario: Move an existent item to a new created folder in the picker
+    Given the following items have been created in the account
+      | file | move2.txt |
+    When Alice selects to Move the file move2.txt
+    And Alice creates new folder move3 in the folder picker
+    And Alice selects move3 as target folder
+    Then Alice should not see move2.txt in the filelist anymore
+    But Alice should see move2.txt inside the folder move3
+
   Scenario: Move a folder to itself
     Given the following items have been created in the account
-      | folder   | move2  |
-    When Alice selects to Move the folder move2
-    And Alice selects move2 as target folder
+      | folder | move4 |
+    When Alice selects to Move the folder move4
+    And Alice selects move4 as target folder
     Then Alice should see the following error
       | It is not possible to move a folder into a descendant |
 
   Scenario: Move a folder to same location
     Given the following items have been created in the account
-      | file   | move3.txt  |
-    When Alice selects to Move the file move3.txt
+      | file | move5.txt |
+    When Alice selects to Move the file move5.txt
     And Alice selects / as target folder
     Then Alice should see the following error
       | The file exists already in the destination folder |
 
   Scenario: Move a folder to descendant
     Given the following items have been created in the account
-      | folder   | move4        |
-      | folder   | move4/move5  |
-    When Alice selects to Move the folder move4
-    And Alice selects move4/move5 as target folder
+      | folder | move6       |
+      | folder | move6/move7 |
+    When Alice selects to Move the folder move6
+    And Alice selects move6/move7 as target folder
     Then Alice should see the following error
       | It is not possible to move a folder into a descendant |
