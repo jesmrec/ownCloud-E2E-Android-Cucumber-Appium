@@ -35,7 +35,7 @@ file](https://github.com/owncloud/android-scenario-testing/archive/master.zip)
 
 Different requirements:
 
-* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium.
+* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium. Last Appium review: v2.0.0-beta.66
 
 * At least, one device/emulator attached and reachable via adb. Check command
 `adb devices` to ensure `Appium` will get the device reference to

@@ -82,7 +82,7 @@ public class FileListPage extends CommonPage {
 
     public void refreshList() {
         Log.log(Level.FINE, "Refresh list");
-        waitById(5, bottomBar);
+        waitById(25, bottomBar);
         swipe(0.50, 0.70, 0.50, 0.95);
     }
 
@@ -128,6 +128,7 @@ public class FileListPage extends CommonPage {
 
     public void executeOperation(String operation, String itemName) {
         Log.log(Level.FINE, "Starts: execute operation: " + operation + " " + itemName);
+        waitToload(itemName);
         selectItemList(itemName);
         selectOperation(operation);
     }
@@ -143,6 +144,7 @@ public class FileListPage extends CommonPage {
 
     public boolean isItemInList(String itemName) {
         Log.log(Level.FINE, "Starts: Check if item is in list: " + itemName);
+        waitById(5, bottomBar);
         return !findListUIAutomatorText(itemName).isEmpty();
     }
 
@@ -168,6 +170,7 @@ public class FileListPage extends CommonPage {
             fileName = browseToFile(path);
         }
         MobileElement element = getElementFromFileList(fileName);
+        waitByTextVisible(5, fileName);
         longPress(element);
     }
 

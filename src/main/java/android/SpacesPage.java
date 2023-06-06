@@ -73,4 +73,12 @@ public class SpacesPage extends CommonPage {
         }
         return false;
     }
+
+    public MobileElement getSpace(String spaceName){
+        return deviceSpacesList.get(1);
+    }
+
+    public void openSpace(String spaceName){
+        deviceSpacesList.get(0).click();
+    }
 }

@@ -17,15 +17,15 @@ Feature: Rename an item
     But Alice should not see <name> in the filelist anymore
 
     Examples:
-      | type     |  name         |  newName       |
-      | folder   |  folder1      |  Rename1       |
-      | file     |  file1.txt    |  Rename1.txt   |
+      | type   | name          | newName     |
+      | folder | folderPSS     | Rename2     |
+      | file   | folderPSS.txt | Rename2.txt |
 
   Scenario: Rename an item with an existing name
     Given the following items have been created in the account
-      | folder   | Photos     |
-      | folder   | Documents  |
-    When Alice selects to Rename the folder Photos
-    And Alice sets Documents as new name
+      | folder | Photos1    |
+      | folder | Documents1 |
+    When Alice selects to Rename the folder Photos1
+    And Alice sets Documents1 as new name
     Then Alice should see the following error
       | Rename could not be completed |

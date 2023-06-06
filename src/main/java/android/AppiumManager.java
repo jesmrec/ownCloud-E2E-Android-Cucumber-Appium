@@ -2,7 +2,11 @@
  * ownCloud Android Scenario Tests
  *
  * @author Jesús Recio Rincón (@jesmrec)
+
+ * Last Appium review: v2.0.0-beta.66
+ * If posible, execute test with such version
  */
+
 
 package android;
 
@@ -54,7 +58,7 @@ public class AppiumManager {
             Log.log(Level.SEVERE, "Driver could not be created: " + e.getMessage());
             e.printStackTrace();
         }
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
         Log.log(Level.FINE, "Device: " +
                 driver.getCapabilities().getCapability("deviceManufacturer") + " " +

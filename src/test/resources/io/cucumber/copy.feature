@@ -32,7 +32,7 @@ Feature: Copy item
     When Alice selects to Copy the folder copy3
     And Alice selects Personal as space
     And Alice selects copy2 as target folder
-    Then Alice should see 'copy3 (2)' inside the folder copy2
+    Then Alice should see 'copy3 (1)' inside the folder copy2
 
   Scenario: Copy an existent item to a new created folder in the picker
     Given the following items have been created in the account
@@ -42,6 +42,17 @@ Feature: Copy item
     And Alice creates new folder copy5 in the folder picker
     And Alice selects copy5 as target folder
     Then Alice should see copy4.txt inside the folder copy5
+
+  @nooc10 @copyspace
+  Scenario: Copy an existent item to another space
+    Given the following items have been created in the account
+      | file | copy4a.txt |
+    And the following spaces have been created in the account
+      | Space1 | Space1 |
+    When Alice selects to Copy the file copy4a.txt
+    And Alice selects Space1 as space
+    And Alice selects / as target folder
+    Then Alice should see copy4a.txt inside the space Space1
 
   @nooc10
   Scenario: Copy a file to same place (duplication)

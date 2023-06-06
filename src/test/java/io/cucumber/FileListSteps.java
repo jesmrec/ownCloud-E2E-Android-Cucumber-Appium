@@ -267,7 +267,7 @@ public class FileListSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.fileListPage.browseInto(targetFolder);
-        world.fileListPage.isItemInList(itemName);
+        assertTrue(world.fileListPage.isItemInList(itemName));
         assertTrue(world.filesAPI.itemExist(targetFolder + "/" + itemName));
     }
 
@@ -280,6 +280,17 @@ public class FileListSteps {
         world.fileListPage.browseInto(targetFolder);
         world.fileListPage.isItemInList(itemName);
         assertTrue(world.filesAPI.itemExist(targetFolder + "/" + itemName));
+    }
+
+    @Then("Alice should see {word} inside the space {word}")
+    public void user_should_see_item_inside_space(String itemName, String spaceName)
+            throws Throwable {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.fileListPage.openSpaces();
+        world.spacesPage.openSpace(spaceName);
+        assertTrue(world.fileListPage.isItemInList(itemName));
+        //assertTrue(world.filesAPI.itemExist(targetFolder + "/" + itemName));
     }
 
     @Then("Alice should see {word} in the filelist as original")

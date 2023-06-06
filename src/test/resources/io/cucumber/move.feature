@@ -11,8 +11,8 @@ Feature: Move item
   @smoke
   Scenario Outline: Move an existent folder to another location
     Given the following items have been created in the account
-      | <type>   | <name>    |
-      | folder   | Documents |
+      | <type> | <name>   |
+      | folder | <target> |
     When Alice selects to Move the <type> <name>
     And Alice selects <target> as target folder
     Then Alice should not see <name> in the filelist anymore
@@ -30,7 +30,7 @@ Feature: Move item
       | folder | move2/move1 |
     When Alice selects to Move the folder move1
     And Alice selects move2 as target folder
-    Then Alice should see 'move1 (2)' inside the folder move2
+    Then Alice should see 'move1 (1)' inside the folder move2
 
   Scenario: Move an existent item to a new created folder in the picker
     Given the following items have been created in the account

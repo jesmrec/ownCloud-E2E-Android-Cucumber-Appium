@@ -183,8 +183,8 @@ public class LinksSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         Log.log(Level.FINE, "Checking if item exists: " + itemName);
-        assertFalse(world.sharingPage.isItemInListPublicShares(itemName + " link"));
         assertTrue(world.sharingPage.isListPublicLinksEmpty());
         assertTrue(world.shareAPI.getSharesByDefault().size() == 0);
+        assertFalse(world.sharingPage.isItemInListPublicShares(itemName + " link"));
     }
 }
