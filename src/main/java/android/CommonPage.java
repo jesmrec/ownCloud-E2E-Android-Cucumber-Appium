@@ -35,7 +35,6 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
-import utils.LocProperties;
 import utils.log.Log;
 
 public class CommonPage {
@@ -46,7 +45,6 @@ public class CommonPage {
     protected static AndroidDriver driver = AppiumManager.getManager().getDriver();
     protected static Actions actions;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-    protected final String packag = LocProperties.getProperties().getProperty("appPackage");
 
     public CommonPage() {
         actions = new Actions(driver);

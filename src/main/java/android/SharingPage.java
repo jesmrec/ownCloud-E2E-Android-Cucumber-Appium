@@ -17,7 +17,6 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.date.DateUtils;
-import utils.entities.OCCapability;
 import utils.entities.OCShare;
 import utils.log.Log;
 
@@ -62,13 +61,11 @@ public class SharingPage extends CommonPage {
 
     public void addPrivateShare() {
         Log.log(Level.FINE, "Starts: add private share");
-        waitById(5, sharefilename_id);
         shareebutton.click();
     }
 
     public void addPublicLink() {
         Log.log(Level.FINE, "Starts: add public link");
-        waitById(5, sharefilename_id);
         publiclinkbutton.click();
     }
 
@@ -83,8 +80,6 @@ public class SharingPage extends CommonPage {
     }
 
     public boolean isItemInListPrivateShares(String sharee) {
-        //One second to assure the sharee is removed from UI - to improve
-        wait(1);
         return !findListUIAutomatorText(sharee).isEmpty();
     }
 
@@ -173,10 +168,7 @@ public class SharingPage extends CommonPage {
                 }
                 case "expiration days": {
                     String dateRemote = remoteShare.getExpiration();
-                    int expiration = DateUtils.minExpirationDate(
-                            OCCapability.getInstance().expirationDateDays(),
-                            Integer.valueOf(entry.getValue())
-                    );
+                    int expiration = Integer.valueOf(entry.getValue());
                     String expDate = DateUtils.dateInDaysWithServerFormat(Integer.toString(expiration));
                     Log.log(Level.FINE, "Expiration dates: Remote: " + dateRemote
                             + " - Expected: " + expDate);

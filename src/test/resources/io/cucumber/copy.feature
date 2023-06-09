@@ -43,7 +43,7 @@ Feature: Copy item
     And Alice selects copy5 as target folder
     Then Alice should see copy4.txt inside the folder copy5
 
-  @nooc10 @copyspace
+  @nooc10
   Scenario: Copy an existent item to another space
     Given the following items have been created in the account
       | file | copy4a.txt |
@@ -61,7 +61,7 @@ Feature: Copy item
     When Alice selects to Copy the file copy5.txt
     And Alice selects Personal as space
     And Alice selects / as target folder
-    Then Alice should see 'copy5 (2).txt' in the filelist as original
+    Then Alice should see 'copy5 (1).txt' in the filelist as original
 
   Scenario: Copy a folder to itself
     Given the following items have been created in the account

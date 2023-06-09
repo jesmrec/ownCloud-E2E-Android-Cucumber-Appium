@@ -87,7 +87,6 @@ public class FileListSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.fileListPage.waitToload(itemName);
-        world.fileListPage.refreshList();
         world.fileListPage.executeOperation("Set as available offline", itemName);
         world.fileListPage.closeSelectionMode();
     }
@@ -96,7 +95,6 @@ public class FileListSteps {
     public void user_selects_to_unset_as_unavoffline_item(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.refreshList();
         world.fileListPage.executeOperation("Unset as available offline", itemName);
         world.fileListPage.closeSelectionMode();
     }
@@ -105,7 +103,6 @@ public class FileListSteps {
     public void user_selects_item_to_some_operation(String operation, String type, String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.refreshList();
         if (operation.equals("Download") || operation.equals("open")) {
             world.fileListPage.downloadAction(itemName);
         } else {

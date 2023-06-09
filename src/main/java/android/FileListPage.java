@@ -82,7 +82,7 @@ public class FileListPage extends CommonPage {
 
     public void refreshList() {
         Log.log(Level.FINE, "Refresh list");
-        waitById(25, bottomBar);
+        waitById(5, bottomBar);
         swipe(0.50, 0.70, 0.50, 0.95);
     }
 
