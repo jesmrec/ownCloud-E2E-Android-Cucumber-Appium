@@ -20,7 +20,7 @@ import utils.log.Log;
 public class SearchShareePage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
-    private MobileElement shareeUsername;
+    private MobileElement shareeUserName;
 
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
     private MobileElement navigateUp;
@@ -30,19 +30,18 @@ public class SearchShareePage extends CommonPage {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public void shareWithUser(String sharee)
-            throws InterruptedException {
+    public void shareWithUser(String sharee) {
         Log.log(Level.FINE, "Starts: Share with user: " + sharee);
-        shareeUsername.sendKeys(sharee);
+        shareeUserName.sendKeys(sharee);
         selectShareeFromList(sharee);
-        //Go back to Share Page
         backListShares();
     }
 
-    private void selectShareeFromList(String sharee)
-            throws InterruptedException {
+    private void selectShareeFromList(String sharee) {
         wait(1);
         TouchAction selectSharee = new TouchAction(driver);
+        //Clicking on screen... very bad but no other solution since results are presented
+        //in another provider
         selectSharee.tap(PointOption.point(500, 470)).perform();
     }
 

@@ -10,12 +10,12 @@ import android.DetailsPage;
 import android.FileListPage;
 import android.FolderPickerPage;
 import android.InputNamePage;
-import android.LinksPage;
+import android.PublicLinksPage;
 import android.LoginPage;
 import android.RemoveDialogPage;
 import android.SearchShareePage;
-import android.SharesPage;
-import android.SharingPage;
+import android.PrivateSharePage;
+import android.SharePage;
 import android.SpacesPage;
 
 import java.io.IOException;
@@ -35,10 +35,10 @@ public class World {
     FolderPickerPage folderPickerPage = new FolderPickerPage();
     RemoveDialogPage removeDialogPage = new RemoveDialogPage();
     DetailsPage detailsPage = new DetailsPage();
-    SharingPage sharingPage = new SharingPage();
-    LinksPage linksPage = new LinksPage();
+    SharePage sharingPage = new SharePage();
+    PublicLinksPage linksPage = new PublicLinksPage();
     SearchShareePage searchShareePage = new SearchShareePage();
-    SharesPage sharesPage = new SharesPage();
+    PrivateSharePage sharesPage = new PrivateSharePage();
     SpacesPage spacesPage = new SpacesPage();
 
     //APIs to call

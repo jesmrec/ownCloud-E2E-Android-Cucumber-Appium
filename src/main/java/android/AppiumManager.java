@@ -92,7 +92,9 @@ public class AppiumManager {
 
         capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
 
-        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
+        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "android");
+
+        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
 
         capabilities.setCapability("appPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
@@ -112,6 +114,8 @@ public class AppiumManager {
         capabilities.setCapability("disableWindowAnimation", true);
 
         capabilities.setCapability("noReset", true);
+
+        capabilities.setCapability("appium:newCommandTimeout", 60);
 
         if (device != null) {
             capabilities.setCapability("udid", device);
