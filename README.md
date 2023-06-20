@@ -46,6 +46,35 @@ pointing to the Android SDK folder
 
 ## How to test
 
+
+### 1. Build app
+
+First, build the [app](https://github.com/owncloud/android) from the expected branch/commit to get the test object. Before building, execute the following commands in the app's folder:
+
+```
+gsed -i 's/<bool name="wizard_enabled">true<\/bool>/<bool name="wizard_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
+gsed -i 's/<bool name="release_notes_enabled">true<\/bool>/<bool name="release_notes_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
+gsed -i '325,326d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
+gsed -i '332,364d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
+```
+These instructions:
+
+- will disable welcome wizard
+- will disable the release notes
+- will set basic auth as forced authentication method, required to execute the test suites
+
+App is built via Android Studio or CLI (`gradlew`)
+
+After building, the signed `ownCloud.apk` artifact is located in:
+
+`owncloudApp/build/outputs/apk/original/release`
+
+move the `owncloud.apk` to the correct place in the current tests project: `/src/test/resources`
+
+(in the current repository will be always an `owncloud.apk` file located in the correct place.)
+
+### 2. Execute tests
+
 The script `executeTests` will launch the tests. The following environment variables must be set in advance
 
 		$OC_SERVER_URL (mandatory): URL of ownCloud server to test against
