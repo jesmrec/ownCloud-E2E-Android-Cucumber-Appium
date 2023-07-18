@@ -8,76 +8,108 @@ Feature: Copy item
   Background: User is logged in
     Given user Alice is logged
 
-  @smoke
-  Scenario Outline: Copy an existent item to another location
-    Given the following items have been created in the account
-      | <type>   | <name>    |
-      | folder   | Documents |
-    When Alice selects to Copy the <type> <name>
-    And Alice selects <space> as space
-    And Alice selects <target> as target folder
-    Then Alice should see <name> in the filelist as original
-    And Alice should see <name> inside the folder <target>
+    Rule: Copy to regular location
 
-    Examples:
-      | type     |  name          | target     | space     |
-      | folder   |  Copyfolder    | Documents  | Personal  |
-      | file     |  Copyfile.txt  | Documents  | Personal  |
+      @smoke
+      Scenario Outline: Copy an existent item to another location
+        Given the following items have been created in the account
+          | <type>   | <name>    |
+          | folder   | Documents |
+        When Alice selects to Copy the <type> <name>
+        And Alice selects <space> as space
+        And Alice selects <target> as target folder
+        Then Alice should see <name> in the filelist as original
+        And Alice should see <name> inside the folder <target>
 
-  Scenario: Copy a folder to another place with same item name
-    Given the following items have been created in the account
-      | folder   | copy2        |
-      | folder   | copy3        |
-      | folder   | copy2/copy3  |
-    When Alice selects to Copy the folder copy3
-    And Alice selects Personal as space
-    And Alice selects copy2 as target folder
-    Then Alice should see 'copy3 (1)' inside the folder copy2
+        Examples:
+          | type   | name      | target    | space    |
+          | folder | copy1     | Documents | Personal |
+          | file   | copy2.txt | Documents | Personal |
 
-  Scenario: Copy an existent item to a new created folder in the picker
-    Given the following items have been created in the account
-      | file | copy4.txt |
-    When Alice selects to Copy the file copy4.txt
-    And Alice selects Personal as space
-    And Alice creates new folder copy5 in the folder picker
-    And Alice selects copy5 as target folder
-    Then Alice should see copy4.txt inside the folder copy5
+      Scenario Outline: Copy an existent item to a new created folder in the picker
+        Given the following items have been created in the account
+          | <type> | <name> |
+        When Alice selects to Copy the <type> <name>
+        And Alice selects <space> as space
+        And Alice creates new folder <target> in the folder picker
+        And Alice selects <target> as target folder
+        Then Alice should see <name> inside the folder <target>
 
-  @nooc10
-  Scenario: Copy an existent item to another space
-    Given the following items have been created in the account
-      | file | copy4a.txt |
-    And the following spaces have been created in the account
-      | Space1 | Space1 |
-    When Alice selects to Copy the file copy4a.txt
-    And Alice selects Space1 as space
-    And Alice selects / as target folder
-    Then Alice should see copy4a.txt inside the space Space1
+        Examples:
+          | type | name      | target | space    |
+          | file | copy3.txt | copy4  | Personal |
 
-  @nooc10
-  Scenario: Copy a file to same place (duplication)
-    Given the following items have been created in the account
-      | file | copy5.txt |
-    When Alice selects to Copy the file copy5.txt
-    And Alice selects Personal as space
-    And Alice selects / as target folder
-    Then Alice should see 'copy5 (1).txt' in the filelist as original
+      @nooc10
+      Scenario Outline: Copy an existent item to another space (root folder)
+        Given the following items have been created in the account
+          | <type> | <name> |
+        And the following spaces have been created in the account
+          | <space> | <space> |
+        When Alice selects to Copy the <type> <name>
+        And Alice selects <space> as space
+        And Alice selects <target> as target folder
+        Then Alice should see <name> inside the space <space>
 
-  Scenario: Copy a folder to itself
-    Given the following items have been created in the account
-      | folder | copy6 |
-    When Alice selects to Copy the folder copy6
-    And Alice selects Personal as space
-    And Alice selects copy6 as target folder
-    Then Alice should see the following error
-      | It is not possible to copy a folder into a descendant |
+        Examples:
+          | type | name      | target | space  |
+          | file | copy5.txt | /      | Space1 |
 
-  Scenario: Copy a folder to descendant
-    Given the following items have been created in the account
-      | folder | copy7       |
-      | folder | copy7/copy8 |
-    When Alice selects to Copy the folder copy7
-    And Alice selects Personal as space
-    And Alice selects copy7/copy8 as target folder
-    Then Alice should see the following error
-      | It is not possible to copy a folder into a descendant |
+      @nooc10
+      Scenario: Copy a file to same place (duplication)
+        Given the following items have been created in the account
+          | <type> | <name> |
+        When Alice selects to Copy the <type> <name>
+        And Alice selects <space> as space
+        And Alice selects <target> as target folder
+        And Alice fixes the conflict with keep both
+        Then Alice should see <result> in the filelist as original
+
+        Examples:
+          | type | name      | target | space    | result          |
+          | file | copy6.txt | /      | Personal | 'copy6 (1).txt' |
+
+      @copyconflicts
+      Rule: Copy with conflicts
+
+        Scenario: Copy a folder to another place with same item name, fixing conflict with keep both
+          Given the following items have been created in the account
+            | folder | copy7       |
+            | folder | copy8       |
+            | folder | copy8/copy7 |
+          When Alice selects to Copy the folder copy7
+          And Alice selects Personal as space
+          And Alice selects copy8 as target folder
+          And Alice fixes the conflict with keep both
+          Then Alice should see 'copy7 (1)' inside the folder copy8
+
+        Scenario: Copy a folder to another place with same item name, fixing conflict with replace
+          Given the following items have been created in the account
+            | file   | copy9.txt        |
+            | folder | copy10           |
+            | file   | copy10/copy9.txt |
+          When Alice selects to Copy the file copy9.txt
+          And Alice selects Personal as space
+          And Alice selects copy10 as target folder
+          And Alice fixes the conflict with replace
+          Then Alice should see copy9.txt inside the folder copy10
+
+      Rule: Copy negative cases
+
+        Scenario: Copy a folder to itself
+          Given the following items have been created in the account
+            | folder | copy11 |
+          When Alice selects to Copy the folder copy11
+          And Alice selects Personal as space
+          And Alice selects copy11 as target folder
+          Then Alice should see the following error
+            | It is not possible to copy a folder into a descendant |
+
+        Scenario: Copy a folder to descendant
+          Given the following items have been created in the account
+            | folder | copy12        |
+            | folder | copy12/copy13 |
+            When Alice selects to Copy the folder copy12
+          And Alice selects Personal as space
+          And Alice selects copy12/copy13 as target folder
+          Then Alice should see the following error
+            | It is not possible to copy a folder into a descendant |

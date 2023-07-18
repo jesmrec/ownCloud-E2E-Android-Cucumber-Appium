@@ -64,6 +64,12 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/Filename")
     private MobileElement fileName;
 
+    @AndroidFindBy(id = "android:id/button1")
+    private MobileElement keepBoth;
+
+    @AndroidFindBy(id = "android:id/button2")
+    private MobileElement replace;
+
     @AndroidFindBy(id = "com.owncloud.android:id/nav_shared_by_link_files")
     private MobileElement linksShortcut;
 
@@ -253,6 +259,15 @@ public class FileListPage extends CommonPage {
         return !findListUIAutomatorText(operationName).isEmpty();
     }
 
+    public void fixConflict(String option){
+        Log.log(Level.FINE, "Starts: Fix Conflict: " + option);
+        if (option.equals("replace")){
+            replace.click();
+        } else {
+            keepBoth.click();
+        }
+    }
+
     public boolean displayedList(String path, ArrayList<OCFile> listServer) {
         boolean found = true;
         browseToFolder(path); //moving to the folder
@@ -281,7 +296,6 @@ public class FileListPage extends CommonPage {
     }
 
     private boolean endList(int numberItems) {
-
         return !findListUIAutomatorText(Integer.toString(numberItems - 1) + " files")
                 .isEmpty();
     }

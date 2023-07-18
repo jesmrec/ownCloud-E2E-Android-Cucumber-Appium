@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -28,6 +29,11 @@ public class FileListSteps {
 
     public FileListSteps(World world) {
         this.world = world;
+    }
+
+    @ParameterType("replace|keep both")
+    public String conflictFix(String type){
+        return type;
     }
 
     @Given("there is an item called {word} in the folder Downloads of the device")
@@ -230,6 +236,13 @@ public class FileListSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.detailsPage.backListFiles();
+    }
+
+    @When("Alice fixes the conflict with {conflictFix}")
+    public void user_fixes_conflict(String conflictFix) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.fileListPage.fixConflict(conflictFix);
     }
 
     @Then("Alice should see {word} in the (file)list")
