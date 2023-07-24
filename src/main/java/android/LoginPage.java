@@ -64,7 +64,7 @@ public class LoginPage extends CommonPage {
         passwordText.sendKeys(password);
     }
 
-    public void submitLogin(/*String method*/) {
+    public void submitLogin() {
         Log.log(Level.FINE, "Starts: Submit login");
         acceptCertificate();
         loginButton.click();

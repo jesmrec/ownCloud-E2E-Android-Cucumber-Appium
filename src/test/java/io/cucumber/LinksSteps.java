@@ -38,7 +38,7 @@ public class LinksSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.shareAPI.createShare(sharingUser, itemName, "", "3", "1", itemName + " link", 0);
+        world.getShareAPI().createShare(sharingUser, itemName, "", "3", "1", itemName + " link", 0);
     }
 
     @When("Alice creates link on {word} {word} with the following fields")
@@ -46,31 +46,31 @@ public class LinksSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.sharingPage.addPublicLink();
+        world.getSharePage().addPublicLink();
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             switch (rows.get(0)) {
                 case "name": {
-                    world.linksPage.addLinkName(rows.get(1));
+                    world.getPublicLinksPage().addLinkName(rows.get(1));
                     break;
                 }
                 case "password": {
-                    world.linksPage.addPassword(itemName, rows.get(1));
+                    world.getPublicLinksPage().addPassword(itemName, rows.get(1));
                     break;
                 }
                 case "permission": {
-                    world.linksPage.setPermission(rows.get(1));
+                    world.getPublicLinksPage().setPermission(rows.get(1));
                     break;
                 }
                 case "expiration days": {
-                    world.linksPage.setExpiration(rows.get(1));
+                    world.getPublicLinksPage().setExpiration(rows.get(1));
                     break;
                 }
                 default:
                     break;
             }
         }
-        world.linksPage.submitLink();
+        world.getPublicLinksPage().submitLink();
     }
 
     @When("Alice edits the link on {word} with the following fields")
@@ -79,28 +79,28 @@ public class LinksSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
-        world.sharingPage.openPublicLink(itemName);
+        world.getSharePage().openPublicLink(itemName);
         for (List<String> rows : listItems) {
             switch (rows.get(0)) {
                 case "name": {
-                    world.linksPage.addLinkName(rows.get(1));
+                    world.getPublicLinksPage().addLinkName(rows.get(1));
                     break;
                 }
                 case "permissions": {
                     switch (rows.get(1)) {
                         case ("1"): { //Download / View
                             Log.log(Level.FINE, "Select Download / View");
-                            world.linksPage.selectDownloadView();
+                            world.getPublicLinksPage().selectDownloadView();
                             break;
                         }
                         case ("15"): { //Download / View / Upload
                             Log.log(Level.FINE, "Select Download / View / Upload");
-                            world.linksPage.selectDownloadViewUpload();
+                            world.getPublicLinksPage().selectDownloadViewUpload();
                             break;
                         }
                         case ("4"): { //Upload Only (File Drop)
                             Log.log(Level.FINE, "Select Upload Only (File Drop)");
-                            world.linksPage.selectUploadOnly();
+                            world.getPublicLinksPage().selectUploadOnly();
                             break;
                         }
                         default:
@@ -109,22 +109,22 @@ public class LinksSteps {
                     break;
                 }
                 case "password": {
-                    world.linksPage.addPassword(itemName, rows.get(1));
+                    world.getPublicLinksPage().addPassword(itemName, rows.get(1));
                     break;
                 }
                 default:
                     break;
             }
         }
-        world.linksPage.submitLink();
+        world.getPublicLinksPage().submitLink();
     }
 
     @When("Alice deletes the link on {word}")
     public void user_deletes_link(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.sharingPage.deletePublicShare();
-        world.sharingPage.acceptDeletion();
+        world.getSharePage().deletePublicShare();
+        world.getSharePage().acceptDeletion();
     }
 
     @Then("link should be created on {word} with the following fields")
@@ -139,32 +139,32 @@ public class LinksSteps {
             switch (rows.get(0)) {
                 case "name": {
                     Log.log(Level.FINE, "Checking name: " + rows.get(1));
-                    assertTrue(world.sharingPage.isItemInListPublicShares(rows.get(1)));
+                    assertTrue(world.getSharePage().isItemInListPublicShares(rows.get(1)));
                     break;
                 }
                 case "password": {
-                    world.sharingPage.openPublicLink(itemName);
-                    assertTrue(world.linksPage.isPasswordEnabled(itemName));
-                    world.linksPage.close();
+                    world.getSharePage().openPublicLink(itemName);
+                    assertTrue(world.getPublicLinksPage().isPasswordEnabled(itemName));
+                    world.getPublicLinksPage().close();
                     break;
                 }
                 case "user": {
                     Log.log(Level.FINE, "checking user: " + itemName);
-                    assertTrue(world.sharingPage.isItemInListPublicShares(itemName));
+                    assertTrue(world.getSharePage().isItemInListPublicShares(itemName));
                     break;
                 }
                 case "permission": {
                     Log.log(Level.FINE, "checking permissions: " + rows.get(1));
-                    world.sharingPage.openPublicLink(itemName);
-                    assertTrue(world.linksPage.checkPermissions(rows.get(1)));
-                    world.linksPage.close();
+                    world.getSharePage().openPublicLink(itemName);
+                    assertTrue(world.getPublicLinksPage().checkPermissions(rows.get(1)));
+                    world.getPublicLinksPage().close();
                     break;
                 }
                 case "expiration days": {
                     Log.log(Level.FINE, "checking expirations day: " + rows.get(1));
-                    world.sharingPage.openPublicLink(itemName);
-                    assertTrue(world.linksPage.checkExpiration(rows.get(1)));
-                    world.linksPage.close();
+                    world.getSharePage().openPublicLink(itemName);
+                    assertTrue(world.getPublicLinksPage().checkExpiration(rows.get(1)));
+                    world.getPublicLinksPage().close();
                     break;
                 }
                 default:
@@ -173,8 +173,8 @@ public class LinksSteps {
         }
         //Asserts in server via API
         Log.log(Level.FINE, "Checking API/server asserts");
-        OCShare share = world.shareAPI.getShare(itemName);
-        assertTrue(world.sharingPage.checkCorrectShare(share, listItems));
+        OCShare share = world.getShareAPI().getShare(itemName);
+        assertTrue(world.getSharePage().checkCorrectShare(share, listItems));
     }
 
     @Then("link on {word} should not exist anymore")
@@ -183,8 +183,8 @@ public class LinksSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         Log.log(Level.FINE, "Checking if item exists: " + itemName);
-        assertTrue(world.sharingPage.isListPublicLinksEmpty());
+        assertTrue(world.getSharePage().isListPublicLinksEmpty());
         assertTrue(world.shareAPI.getSharesByDefault().size() == 0);
-        assertFalse(world.sharingPage.isItemInListPublicShares(itemName + " link"));
+        assertFalse(world.getSharePage().isItemInListPublicShares(itemName + " link"));
     }
 }

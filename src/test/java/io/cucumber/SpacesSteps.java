@@ -35,7 +35,7 @@ public class SpacesSteps {
         for (List<String> rows : listItems) {
             String name = rows.get(0);
             String description = rows.get(1);
-            world.graphAPI.createSpace(name, description);
+            world.getGraphAPI().createSpace(name, description);
         }
     }
 
@@ -43,7 +43,7 @@ public class SpacesSteps {
     public void user_selects_spaces_view() throws InterruptedException {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.openSpaces();
+        world.getFileListPage().openSpaces();
         //BAD. But no other way to wait for server response ftm.
         Thread.sleep(3000);
     }
@@ -57,7 +57,7 @@ public class SpacesSteps {
         for (List<String> rows : listItems) {
             String name = rows.get(0);
             String description = rows.get(1);
-            world.graphAPI.disableSpace(name, description);
+            world.getGraphAPI().disableSpace(name, description);
         }
     }
 
@@ -66,7 +66,7 @@ public class SpacesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
-        assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
+        assertTrue(world.getSpacesPage().areAllSpacesVisible(listItems));
     }
 
     @Then("Alice should not see the following spaces")
@@ -74,6 +74,6 @@ public class SpacesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
-        assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
+        assertFalse(world.getSpacesPage().areAllSpacesVisible(listItems));
     }
 }

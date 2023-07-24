@@ -47,14 +47,14 @@ public class Hooks {
     private void cleanUp()
             throws IOException, ParserConfigurationException, SAXException {
         //First, remove leftovers in root folder. Just keeping the skeleton items
-        ArrayList<OCFile> filesRoot = world.filesAPI.listItems("");
+        ArrayList<OCFile> filesRoot = world.getFilesAPI().listItems("");
         for (OCFile iterator: filesRoot){
             Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
-            world.filesAPI.removeItem(iterator.getName());
+            world.getFilesAPI().removeItem(iterator.getName());
         }
-        world.trashbinAPI.emptyTrashbin();
-        if (world.authAPI.checkAuthMethod().equals("OIDC")){ //remove spaces
-            world.graphAPI.removeSpacesOfUser();
+        world.getTrashbinAPI().emptyTrashbin();
+        if (world.getAuthAPI().checkAuthMethod().equals("OIDC")){ //remove spaces
+            world.getGraphAPI().removeSpacesOfUser();
         }
     }
 }
