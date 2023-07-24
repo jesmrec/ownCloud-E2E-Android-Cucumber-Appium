@@ -92,7 +92,7 @@ public class AppiumManager {
 
         capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
 
-        capabilities.setCapability("appium:platformName", "android");
+        capabilities.setCapability("appium:platformName", "Android");
 
         capabilities.setCapability("appium:automationName", "UIAutomator2");
 
