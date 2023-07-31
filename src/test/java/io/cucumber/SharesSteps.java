@@ -208,7 +208,7 @@ public class SharesSteps {
             }
         }
         //Asserts in server via API
-        OCShare share = world.shareAPI.getShare(itemName);
+        OCShare share = world.getShareAPI().getShare(itemName);
         assertTrue(world.getSharePage().checkCorrectShare(share, listItems));
     }
 
@@ -217,7 +217,7 @@ public class SharesSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertFalse(world.shareAPI.isSharedWithMe(itemName, userName, false));
+        assertFalse(world.getShareAPI().isSharedWithMe(itemName, userName, false));
     }
 
     @Then("{usertype} {word} should have access to {word}")
@@ -226,9 +226,9 @@ public class SharesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (type.equalsIgnoreCase("user")) {
-            assertTrue(world.shareAPI.isSharedWithMe(itemName, shareeName, false));
+            assertTrue(world.getShareAPI().isSharedWithMe(itemName, shareeName, false));
         } else if (type.equalsIgnoreCase("group")) {
-            assertTrue(world.shareAPI.isSharedWithMe(itemName, shareeName, true));
+            assertTrue(world.getShareAPI().isSharedWithMe(itemName, shareeName, true));
         }
     }
 

@@ -74,13 +74,6 @@ public class FileListSteps {
         }
     }
 
-    @Given ("a file {word} exists in the device")
-    public void a_file_exists_in_device(String fileName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().pushFile(fileName);
-    }
-
     @When("Alice selects the option Create Folder")
     public void user_selects_option_create_folder() {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
@@ -149,13 +142,6 @@ public class FileListSteps {
         world.getFileListPage().uploadFiles();
     }
 
-    @When("Alice selects {word} to upload")
-    public void user_selects_file_to_upload(String fileName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().selectFileToUpload(fileName);
-    }
-
     @When ("Alice refreshes the list")
     public void user_refreshes_list() {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
@@ -206,6 +192,7 @@ public class FileListSteps {
     public void user_browses_into_folder(String path) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getFileListPage().refreshList();
         world.getFileListPage().browseToFolder(path);
     }
 
@@ -276,7 +263,7 @@ public class FileListSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.browseInto(targetFolder);
+        world.getFileListPage().browseInto(targetFolder);
         assertTrue(world.getFileListPage().isItemInList(itemName));
         assertTrue(world.getFilesAPI().itemExist(targetFolder + "/" + itemName));
     }
@@ -326,11 +313,11 @@ public class FileListSteps {
     public void user_should_see_defailed_information(String itemName, String type, String size) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.detailsPage.removeShareSheet();
+        world.getDetailsPage().removeShareSheet();
         assertEquals(world.getDetailsPage().getName(), itemName);
         assertEquals(world.getDetailsPage().getSize(), size);
         assertEquals(world.getDetailsPage().getType(), type);
-        world.detailsPage.backListFiles();
+        world.getDetailsPage().backListFiles();
     }
 
     @Then("the item {word} should be marked as downloaded")

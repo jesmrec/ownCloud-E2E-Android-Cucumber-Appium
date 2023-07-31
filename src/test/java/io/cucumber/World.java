@@ -7,6 +7,7 @@
 package io.cucumber;
 
 import android.DetailsPage;
+import android.DocumentProviderPage;
 import android.FileListPage;
 import android.FolderPickerPage;
 import android.InputNamePage;
@@ -17,6 +18,7 @@ import android.SearchShareePage;
 import android.PrivateSharePage;
 import android.SharePage;
 import android.SpacesPage;
+import android.UploadsPage;
 
 import java.io.IOException;
 
@@ -29,24 +31,26 @@ import utils.api.TrashbinAPI;
 public class World {
 
     //Involved pages
-    LoginPage loginPage;
-    FileListPage fileListPage;
-    InputNamePage inputNamePage;
-    FolderPickerPage folderPickerPage;
-    RemoveDialogPage removeDialogPage;
-    DetailsPage detailsPage;
-    SharePage sharePage;
-    PublicLinksPage publicLinksPage;
-    SearchShareePage searchShareePage;
-    PrivateSharePage privateSharePage;
-    SpacesPage spacesPage;
+    private LoginPage loginPage;
+    private FileListPage fileListPage;
+    private InputNamePage inputNamePage;
+    private FolderPickerPage folderPickerPage;
+    private RemoveDialogPage removeDialogPage;
+    private DetailsPage detailsPage;
+    private SharePage sharePage;
+    private PublicLinksPage publicLinksPage;
+    private SearchShareePage searchShareePage;
+    private PrivateSharePage privateSharePage;
+    private SpacesPage spacesPage;
+    private DocumentProviderPage documentProviderPage;
+    private UploadsPage uploadsPage;
 
     //APIs to call
-    ShareAPI shareAPI;
-    FilesAPI filesAPI ;
-    GraphAPI graphAPI;
-    TrashbinAPI trashbinAPI;
-    AuthAPI authAPI;
+    private ShareAPI shareAPI;
+    private FilesAPI filesAPI ;
+    private GraphAPI graphAPI;
+    private TrashbinAPI trashbinAPI;
+    private AuthAPI authAPI;
 
     public World() throws IOException {
     }
@@ -115,6 +119,16 @@ public class World {
         if (spacesPage == null)
             spacesPage = new SpacesPage();
         return spacesPage;
+    }
+    public DocumentProviderPage getDocumentProviderPage() {
+        if (documentProviderPage == null)
+            documentProviderPage = new DocumentProviderPage();
+        return documentProviderPage;
+    }
+    public UploadsPage getUploadsPage() {
+        if (uploadsPage == null)
+            uploadsPage = new UploadsPage();
+        return uploadsPage;
     }
 
     public ShareAPI getShareAPI()

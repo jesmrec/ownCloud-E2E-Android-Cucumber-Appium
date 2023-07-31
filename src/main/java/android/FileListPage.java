@@ -43,9 +43,6 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/fab_upload")
     private MobileElement uploadOption;
 
-    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Show roots\"]")
-    private MobileElement hamburger;
-
     @AndroidFindBy(id = "com.owncloud.android:id/upload_from_files_item_view")
     private MobileElement uploadFiles;
 
@@ -78,6 +75,9 @@ public class FileListPage extends CommonPage {
 
     @AndroidFindBy (id = "nav_spaces")
     MobileElement spacesTab;
+
+    @AndroidFindBy (id = "nav_uploads")
+    MobileElement uploads;
 
     private final String listFiles_id = "com.owncloud.android:id/list_root";
 
@@ -122,9 +122,9 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: push file: " + itemName);
         File rootPath = new File(System.getProperty("user.dir"));
         File appDir = new File(rootPath,"src/test/resources");
-        File app = new File(appDir, "io/cucumber/example-files/AAAA.txt");
+        File app = new File(appDir, "io/cucumber/example-files/" + itemName);
         try {
-            driver.pushFile("/sdcard/Download/AAAA.txt", app);
+            driver.pushFile("/sdcard/Download/" + itemName, app);
             Log.log(Level.FINE, "File " + itemName + " pushed");
         } catch (IOException e) {
             Log.log(Level.SEVERE, "IO Exception: " + e.getMessage());
@@ -203,6 +203,11 @@ public class FileListPage extends CommonPage {
     public void openSpaces(){
         spacesTab.click();
     }
+
+    public void openUploadsView(){
+        uploads.click();
+    }
+
 
     public void closeSelectionMode() {
         Log.log(Level.FINE, "Starts: close selection mode");
@@ -321,14 +326,5 @@ public class FileListPage extends CommonPage {
             Log.log(Level.FINE, "Item not found: " + itemName);
             return null;
         }
-    }
-
-    public void selectFileToUpload(String fileName){
-        Log.log(Level.FINE, "Starts: Select File to Upload: " + fileName);
-        hamburger.click();
-        waitByTextVisible(2, "Downloads");
-        findUIAutomatorText("Downloads");
-        waitByTextVisible(2, fileName);
-        findUIAutomatorText(fileName);
     }
 }
