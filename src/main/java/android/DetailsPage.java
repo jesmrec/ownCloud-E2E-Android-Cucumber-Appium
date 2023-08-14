@@ -20,7 +20,7 @@ import utils.log.Log;
 
 public class DetailsPage extends CommonPage {
 
-    @AndroidFindBy(id = "com.owncloud.android:id/fdIcon")
+    @AndroidFindBy(id = "com.owncloud.android:id/lytName")
     private MobileElement thumbnail;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fdFilename")
