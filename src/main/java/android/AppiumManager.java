@@ -117,6 +117,8 @@ public class AppiumManager {
 
         capabilities.setCapability("appium:newCommandTimeout", 60);
 
+	capabilities.setCapability("appium:adbExecTimeout", 40000);
+		
         if (device != null) {
             capabilities.setCapability("udid", device);
         }
