@@ -129,3 +129,17 @@ Feature: Public Links
         And Alice should see Links17 in the list
         But Alice should not see Links16.txt in the links list
         And Alice should not see Links18 in the links list
+
+      @pdo
+      Scenario: Remove from available offline shortcut
+        Given the following items have been created in the account
+          | file | Links19.txt |
+        And Alice has shared the file Links19.txt by link
+        When Alice opens the public link shortcut
+        And Alice selects to share the file Links19.txt
+        And Alice deletes the link on Links19.txt
+        And Alice closes share view
+        And Alice refreshes the list
+        Then Alice should not see Links19.txt in the offline list
+        And Alice should see the following message
+          | No shared links|

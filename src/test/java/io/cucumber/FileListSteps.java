@@ -250,7 +250,7 @@ public class FileListSteps {
         assertFalse(world.getFilesAPI().itemExist(itemName));
     }
 
-    @Then("Alice should not see {word} in the links list")
+    @Then("Alice should not see {word} in the links/offline list")
     public void user_should_not_see_item_in_links_list(String itemName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
@@ -361,13 +361,13 @@ public class FileListSteps {
         assertTrue(world.getFileListPage().displayedList(path, listServer));
     }
 
-    @Then("Alice should see the following error")
+    @Then("Alice should see the following error/message")
     public void user_should_see_following_error(DataTable table){
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
         String error = listItems.get(0).get(0);
-        Log.log(Level.FINE, "Error message to check: " + error);
+        Log.log(Level.FINE, "Error/Message to check: " + error);
         assertTrue(world.getFileListPage().errorDisplayed(error));
     }
 
