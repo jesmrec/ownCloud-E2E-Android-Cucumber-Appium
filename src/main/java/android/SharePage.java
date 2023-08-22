@@ -52,6 +52,9 @@ public class SharePage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/shareNoPublicLinks")
     private MobileElement noPublicLinks;
 
+    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
+    private MobileElement close;
+
     public SharePage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
@@ -187,5 +190,9 @@ public class SharePage extends CommonPage {
 
     public void cancelDeletion() {
         cancelDeletion.click();
+    }
+
+    public void close() {
+        close.click();
     }
 }

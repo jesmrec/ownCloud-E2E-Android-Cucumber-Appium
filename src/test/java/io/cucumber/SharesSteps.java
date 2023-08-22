@@ -136,6 +136,13 @@ public class SharesSteps {
         world.getSharePage().acceptDeletion();
     }
 
+    @When("Alice closes share view")
+    public void user_closes_shares_view() {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getSharePage().close();
+    }
+
     @Then("share should be created on {word} with the following fields")
     public void share_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {

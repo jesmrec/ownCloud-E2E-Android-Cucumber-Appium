@@ -79,6 +79,9 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy (id = "nav_spaces")
     MobileElement spacesTab;
 
+    @AndroidFindBy (id = "com.owncloud.android:id/list_empty_dataset_title")
+    MobileElement emptyMessage;
+
     private final String listFiles_id = "com.owncloud.android:id/list_root";
 
     public FileListPage() {
@@ -198,6 +201,15 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: open av offline shortcut");
         waitByTextInvisible(5, "Download enqueued");
         avOffShortcut.click();
+    }
+
+    public boolean emptyMessage(String message) {
+        Log.log(Level.FINE, "Starts: Check empty message displayed: " + message);
+        if (emptyMessage.isDisplayed() &&
+                findUIAutomatorText(message).isDisplayed()) {
+            return true;
+        }
+        return false;
     }
 
     public void openSpaces(){
