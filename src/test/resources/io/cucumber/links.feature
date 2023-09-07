@@ -42,6 +42,7 @@ Feature: Public Links
           |  folder   |  Links3      |  link3   |    a     |
           |  file     |  Links4.txt  |  link4   |    a     |
 
+      @nooc10
       Scenario Outline: Create a public link with expiration date
         Given the following items have been created in the account
           | <type>   | <item>  |
@@ -76,9 +77,10 @@ Feature: Public Links
           |  Links9       |  link9   |     1       | Download / View
 
 
-    @editlink @noocis
+    @editlink
     Rule: Edit a public link
 
+      @noocis
       Scenario Outline: Edit existing share on a folder, changing permissions
         Given the following items have been created in the account
           | folder  | <item>  |
@@ -97,6 +99,20 @@ Feature: Public Links
           |  Links11  |  link11  |     4       | Upload Only (File drop)
           |  Links12  |  link12  |     1       | Download / View
 
+      @nooc10
+      Scenario: Edit existing share on a folder, adding password and expiration
+        Given the following items have been created in the account
+          | folder | Links13 |
+          And Alice has shared the folder Links13 by link
+        When Alice selects to share the folder Links13
+        And Alice edits the link on Links13 with the following fields
+          | password        | a |
+          | expiration days | 1 |
+        Then link should be created on Links13 with the following fields
+          | password        | a |
+          | expiration days | 1 |
+
+
     @deletelink
     Rule: Delete a public link
 
@@ -109,37 +125,36 @@ Feature: Public Links
         Then link on <item> should not exist anymore
 
         Examples:
-          |  type   |  item         |
-          |  folder |  Links13      |
-          |  file   |  Links14.txt  |
+          | type   | item        |
+          | folder | Links14     |
+          | file   | Links15.txt |
 
     @linkshortcut @noocis
     Rule: Public link Shortcut
 
       Scenario: Public link shortcut shows correct links
         Given the following items have been created in the account
-          | file     | Links15.txt  |
-          | file     | Links16.txt  |
-          | folder   | Links17      |
-          | folder   | Links18      |
-        And Alice has shared the file Links15.txt by link
-        And Alice has shared the folder Links17 by link
+          | file   | Links16.txt |
+          | file   | Links17.txt |
+          | folder | Links18     |
+          | folder | Links19     |
+        And Alice has shared the file Links16.txt by link
+        And Alice has shared the folder Links18 by link
         When Alice opens the public link shortcut
-        Then Alice should see Links15.txt in the list
-        And Alice should see Links17 in the list
-        But Alice should not see Links16.txt in the links list
-        And Alice should not see Links18 in the links list
+        Then Alice should see Links16.txt in the list
+        And Alice should see Links18 in the list
+        But Alice should not see Links17.txt in the links list
+        And Alice should not see Links19 in the links list
 
-      @pdo
       Scenario: Remove from available offline shortcut
         Given the following items have been created in the account
-          | file | Links19.txt |
-        And Alice has shared the file Links19.txt by link
+          | file | Links20.txt |
+        And Alice has shared the file Links20.txt by link
         When Alice opens the public link shortcut
-        And Alice selects to share the file Links19.txt
-        And Alice deletes the link on Links19.txt
+        And Alice selects to share the file Links20.txt
+        And Alice deletes the link on Links20.txt
         And Alice closes share view
         And Alice refreshes the list
-        Then Alice should not see Links19.txt in the offline list
+        Then Alice should not see Links20.txt in the offline list
         And Alice should see the following message
-          | No shared links|
+          | No shared links |

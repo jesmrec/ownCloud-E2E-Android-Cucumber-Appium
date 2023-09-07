@@ -41,7 +41,7 @@ public class DateUtils {
         String dateAfterDays = gregorianCalendar.get(Calendar.YEAR)
                 + "-" + formatInt(gregorianCalendar.get(Calendar.MONTH) + 1)
                 + "-" + formatInt(gregorianCalendar.get(Calendar.DAY_OF_MONTH))
-                + " 00:00:00";
+                + " 23:59:59";
         Log.log(Level.FINE, "Date formatted: " + dateAfterDays);
         return dateAfterDays;
     }

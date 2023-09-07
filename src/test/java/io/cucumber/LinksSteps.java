@@ -112,6 +112,10 @@ public class LinksSteps {
                     world.getPublicLinksPage().addPassword(itemName, rows.get(1));
                     break;
                 }
+                case "expiration days": {
+                    world.getPublicLinksPage().setExpiration(rows.get(1));
+                    break;
+                }
                 default:
                     break;
             }
