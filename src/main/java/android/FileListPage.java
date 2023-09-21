@@ -61,11 +61,14 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/Filename")
     private MobileElement fileName;
 
-    @AndroidFindBy(id = "android:id/button1")
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_keep_both")
     private MobileElement keepBoth;
 
-    @AndroidFindBy(id = "android:id/button2")
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_replace")
     private MobileElement replace;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_skip")
+    private MobileElement skip;
 
     @AndroidFindBy(id = "com.owncloud.android:id/nav_shared_by_link_files")
     private MobileElement linksShortcut;
@@ -81,6 +84,9 @@ public class FileListPage extends CommonPage {
 
     @AndroidFindBy (id = "com.owncloud.android:id/list_empty_dataset_title")
     MobileElement emptyMessage;
+
+    @AndroidFindBy (id = "com.owncloud.android:id/dialog_file_already_exists_title")
+    MobileElement conflictTitle;
 
     private final String listFiles_id = "com.owncloud.android:id/list_root";
 
@@ -192,6 +198,16 @@ public class FileListPage extends CommonPage {
         }
     }
 
+    public void longPress(String itemName) {
+        longPress(findUIAutomatorText(itemName));
+    }
+
+    /* On multiselection mode */
+    public void selectItem(String itemName) {
+        Log.log(Level.FINE, "Starts: select item: " + itemName);
+        findUIAutomatorText(itemName).click();
+    }
+
     public void openLinkShortcut() {
         Log.log(Level.FINE, "Starts: open link shortcut");
         linksShortcut.click();
@@ -274,6 +290,11 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Check if operation is available: " + operationName);
         openMenuActions();
         return !findListUIAutomatorText(operationName).isEmpty();
+    }
+
+    public boolean conflictDisplayed(){
+        Log.log(Level.FINE, "Starts: Conflict displayed");
+        return  conflictTitle.isDisplayed();
     }
 
     public void fixConflict(String option){

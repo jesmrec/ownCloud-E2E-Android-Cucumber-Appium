@@ -109,6 +109,13 @@ public class FileListSteps {
         }
     }
 
+    @When("Alice selects to {word}")
+    public void user_selects_item_to_some_operation_in_multi(String operation) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getFileListPage().selectOperation(operation);
+    }
+
     @When("Alice selects {word} as target folder")
     public void user_selects_target_folder(String targetFolder) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
@@ -230,6 +237,25 @@ public class FileListSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getFileListPage().fixConflict(conflictFix);
+    }
+
+    @When("Alice long presses over {word}")
+    public void user_longpress_over_item(String itemName) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getFileListPage().refreshList();
+        world.getFileListPage().longPress(itemName);
+    }
+
+    @When("Alice multiselects the following items")
+    public void user_selects_all_items(DataTable table) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        List<List<String>> listItems = table.asLists();
+        for (List<String> rows : listItems) {
+            String name = rows.get(0);
+            world.getFileListPage().selectItem(name);
+        }
     }
 
     @Then("Alice should see {word} in the (file)list")
@@ -393,5 +419,16 @@ public class FileListSteps {
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getFileListPage().selectItemList(itemName);
         assertFalse(world.getFileListPage().operationAvailable("Unset as available offline"));
+    }
+
+    @Then("Alice should see the conflict dialog with the following message")
+    public void user_see_dialog_conflict(DataTable table){
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        List<List<String>> listItems = table.asLists();
+        String msg = listItems.get(0).get(0);
+        Log.log(Level.FINE, "Message to check: " + msg);
+        assertTrue(world.getFileListPage().conflictDisplayed());
+        assertTrue(world.getFileListPage().errorDisplayed(msg));
     }
 }

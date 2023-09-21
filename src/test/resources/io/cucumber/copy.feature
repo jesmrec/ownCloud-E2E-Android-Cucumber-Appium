@@ -93,23 +93,43 @@ Feature: Copy item
           And Alice fixes the conflict with replace
           Then Alice should see copy9.txt inside the folder copy10
 
-      Rule: Copy negative cases
+        @nooc10
+        Scenario: More than one conflict at the time
+          Given the following items have been created in the account
+            | folder | test11            |
+            | file   | copy11.txt        |
+            | file   | copy12.txt        |
+            | file   | copy13.txt        |
+            | file   | test11/copy11.txt |
+            | file   | test11/copy12.txt |
+            | file   | test11/copy13.txt  |
+          When Alice long presses over copy11.txt
+          And Alice multiselects the following items
+            | copy12.txt |
+            | copy13.txt |
+          And Alice selects to Copy
+          And Alice selects Personal as space
+          And Alice selects test as target folder
+          Then Alice should see the conflict dialog with the following message
+            | Apply to all 3 conflicts |
+
+    Rule: Copy negative cases
 
         Scenario: Copy a folder to itself
           Given the following items have been created in the account
-            | folder | copy11 |
-          When Alice selects to Copy the folder copy11
+            | folder | copy14 |
+          When Alice selects to Copy the folder copy14
           And Alice selects Personal as space
-          And Alice selects copy11 as target folder
+          And Alice selects copy14 as target folder
           Then Alice should see the following error
             | It is not possible to copy a folder into a descendant |
 
         Scenario: Copy a folder to descendant
           Given the following items have been created in the account
-            | folder | copy12        |
-            | folder | copy12/copy13 |
-            When Alice selects to Copy the folder copy12
+            | folder | copy15        |
+            | folder | copy15/copy16 |
+          When Alice selects to Copy the folder copy15
           And Alice selects Personal as space
-          And Alice selects copy12/copy13 as target folder
+          And Alice selects copy15/copy16 as target folder
           Then Alice should see the following error
             | It is not possible to copy a folder into a descendant |
