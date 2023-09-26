@@ -7,12 +7,8 @@
 package android;
 
 import org.openqa.selenium.support.PageFactory;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.util.logging.Level;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -127,7 +123,7 @@ public class PublicLinksPage extends CommonPage {
         return false;
     }
 
-    public void addPassword(String itemName, String password) throws IOException, SAXException, ParserConfigurationException {
+    public void addPassword(String itemName, String password) {
         Log.log(Level.FINE, "Starts: Add link password: " + password);
         //To avoid password keyboard to appear
         driver.hideKeyboard();

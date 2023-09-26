@@ -11,7 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -173,17 +172,9 @@ public class FileListPage extends CommonPage {
         return findUIAutomatorSubText(error).isDisplayed();
     }
 
-    /*
-     * Receives: Path of the item to be selected by long pressing,
-     * in order to display the operations menu.
-     */
     public void selectItemList(String path) {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
-        String fileName;
-        fileName = path;
-        if (path.contains("/")) { //Browse through
-            fileName = browseToFile(path);
-        }
+        String fileName = path.contains("/") ? browseToFile(path) : path;
         MobileElement element = getElementFromFileList(fileName);
         waitByTextVisible(5, fileName);
         longPress(element);
@@ -202,7 +193,7 @@ public class FileListPage extends CommonPage {
         longPress(findUIAutomatorText(itemName));
     }
 
-    /* On multiselection mode */
+    //Select once multiselection mode is on
     public void selectItem(String itemName) {
         Log.log(Level.FINE, "Starts: select item: " + itemName);
         findUIAutomatorText(itemName).click();
@@ -219,15 +210,6 @@ public class FileListPage extends CommonPage {
         avOffShortcut.click();
     }
 
-    public boolean emptyMessage(String message) {
-        Log.log(Level.FINE, "Starts: Check empty message displayed: " + message);
-        if (emptyMessage.isDisplayed() &&
-                findUIAutomatorText(message).isDisplayed()) {
-            return true;
-        }
-        return false;
-    }
-
     public void openSpaces(){
         spacesTab.click();
     }
@@ -236,40 +218,25 @@ public class FileListPage extends CommonPage {
         uploads.click();
     }
 
-
     public void closeSelectionMode() {
         Log.log(Level.FINE, "Starts: close selection mode");
         closeSelectionMode.click();
     }
 
-    /*
-     * Receives: path of the item
-     * Returns: true if "Download" action is not displayed after selecting the item
-     * by long pressing, and sync action is displayed (already dowloaded)
-     */
     public boolean fileIsMarkedAsDownloaded(String path) {
         Log.log(Level.FINE, "Check if file is downloaded: " + path);
         selectItemList(path);
-        return findListId(downloadoption_id).isEmpty() &&
-                !findListId(syncoption_id).isEmpty();
+        List<MobileElement> downloadOptions = findListId(downloadoption_id);
+        List<MobileElement> syncOptions = findListId(syncoption_id);
+        return downloadOptions.isEmpty() && !syncOptions.isEmpty();
     }
 
-    /*
-     * Receives: path of the item
-     * Returns: true if "Set as available offline" is displayed after selecting the item
-     * by long pressing (checked in menu options - need improvement)
-     */
     public boolean itemIsMarkedAsAvOffline(String path) {
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(avofflineoption_id).isEmpty();
     }
 
-    /*
-     * Receives: path of the item
-     * Returns: true if "Unset as available offline" is displayed after selecting the item
-     * by long pressing (checked in menu options - need improvement)
-     */
     public boolean itemIsMarkedAsUnAvOffline(String path) {
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
@@ -307,30 +274,16 @@ public class FileListPage extends CommonPage {
     }
 
     public boolean displayedList(String path, ArrayList<OCFile> listServer) {
-        boolean found = true;
-        browseToFolder(path); //moving to the folder
-        Iterator iterator = listServer.iterator();
-        while (iterator.hasNext()) {
-            OCFile ocfile = (OCFile) iterator.next();
-            Log.log(Level.FINE, "Checking item in list: " + ocfile.getName());
-            //Server returns the username as value. Here, we skip it.
-            //in oCIS, id is returned instead of name in reference.
-            //Shortcut: username > 15 = id (check a best method)
-            if (ocfile.getName().equalsIgnoreCase(LocProperties.getProperties().getProperty("userName1")) ||
-                    ocfile.getName().length() > 15) {
-                continue;
-            }
-            while (!isItemInList(ocfile.getName()) && !endList(listServer.size())) {
-                Log.log(Level.FINE, "Item " + ocfile.getName() + " not found yet. Swiping");
-                refreshList();
-            }
-            if (!isItemInList(ocfile.getName())) {
-                Log.log(Level.FINE, "Item " + ocfile.getName() + " is not in the list");
-                found = false;
-                break;
-            }
-        }
-        return found;
+        browseToFolder(path); // Mover a la carpeta
+        String userName1 = LocProperties.getProperties().getProperty("userName1");
+        return listServer.stream().filter(
+            ocfile -> !ocfile.getName().equalsIgnoreCase(userName1) && ocfile.getName().length() <= 15)
+            .allMatch(ocfile -> {
+                while (!isItemInList(ocfile.getName()) && !endList(listServer.size())) {
+                    refreshList();
+                }
+                return isItemInList(ocfile.getName());
+            });
     }
 
     private boolean endList(int numberItems) {
@@ -342,16 +295,8 @@ public class FileListPage extends CommonPage {
         return !findListId(footer_id).isEmpty();
     }
 
-    /*
-     * Receives: An item name
-     * Returns: MobileElement object correspondent with the given item name in the current list
-     */
     private MobileElement getElementFromFileList(String itemName) {
         Log.log(Level.FINE, "Starts: searching item in list: " + itemName);
-        while (!isItemInList(itemName) && !endList()) {
-            Log.log(Level.FINE, "Item " + itemName + " not found yet. Swiping");
-            refreshList();
-        }
         if (isItemInList(itemName)) {
             Log.log(Level.FINE, "Item found: " + itemName);
             return findUIAutomatorText(itemName);

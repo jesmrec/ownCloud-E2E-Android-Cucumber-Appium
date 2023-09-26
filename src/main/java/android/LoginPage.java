@@ -39,15 +39,11 @@ public class LoginPage extends CommonPage {
     //For the regular tests
     private final String server = System.getProperty("server");
 
-    private String errorcredentialstext_xpath = "//*[@text='Wrong username or password']";
+    private final String errorcredentialstext_xpath = "//*[@text='Wrong username or password']";
 
     public LoginPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-    }
-
-    public boolean notLoggedIn() {
-        return !urlServer.isEmpty();
     }
 
     public void typeURL() {

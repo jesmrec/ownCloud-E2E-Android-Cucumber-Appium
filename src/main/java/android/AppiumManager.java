@@ -3,8 +3,8 @@
  *
  * @author Jesús Recio Rincón (@jesmrec)
 
- * Last Appium review: v2.0.0-beta.66
- * If posible, execute test with such version
+ * Last Appium review: v2.0.1
+ * If posible, execute tests with such version
  */
 
 
@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
 import utils.LocProperties;
 import utils.log.Log;
@@ -89,34 +88,21 @@ public class AppiumManager {
     private static void setCapabilities(DesiredCapabilities capabilities){
 
         capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "test");
-
         capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
-
         capabilities.setCapability("appium:platformName", "Android");
-
         capabilities.setCapability("appium:automationName", "UIAutomator2");
-
         capabilities.setCapability("appPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
-
         capabilities.setCapability("appActivity",
                 "com.owncloud.android.ui.activity.SplashActivity");
-
         capabilities.setCapability("appWaitPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
-
         capabilities.setCapability("autoGrantPermissions", true);
-
         capabilities.setCapability("unicodeKeyboard", true);
-
         capabilities.setCapability("resetKeyboard", true);
-
         capabilities.setCapability("disableWindowAnimation", true);
-
         capabilities.setCapability("noReset", true);
-
         capabilities.setCapability("appium:newCommandTimeout", 60);
-
         if (device != null) {
             capabilities.setCapability("udid", device);
         }
