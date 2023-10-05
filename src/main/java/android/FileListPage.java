@@ -182,7 +182,7 @@ public class FileListPage extends CommonPage {
 
     public void selectOperation(String operationName) {
         if (operationName.equals("share")) {  //placed in toolbar
-            actions.click(findId(shareoption_id)).perform();
+            findId(shareoption_id).click();
         } else {
             Log.log(Level.FINE, "Operation: " + operationName + " placed in menu");
             selectOperationMenu(operationName);

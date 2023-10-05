@@ -112,11 +112,12 @@ Feature: Private Share
           | permissions   |  <permissions> |
 
         Examples:
-          |  item      |   user    | permissions | Description
-          |  Share12   |   Bob     |   1         | only read
-          |  Share13   |   Bob     |   9         | delete
-          |  Share14   |   Bob     |   13        | delete and create
-          |  Share15   |   Bob     |   17        | share
+          | item    | user | permissions | Description       |
+          | Share12 | Bob  | 1           | only read         |
+          | Share13 | Bob  | 3           | update            |
+          | Share14 | Bob  | 9           | delete            |
+          | Share15 | Bob  | 13          | delete and create |
+          | Share16 | Bob  | 17          | share             |
 
     @deleteshare
     Rule: Delete a share
@@ -131,6 +132,6 @@ Feature: Private Share
         And Bob should not have access to <item>
 
         Examples:
-          |  type   |  item         |
-          |  file   |  Share16.txt  |
-          |  folder |  Share17      |
+          | type   | item        |
+          | file   | Share17.txt |
+          | folder | Share18     |
