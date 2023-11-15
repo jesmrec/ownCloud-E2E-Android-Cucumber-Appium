@@ -54,7 +54,7 @@ Feature: Copy item
           | type | name      | target | space  |
           | file | copy5.txt | /      | Space1 |
 
-      @nooc10
+      @nooc10 @copyconflicts
       Scenario: Copy a file to same place (duplication)
         Given the following items have been created in the account
           | <type> | <name> |
