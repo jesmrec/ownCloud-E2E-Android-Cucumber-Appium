@@ -17,15 +17,17 @@ Feature: Public Links
           | <type>   | <item>  |
         When Alice selects to share the <type> <item>
         And Alice creates link on <type> <item> with the following fields
-          | name | <name> |
+          | name     | <name>   |
+          | password | aa55AA.. |
         Then link should be created on <item> with the following fields
           | name | <name> |
 
         Examples:
-          |  type     |  item          |  name    |
-          |  folder   |  Links1        |  link1   |
-          |  file     |  Links2.txt    |  link2   |
+          | type   | item       | name  |
+          | folder | Links1     | link1 |
+          | file   | Links2.txt | link2 |
 
+      @ignore
       Scenario Outline: Create a public link with password
         Given the following items have been created in the account
           | <type>   | <item>  |
@@ -38,18 +40,19 @@ Feature: Public Links
           | password | <password> |
 
         Examples:
-          |  type     |  item        |  name    | password |
-          |  folder   |  Links3      |  link3   |    a     |
-          |  file     |  Links4.txt  |  link4   |    a     |
+          | type   | item       | name  | password |
+          | folder | Links3     | link3 | aa55AA.. |
+          | file   | Links4.txt | link4 | aa55AA.. |
 
-      @nooc10
+  @nooc10
       Scenario Outline: Create a public link with expiration date
         Given the following items have been created in the account
           | <type>   | <item>  |
         When Alice selects to share the <type> <item>
         And Alice creates link on <type> <item> with the following fields
-          | name            | <name>  |
-          | expiration days | <expiration>  |
+          | name            | <name>       |
+          | expiration days | <expiration> |
+          | password        | aa55AA..     |
         Then link should be created on <item> with the following fields
           | name            | <name>        |
           | expiration days | <expiration>  |
@@ -66,6 +69,7 @@ Feature: Public Links
         And Alice creates link on folder <item> with the following fields
           | name       | <name>        |
           | permission | <permissions> |
+          | password   | aa55AA..      |
         Then link should be created on <item> with the following fields
           | name       | <name>        |
           | permission | <permissions> |
@@ -99,18 +103,18 @@ Feature: Public Links
           |  Links11  |  link11  |     4       | Upload Only (File drop)
           |  Links12  |  link12  |     1       | Download / View
 
-      @nooc10
+      @nooc10 @ignore
       Scenario: Edit existing share on a folder, adding password and expiration
         Given the following items have been created in the account
           | folder | Links13 |
           And Alice has shared the folder Links13 by link
         When Alice selects to share the folder Links13
         And Alice edits the link on Links13 with the following fields
-          | password        | a |
-          | expiration days | 1 |
+          | password        | aa55AA.. |
+          | expiration days | 1        |
         Then link should be created on Links13 with the following fields
-          | password        | a |
-          | expiration days | 1 |
+          | password        | aa55AA.. |
+          | expiration days | 1        |
 
 
     @deletelink

@@ -47,7 +47,7 @@ public class SharesSteps {
                                     String recipientUser, String permissions) throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getShareAPI().createShare(sharingUser, itemName, recipientUser, "0", permissions, "", shareLevel);
+        world.getShareAPI().createShare(sharingUser, itemName, recipientUser, "0", permissions, "", "", shareLevel);
         world.getShareAPI().acceptAllShares("user", recipientUser);
     }
 
