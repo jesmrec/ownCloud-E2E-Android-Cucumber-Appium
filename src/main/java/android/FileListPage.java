@@ -10,10 +10,13 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -23,18 +26,21 @@ import utils.log.Log;
 
 public class FileListPage extends CommonPage {
 
-    private String shareoption_id = "com.owncloud.android:id/action_share_file";
-    private String avofflineoption_id = "com.owncloud.android:id/action_set_available_offline";
-    private String unavofflineoption_id = "com.owncloud.android:id/action_set_unavailable_offline";
-    private String downloadoption_id = "com.owncloud.android:id/action_download_file";
-    private String syncoption_id = "com.owncloud.android:id/action_sync_file";
-    private String footer_id = "com.owncloud.android:id/footerText";
+    private final String shareoption_id = "com.owncloud.android:id/action_share_file";
+    private final String avofflineoption_id = "com.owncloud.android:id/action_set_available_offline";
+    private final String unavofflineoption_id = "com.owncloud.android:id/action_set_unavailable_offline";
+    private final String downloadoption_id = "com.owncloud.android:id/action_download_file";
+    private final String syncoption_id = "com.owncloud.android:id/action_sync_file";
+    private final String footer_id = "com.owncloud.android:id/footerText";
 
     @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.owncloud.android:id/action_mode_close_button\");")
     private MobileElement closeSelectionMode;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fab_expand_menu_button")
     private MobileElement fabButton;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar_left_icon")
+    private List<MobileElement> hamburgerButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fab_mkdir")
     private MobileElement createFolder;
@@ -87,8 +93,6 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy (id = "com.owncloud.android:id/dialog_file_already_exists_title")
     MobileElement conflictTitle;
 
-    private final String listFiles_id = "com.owncloud.android:id/list_root";
-
     public FileListPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
@@ -102,6 +106,7 @@ public class FileListPage extends CommonPage {
 
     public void waitToload(String itemName) {
         Log.log(Level.FINE, "Waiting to load");
+        String listFiles_id = "com.owncloud.android:id/list_root";
         try {
             //if list of files is not loaded, we should swipe to get the file list
             waitById(5, listFiles_id);
@@ -291,11 +296,7 @@ public class FileListPage extends CommonPage {
                 .isEmpty();
     }
 
-    private boolean endList() {
-        return !findListId(footer_id).isEmpty();
-    }
-
-    private MobileElement getElementFromFileList(String itemName) {
+    private MobileElement getElementFromFileList (String itemName) {
         Log.log(Level.FINE, "Starts: searching item in list: " + itemName);
         if (isItemInList(itemName)) {
             Log.log(Level.FINE, "Item found: " + itemName);
@@ -305,4 +306,54 @@ public class FileListPage extends CommonPage {
             return null;
         }
     }
+
+    public String getPrivateLink(String scheme, String linkOriginal) {
+        Log.log(Level.FINE, "Starts: Create private link: " + scheme + " " + linkOriginal);
+        String originalScheme = getScheme(linkOriginal);
+        Log.log(Level.FINE, "Original scheme: " + originalScheme);
+        String linkToOpen = linkOriginal.replace(originalScheme, scheme);
+        String linkToOpen2 = linkToOpen.replace("%21", "!");
+        Log.log(Level.FINE, "Link to open: " + linkToOpen + " " + linkToOpen2);
+        return linkToOpen2;
+    }
+
+    private String getScheme(String originalURL){
+        return originalURL.split("://")[0];
+    }
+
+    public void openPrivateLink(String privateLink) throws MalformedURLException {
+        Log.log(Level.FINE, "Starts: Open private link: " + privateLink);
+        driver.closeApp();
+        wait (5);
+        driver.get(privateLink);
+        //Let some time to load... did not found a reliable condition to avoid this ugly wait
+        wait (5);
+    }
+
+    public void openFakePrivateLink() {
+        Log.log(Level.FINE, "Starts: Open fake private link");
+        String originalScheme = getScheme(System.getProperty("server"));
+        String fakeURL = System.getProperty("server").replace(originalScheme, "owncloud") + "/f/11111111111";
+        Log.log(Level.FINE, "Fake URL: " + fakeURL);
+        driver.get(fakeURL);
+        //Let some time to load... did not found a reliable condition to avoid this ugly wait
+        wait (5);
+    }
+
+    public boolean itemOpened(String itemType, String itemName) {
+        Log.log(Level.FINE, "Starts: checking if item is opened: " + itemType + " " + itemName);
+        if (itemType.equals("file")) {
+            Log.log(Level.FINE, "Opening file");
+            boolean fileNameVisible = findUIAutomatorText(itemName).isDisplayed();
+            boolean fileTypeIconVisible = findId("com.owncloud.android:id/fdImageDetailFile").isDisplayed();
+            return fileNameVisible && fileTypeIconVisible;
+        } else if (itemType.equals("folder")) {
+            Log.log(Level.FINE, "Opening folder");
+            boolean folderNameVisible = findUIAutomatorText(itemName).isDisplayed();
+            boolean hamburgerButtonVisible = hamburgerButton.size() > 0;
+            return folderNameVisible && !hamburgerButtonVisible;
+        }
+        return false;
+    }
+
 }

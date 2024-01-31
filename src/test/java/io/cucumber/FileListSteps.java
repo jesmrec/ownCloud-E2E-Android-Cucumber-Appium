@@ -129,7 +129,8 @@ public class FileListSteps {
             throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        if (world.getAuthAPI().checkAuthMethod().equals("OIDC")) {
+        //if (world.getAuthAPI().checkAuthMethod().equals("OIDC")) {
+        if (world.getAuthAPI().isOidc()) {
             world.getFolderPickerPage().selectSpace(spaceName);
         }
     }
@@ -256,6 +257,39 @@ public class FileListSteps {
             String name = rows.get(0);
             world.getFileListPage().selectItem(name);
         }
+    }
+
+    @When("Alice opens a private link pointing to {word} with scheme {word}")
+    public void open_private_link(String filePath, String scheme)
+            throws Throwable {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        OCFile item = world.getFilesAPI().listItems(filePath).get(0);
+        String privateLink = world.getFileListPage().getPrivateLink(scheme, item.getPrivateLink());
+        world.getFileListPage().openPrivateLink(privateLink);
+    }
+
+    @When("Alice opens a private link pointing to shared {word} with scheme {word}")
+    public void open_private_link_shared(String fileName, String scheme)
+            throws Throwable {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        ArrayList<OCFile> listShared = world.getFilesAPI().listShared();
+        OCFile item = null;
+        for (OCFile ocFile: listShared){
+            if (ocFile.getName().equals(fileName)){
+                item = ocFile;
+            }
+        }
+        String privateLink = world.getFileListPage().getPrivateLink(scheme, item.getPrivateLink());
+        world.getFileListPage().openPrivateLink(privateLink);
+    }
+
+    @When("Alice opens a private link pointing to non-existing item")
+    public void open_fake_private_link() {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getFileListPage().openFakePrivateLink();
     }
 
     @Then("Alice should see {word} in the (file)list")
@@ -430,5 +464,12 @@ public class FileListSteps {
         Log.log(Level.FINE, "Message to check: " + msg);
         assertTrue(world.getFileListPage().conflictDisplayed());
         assertTrue(world.getFileListPage().errorDisplayed(msg));
+    }
+
+    @Then("{itemtype} {word} is opened in the app")
+    public void original_is_opened(String itemType, String itemName) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.getFileListPage().itemOpened(itemType, itemName));
     }
 }

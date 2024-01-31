@@ -8,6 +8,7 @@ package android;
 
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import io.appium.java_client.MobileElement;
@@ -31,7 +32,7 @@ public class PublicLinksPage extends CommonPage {
     private MobileElement uploadOnlyOption;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkPasswordSwitch")
-    private MobileElement passwordSwitch;
+    private List<MobileElement> passwordSwitch;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkPasswordValue")
     private MobileElement textPassword;
@@ -127,16 +128,22 @@ public class PublicLinksPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Add link password: " + password);
         //To avoid password keyboard to appear
         driver.hideKeyboard();
-        passwordSwitch.click();
+        if (!passwordSwitch.isEmpty()) {
+            passwordSwitch.get(0).click();
+        }
         textPassword.sendKeys(password);
     }
 
-    public boolean isPasswordEnabled(String itemName) {
-        boolean switchEnabled = true;
+    public boolean isPasswordEnabled() {
+        boolean switchEnabled;
         boolean passVisible;
-        switchEnabled = parseIntBool(passwordSwitch.getAttribute("checked"));
-        passVisible = textPassword.isDisplayed();
-        return switchEnabled && passVisible;
+        if (!passwordSwitch.isEmpty()) {
+            switchEnabled = parseIntBool(passwordSwitch.get(0).getAttribute("checked"));
+            passVisible = textPassword.isDisplayed();
+            return switchEnabled && passVisible;
+        } else { //password enforced, then enabled
+            return true;
+        }
     }
 
     public void setExpiration(String days) {

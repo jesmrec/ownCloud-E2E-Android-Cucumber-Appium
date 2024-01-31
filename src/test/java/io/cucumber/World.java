@@ -159,8 +159,7 @@ public class World {
         return trashbinAPI;
     }
 
-    public AuthAPI getAuthAPI()
-            throws IOException {
+    public AuthAPI getAuthAPI() {
         if (authAPI == null)
             authAPI = new AuthAPI();
         return authAPI;

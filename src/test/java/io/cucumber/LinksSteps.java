@@ -148,7 +148,7 @@ public class LinksSteps {
                 }
                 case "password": {
                     world.getSharePage().openPublicLink(itemName);
-                    assertTrue(world.getPublicLinksPage().isPasswordEnabled(itemName));
+                    assertTrue(world.getPublicLinksPage().isPasswordEnabled());
                     world.getPublicLinksPage().close();
                     break;
                 }

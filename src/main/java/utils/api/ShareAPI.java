@@ -150,7 +150,7 @@ public class ShareAPI extends CommonAPI {
                     throws IOException {
         Log.log(Level.FINE, "BODY SHARE: path " + itemPath+ " sharee: " + sharee + " type: " + type + " permi: " + permissions + " name:" + name);
         FormBody.Builder body = new FormBody.Builder();
-        if (isReshare == 1 && authAPI.isOidc(urlServer)) {
+        if (isReshare == 1 && authAPI.isOidc()) {
             body.add("path", "/Shares/" + itemPath);
         } else {
             body.add("path", itemPath);

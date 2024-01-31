@@ -56,7 +56,8 @@ public class CommonAPI {
     public CommonAPI() throws IOException {
         AuthAPI authAPI = new AuthAPI();
         //ftm, OIDC == oCIS. Bad.
-        if (authAPI.checkAuthMethod().equals("OIDC")){
+        //if (authAPI.checkAuthMethod().equals("OIDC")){
+        if (authAPI.isOidc()){
             space = getPersonalDrives(urlServer);
             davEndpoint = spacesEndpoint + space;
         } else {
@@ -69,23 +70,20 @@ public class CommonAPI {
         return davEndpoint;
     }
 
-    public String getCapabilities()
-            throws IOException {
-        String urlCheck = urlServer + "/ocs/v2.php/cloud/capabilities?format=json";
-        Request request = getRequest(urlCheck);
-        Response response = httpClient.newCall(request).execute();
-        Log.log(Level.FINE, "Capabilities: " + response.body());
-        String capabilities = response.body().string();
-        response.close();
-        return capabilities;
+    public String getSharedEndpoint() throws IOException {
+        Log.log(Level.FINE, "Starts: Get Shared Space Endpoint");
+        String sharesSpaceId = getSharesDrives(urlServer);
+        String endpoint = spacesEndpoint + sharesSpaceId;
+        Log.log(Level.FINE, "Endpoint: " + endpoint);
+        return endpoint;
     }
 
-    protected Request davRequest(String url, String method, RequestBody body) {
+    protected Request davRequest(String url, String method, RequestBody body, String userName) {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("OCS-APIREQUEST", "true")
                 .addHeader("User-Agent", userAgent)
-                .addHeader("Authorization", "Basic " + credentialsB64)
+                .addHeader("Authorization", "Basic " + credentialsBuilder(userName))
                 .addHeader("Host", host)
                 .method(method, body)
                 .build();
@@ -178,6 +176,18 @@ public class CommonAPI {
         return personalId;
     }
 
+    private String getSharesDrives(String url)
+            throws IOException {
+        Log.log(Level.FINE, "Starts: GET personal drives: " + url );
+        Request request = getRequest(url + graphDrivesEndpoint, user);
+        Response response = httpClient.newCall(request).execute();
+        String body = response.body().string();
+        response.close();
+        String sharesId = DrivesJSONHandler.getSharesDriveId(body);
+        Log.log(Level.FINE, "Shares Drive ID: " + sharesId);
+        return sharesId;
+    }
+
     protected String getSpaceId(String url, String spaceName) throws IOException {
         Request request = getRequest(url + graphDrivesEndpoint);
         Response response = httpClient.newCall(request).execute();
@@ -186,5 +196,9 @@ public class CommonAPI {
         String spaceId = DrivesJSONHandler.getSpaceId(body, spaceName);
         Log.log(Level.FINE, "Space ID: " + spaceId);
         return spaceId;
+    }
+
+    private String credentialsBuilder (String userName) {
+        return Base64.getEncoder().encodeToString((userName.toLowerCase()+":"+password).getBytes());
     }
 }

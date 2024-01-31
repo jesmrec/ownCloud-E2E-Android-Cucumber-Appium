@@ -29,4 +29,16 @@ public class DrivesJSONHandler {
         }
         return "";
     }
+
+    public static String getSharesDriveId(String json) {
+        JSONObject drivesObj = new JSONObject(json);
+        JSONArray valuesArr = drivesObj.getJSONArray("value");
+        for (int i = 0; i < valuesArr.length(); i++) {
+            JSONObject drivesList = valuesArr.getJSONObject(i);
+            if (drivesList.get("driveType").equals("virtual")) {
+                return (String) drivesList.get("id");
+            }
+        }
+        return "";
+    }
 }

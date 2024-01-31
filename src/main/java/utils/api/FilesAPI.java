@@ -41,7 +41,7 @@ public class FilesAPI extends CommonAPI {
         String url = urlServer + getEndpoint() + "/" + folderName + "/";
         Log.log(Level.FINE, "Starts: Request create folder");
         Log.log(Level.FINE, "URL: " + url);
-        Request request = davRequest(url, "MKCOL", null);
+        Request request = davRequest(url, "MKCOL", null, user);
         Response response = httpClient.newCall(request).execute();
         response.close();
     }
@@ -53,7 +53,7 @@ public class FilesAPI extends CommonAPI {
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),
                 "text Example");
-        Request request = davRequest(url, "PUT", body);
+        Request request = davRequest(url, "PUT", body, user);
         Response response = httpClient.newCall(request).execute();
         response.close();
     }
@@ -65,7 +65,7 @@ public class FilesAPI extends CommonAPI {
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),
                 content);
-        Request request = davRequest(url, "PUT", body);
+        Request request = davRequest(url, "PUT", body, user);
         Response response = httpClient.newCall(request).execute();
         response.close();
     }
@@ -76,7 +76,7 @@ public class FilesAPI extends CommonAPI {
         Log.log(Level.FINE, "Starts: Request check if item exists in server");
         Log.log(Level.FINE, "URL: " + url);
         Response response;
-        Request request = davRequest(url, "PROPFIND", null);
+        Request request = davRequest(url, "PROPFIND", null, user);
         response = httpClient.newCall(request).execute();
         response.close();
         switch (response.code() / 100) {
@@ -97,28 +97,31 @@ public class FilesAPI extends CommonAPI {
         }
     }
 
-    public boolean isFolder(String itemName)
+    public ArrayList<OCFile> listShared()
             throws IOException, SAXException, ParserConfigurationException {
-        String url = urlServer + getEndpoint() + "/" + itemName;
-        Log.log(Level.FINE, "Starts: Request check if item is file or folder");
-        Log.log(Level.FINE, "URL: " + url);
+        Log.log(Level.FINE, "Starts: Request to fetch list of shared items from oCIS");
         Response response;
-        Request request = davRequest(url, "PROPFIND", null);
+        String url = urlServer + getSharedEndpoint();
+        Log.log(Level.FINE, "URL: " + url);
+        RequestBody body = RequestBody.create(MediaType.parse("application/xml; charset=utf-8"),
+                basicPropfindBody);
+        Request request = davRequest(url, "PROPFIND", body, user);
         response = httpClient.newCall(request).execute();
-        boolean isFolder = getList(response).get(0).getType() == null;
+        ArrayList<OCFile> listItems = getList(response);
         response.close();
-        return isFolder;
+        Log.log(Level.FINE, "ITEMS: " + listItems.size());
+        return listItems;
     }
 
     public ArrayList<OCFile> listItems(String path)
             throws IOException, SAXException, ParserConfigurationException {
         Response response;
-        String url = urlServer + getEndpoint() + path;
+        String url = urlServer + getEndpoint() + "/" + path;
         Log.log(Level.FINE, "Starts: Request to fetch list of items from server");
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("application/xml; charset=utf-8"),
                 basicPropfindBody);
-        Request request = davRequest(url, "PROPFIND", body);
+        Request request = davRequest(url, "PROPFIND", body, user);
         response = httpClient.newCall(request).execute();
         ArrayList<OCFile> listItems = getList(response);
         response.close();
