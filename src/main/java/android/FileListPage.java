@@ -6,6 +6,7 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.LocProperties;
@@ -31,67 +30,66 @@ public class FileListPage extends CommonPage {
     private final String unavofflineoption_id = "com.owncloud.android:id/action_set_unavailable_offline";
     private final String downloadoption_id = "com.owncloud.android:id/action_download_file";
     private final String syncoption_id = "com.owncloud.android:id/action_sync_file";
-    private final String footer_id = "com.owncloud.android:id/footerText";
 
     @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.owncloud.android:id/action_mode_close_button\");")
-    private MobileElement closeSelectionMode;
+    private WebElement closeSelectionMode;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fab_expand_menu_button")
-    private MobileElement fabButton;
+    private WebElement fabButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar_left_icon")
-    private List<MobileElement> hamburgerButton;
+    private List<WebElement> hamburgerButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fab_mkdir")
-    private MobileElement createFolder;
+    private WebElement createFolder;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fab_upload")
-    private MobileElement uploadOption;
+    private WebElement uploadOption;
 
     @AndroidFindBy(id = "com.owncloud.android:id/upload_from_files_item_view")
-    private MobileElement uploadFiles;
+    private WebElement uploadFiles;
 
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar")
-    private List<MobileElement> toolbar;
+    private List<WebElement> toolbar;
 
-    @AndroidFindBy (id = "com.owncloud.android:id/bottom_nav_view")
-    MobileElement bottomBar;
+    @AndroidFindBy(id = "com.owncloud.android:id/bottom_nav_view")
+    WebElement bottomBar;
 
     @AndroidFindBy(id = "com.owncloud.android:id/list_root")
-    private MobileElement listFiles;
+    private WebElement listFiles;
 
     @AndroidFindBy(id = "com.owncloud.android:id/file_list_constraint_layout")
-    private MobileElement fileCell;
+    private WebElement fileCell;
 
     @AndroidFindBy(id = "com.owncloud.android:id/Filename")
-    private MobileElement fileName;
+    private WebElement fileName;
 
     @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_keep_both")
-    private MobileElement keepBoth;
+    private WebElement keepBoth;
 
     @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_replace")
-    private MobileElement replace;
+    private WebElement replace;
 
     @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_skip")
-    private MobileElement skip;
+    private WebElement skip;
 
     @AndroidFindBy(id = "com.owncloud.android:id/nav_shared_by_link_files")
-    private MobileElement linksShortcut;
+    private WebElement linksShortcut;
 
     @AndroidFindBy(id = "com.owncloud.android:id/nav_available_offline_files")
-    private MobileElement avOffShortcut;
+    private WebElement avOffShortcut;
 
-    @AndroidFindBy (id = "nav_spaces")
-    MobileElement spacesTab;
+    @AndroidFindBy(id = "nav_spaces")
+    WebElement spacesTab;
 
-    @AndroidFindBy (id = "nav_uploads")
-    MobileElement uploads;
+    @AndroidFindBy(id = "nav_uploads")
+    WebElement uploads;
 
-    @AndroidFindBy (id = "com.owncloud.android:id/list_empty_dataset_title")
-    MobileElement emptyMessage;
+    @AndroidFindBy(id = "com.owncloud.android:id/list_empty_dataset_title")
+    WebElement emptyMessage;
 
-    @AndroidFindBy (id = "com.owncloud.android:id/dialog_file_already_exists_title")
-    MobileElement conflictTitle;
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_title")
+    WebElement conflictTitle;
 
     public FileListPage() {
         super();
@@ -134,7 +132,7 @@ public class FileListPage extends CommonPage {
     public void pushFile(String itemName) {
         Log.log(Level.FINE, "Starts: push file: " + itemName);
         File rootPath = new File(System.getProperty("user.dir"));
-        File appDir = new File(rootPath,"src/test/resources");
+        File appDir = new File(rootPath, "src/test/resources");
         File app = new File(appDir, "io/cucumber/example-files/" + itemName);
         try {
             driver.pushFile("/sdcard/Download/" + itemName, app);
@@ -180,7 +178,7 @@ public class FileListPage extends CommonPage {
     public void selectItemList(String path) {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName = path.contains("/") ? browseToFile(path) : path;
-        MobileElement element = getElementFromFileList(fileName);
+        WebElement element = getElementFromFileList(fileName);
         waitByTextVisible(5, fileName);
         longPress(element);
     }
@@ -215,11 +213,11 @@ public class FileListPage extends CommonPage {
         avOffShortcut.click();
     }
 
-    public void openSpaces(){
+    public void openSpaces() {
         spacesTab.click();
     }
 
-    public void openUploadsView(){
+    public void openUploadsView() {
         uploads.click();
     }
 
@@ -231,8 +229,8 @@ public class FileListPage extends CommonPage {
     public boolean fileIsMarkedAsDownloaded(String path) {
         Log.log(Level.FINE, "Check if file is downloaded: " + path);
         selectItemList(path);
-        List<MobileElement> downloadOptions = findListId(downloadoption_id);
-        List<MobileElement> syncOptions = findListId(syncoption_id);
+        List<WebElement> downloadOptions = findListId(downloadoption_id);
+        List<WebElement> syncOptions = findListId(syncoption_id);
         return downloadOptions.isEmpty() && !syncOptions.isEmpty();
     }
 
@@ -248,7 +246,7 @@ public class FileListPage extends CommonPage {
         return findListId(unavofflineoption_id).isEmpty();
     }
 
-    private void openMenuActions(){
+    private void openMenuActions() {
         findUIAutomatorDescription("More options").click();
     }
 
@@ -258,20 +256,20 @@ public class FileListPage extends CommonPage {
         findUIAutomatorText(operationName).click();
     }
 
-    public boolean operationAvailable(String operationName){
+    public boolean operationAvailable(String operationName) {
         Log.log(Level.FINE, "Starts: Check if operation is available: " + operationName);
         openMenuActions();
         return !findListUIAutomatorText(operationName).isEmpty();
     }
 
-    public boolean conflictDisplayed(){
+    public boolean conflictDisplayed() {
         Log.log(Level.FINE, "Starts: Conflict displayed");
-        return  conflictTitle.isDisplayed();
+        return conflictTitle.isDisplayed();
     }
 
-    public void fixConflict(String option){
+    public void fixConflict(String option) {
         Log.log(Level.FINE, "Starts: Fix Conflict: " + option);
-        if (option.equals("replace")){
+        if (option.equals("replace")) {
             replace.click();
         } else {
             keepBoth.click();
@@ -296,7 +294,7 @@ public class FileListPage extends CommonPage {
                 .isEmpty();
     }
 
-    private MobileElement getElementFromFileList (String itemName) {
+    private WebElement getElementFromFileList(String itemName) {
         Log.log(Level.FINE, "Starts: searching item in list: " + itemName);
         if (isItemInList(itemName)) {
             Log.log(Level.FINE, "Item found: " + itemName);
@@ -317,17 +315,15 @@ public class FileListPage extends CommonPage {
         return linkToOpen2;
     }
 
-    private String getScheme(String originalURL){
+    private String getScheme(String originalURL) {
         return originalURL.split("://")[0];
     }
 
     public void openPrivateLink(String privateLink) throws MalformedURLException {
         Log.log(Level.FINE, "Starts: Open private link: " + privateLink);
-        driver.closeApp();
-        wait (5);
         driver.get(privateLink);
         //Let some time to load... did not found a reliable condition to avoid this ugly wait
-        wait (5);
+        wait(5);
     }
 
     public void openFakePrivateLink() {
@@ -337,7 +333,7 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Fake URL: " + fakeURL);
         driver.get(fakeURL);
         //Let some time to load... did not found a reliable condition to avoid this ugly wait
-        wait (5);
+        wait(5);
     }
 
     public boolean itemOpened(String itemType, String itemName) {

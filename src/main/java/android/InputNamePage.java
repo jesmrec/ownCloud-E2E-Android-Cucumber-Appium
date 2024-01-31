@@ -6,11 +6,11 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -18,10 +18,10 @@ import utils.log.Log;
 public class InputNamePage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/user_input")
-    private MobileElement newName;
+    private WebElement newName;
 
     @AndroidFindBy(id = "android:id/button1")
-    private MobileElement acceptButton;
+    private WebElement acceptButton;
 
     public InputNamePage() {
         super();

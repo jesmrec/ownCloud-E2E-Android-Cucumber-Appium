@@ -6,11 +6,11 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -20,10 +20,10 @@ import utils.log.Log;
 public class SearchShareePage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
-    private MobileElement shareeUserName;
+    private WebElement shareeUserName;
 
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    private MobileElement navigateUp;
+    private WebElement navigateUp;
 
     public SearchShareePage() {
         super();

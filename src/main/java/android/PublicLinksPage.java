@@ -6,12 +6,12 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.date.DateUtils;
@@ -20,40 +20,40 @@ import utils.log.Log;
 public class PublicLinksPage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkNameValue")
-    private MobileElement namePublicLink;
+    private WebElement namePublicLink;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkEditPermissionReadOnly")
-    private MobileElement downloadViewOption;
+    private WebElement downloadViewOption;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkEditPermissionReadAndWrite")
-    private MobileElement downloadViewUploadOption;
+    private WebElement downloadViewUploadOption;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkEditPermissionUploadFiles")
-    private MobileElement uploadOnlyOption;
+    private WebElement uploadOnlyOption;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkPasswordSwitch")
-    private List<MobileElement> passwordSwitch;
+    private List<WebElement> passwordSwitch;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkPasswordValue")
-    private MobileElement textPassword;
+    private WebElement textPassword;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkExpirationSwitch")
-    private MobileElement expirationSwitch;
+    private WebElement expirationSwitch;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkExpirationValue")
-    private MobileElement expirationDate;
+    private WebElement expirationDate;
 
     @AndroidFindBy(id = "android:id/button1")
-    private MobileElement okButton;
+    private WebElement okButton;
 
     @AndroidFindBy(id = "android:id/next")
-    private MobileElement nextButton;
+    private WebElement nextButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/cancelButton")
-    private MobileElement cancelButton;
+    private WebElement cancelButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/saveButton")
-    private MobileElement saveButton;
+    private WebElement saveButton;
 
     public PublicLinksPage() {
         super();

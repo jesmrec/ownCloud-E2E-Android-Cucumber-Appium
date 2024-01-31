@@ -2,7 +2,7 @@
  * ownCloud Android Scenario Tests
  *
  * @author Jesús Recio Rincón (@jesmrec)
-
+ * <p>
  * Last Appium review: v2.0.1
  * If posible, execute tests with such version
  */
@@ -15,21 +15,20 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 import java.util.logging.Level;
 
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 import utils.LocProperties;
 import utils.log.Log;
 
 public class AppiumManager {
 
-    private static AppiumManager appiumManager;
-    private static AndroidDriver driver;
     private static final String driverDefect = LocProperties.getProperties().getProperty("appiumURL");
     private static final String driverURL = System.getProperty("appium");
     private static final String device = System.getProperty("device");
+    private static AppiumManager appiumManager;
+    private static AndroidDriver driver;
     private static File app;
 
     private AppiumManager() {
@@ -47,17 +46,17 @@ public class AppiumManager {
 
         try {
             if (!driverURL.isEmpty()) {
-                Log.log(Level.FINE,"Appium driver located in: " + driverURL);
+                Log.log(Level.FINE, "Appium driver located in: " + driverURL);
                 driver = new AndroidDriver(new URL(driverURL), capabilities);
             } else {
-                Log.log(Level.FINE,"Appium driver located in: " + driverDefect);
+                Log.log(Level.FINE, "Appium driver located in: " + driverDefect);
                 driver = new AndroidDriver(new URL(driverDefect), capabilities);
             }
         } catch (MalformedURLException e) {
             Log.log(Level.SEVERE, "Driver could not be created: " + e.getMessage());
             e.printStackTrace();
         }
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
         Log.log(Level.FINE, "Device: " +
                 driver.getCapabilities().getCapability("deviceManufacturer") + " " +
@@ -80,20 +79,16 @@ public class AppiumManager {
         return appiumManager;
     }
 
-    public AndroidDriver getDriver() {
-        return driver;
-    }
-
     //Check https://appium.io/docs/en/writing-running-appium/caps/
-    private static void setCapabilities(DesiredCapabilities capabilities){
+    private static void setCapabilities(DesiredCapabilities capabilities) {
 
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "test");
-        capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+        capabilities.setCapability("appium:deviceName", "test");
+        capabilities.setCapability("appium:app", app.getAbsolutePath());
         capabilities.setCapability("appium:platformName", "Android");
         capabilities.setCapability("appium:automationName", "UIAutomator2");
-        capabilities.setCapability("appPackage",
+        capabilities.setCapability("appium:appPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
-        capabilities.setCapability("appActivity",
+        capabilities.setCapability("appium:appActivity",
                 "com.owncloud.android.ui.activity.SplashActivity");
         capabilities.setCapability("appWaitPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
@@ -106,6 +101,9 @@ public class AppiumManager {
         if (device != null) {
             capabilities.setCapability("udid", device);
         }
+    }
 
+    public AndroidDriver getDriver() {
+        return driver;
     }
 }

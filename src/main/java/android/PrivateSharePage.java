@@ -6,11 +6,11 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -23,23 +23,23 @@ public class PrivateSharePage extends CommonPage {
     private final String editboxId = "com.owncloud.android:id/canEditSwitch";
     private final String shareboxId = "com.owncloud.android:id/canShareSwitch";
 
-    @AndroidFindBy (id = createboxId)
-    private MobileElement create;
+    @AndroidFindBy(id = createboxId)
+    private WebElement create;
 
-    @AndroidFindBy (id = changeboxId)
-    private MobileElement change;
+    @AndroidFindBy(id = changeboxId)
+    private WebElement change;
 
-    @AndroidFindBy (id = deleteboxId)
-    private MobileElement delete;
+    @AndroidFindBy(id = deleteboxId)
+    private WebElement delete;
 
-    @AndroidFindBy (id = editboxId)
-    private MobileElement edit;
+    @AndroidFindBy(id = editboxId)
+    private WebElement edit;
 
-    @AndroidFindBy (id = shareboxId)
-    private MobileElement share;
+    @AndroidFindBy(id = shareboxId)
+    private WebElement share;
 
-    @AndroidFindBy (id = "com.owncloud.android:id/closeButton")
-    private MobileElement close;
+    @AndroidFindBy(id = "com.owncloud.android:id/closeButton")
+    private WebElement close;
 
     public PrivateSharePage() {
         super();

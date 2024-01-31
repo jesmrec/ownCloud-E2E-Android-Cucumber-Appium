@@ -6,11 +6,11 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -18,13 +18,13 @@ import utils.log.Log;
 public class RemoveDialogPage extends CommonPage {
 
     @AndroidFindBy(id = "android:id/button1")
-    private MobileElement buttonYes;
+    private WebElement buttonYes;
 
     @AndroidFindBy(id = "android:id/button2")
-    private MobileElement buttonLocal;
+    private WebElement buttonLocal;
 
     @AndroidFindBy(id = "android:id/button3")
-    private MobileElement buttonNo;
+    private WebElement buttonNo;
 
     public RemoveDialogPage() {
         super();

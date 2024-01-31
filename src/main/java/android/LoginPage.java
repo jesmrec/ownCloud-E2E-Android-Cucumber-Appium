@@ -6,12 +6,12 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -19,22 +19,22 @@ import utils.log.Log;
 public class LoginPage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/hostUrlInput")
-    private List<MobileElement> urlServer;
+    private List<WebElement> urlServer;
 
     @AndroidFindBy(id = "com.owncloud.android:id/embeddedCheckServerButton")
-    private MobileElement checkServerButton;
+    private WebElement checkServerButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/account_username")
-    private MobileElement userNameText;
+    private WebElement userNameText;
 
     @AndroidFindBy(id = "com.owncloud.android:id/account_password")
-    private MobileElement passwordText;
+    private WebElement passwordText;
 
     @AndroidFindBy(id = "com.owncloud.android:id/loginButton")
-    private MobileElement loginButton;
+    private WebElement loginButton;
 
     @AndroidFindBy(id = "ok")
-    private MobileElement acceptCertificate;
+    private WebElement acceptCertificate;
 
     //For the regular tests
     private final String server = System.getProperty("server");
@@ -66,8 +66,8 @@ public class LoginPage extends CommonPage {
         loginButton.click();
     }
 
-    public void acceptCertificate(){
-        if (!findListUIAutomatorText("YES").isEmpty()){
+    public void acceptCertificate() {
+        if (!findListUIAutomatorText("YES").isEmpty()) {
             findListUIAutomatorText("YES").get(0).click();
         }
     }

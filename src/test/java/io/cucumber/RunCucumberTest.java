@@ -15,6 +15,7 @@ import java.util.logging.Level;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import utils.LocProperties;
 import utils.log.Log;
 
 @RunWith(Cucumber.class)
@@ -31,7 +32,8 @@ public class RunCucumberTest {
     @AfterClass
     public static void afterclass() {
         //remove the oC app
-        AppiumManager.getManager().getDriver().removeApp("com.owncloud.android");
+        AppiumManager.getManager().getDriver().removeApp(
+                LocProperties.getProperties().getProperty("appPackage"));
         //remove Appium Settings
         AppiumManager.getManager().getDriver().removeApp("io.appium.settings");
         AppiumManager.getManager().getDriver().quit();

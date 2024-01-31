@@ -6,11 +6,11 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -18,20 +18,20 @@ import utils.log.Log;
 public class FolderPickerPage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/folder_picker_btn_choose")
-    private MobileElement chooseButton;
+    private WebElement chooseButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/folder_picker_btn_cancel")
-    private MobileElement cancelButton;
+    private WebElement cancelButton;
 
     @AndroidFindBy(id = "com.owncloud.android:id/view_type_selector")
-    private MobileElement createFolderButton;
+    private WebElement createFolderButton;
 
     public FolderPickerPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public void selectSpace(String spaceName){
+    public void selectSpace(String spaceName) {
         Log.log(Level.FINE, "Start: Select space from picker: " + spaceName);
         findUIAutomatorText(spaceName).click();
     }

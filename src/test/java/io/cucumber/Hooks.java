@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import utils.LocProperties;
 import utils.entities.OCFile;
 import utils.log.Log;
 
@@ -33,13 +34,15 @@ public class Hooks {
     @Before
     public void setup(Scenario scenario) {
         Log.log(Level.FINE, "START SCENARIO EXECUTION: " + scenario.getName());
-        AppiumManager.getManager().getDriver().launchApp();
+        AppiumManager.getManager().getDriver().activateApp(
+                LocProperties.getProperties().getProperty("appPackage"));
     }
 
     @After
     public void tearDown(Scenario scenario)
             throws IOException, ParserConfigurationException, SAXException {
-        AppiumManager.getManager().getDriver().closeApp();
+        AppiumManager.getManager().getDriver().terminateApp(
+                LocProperties.getProperties().getProperty("appPackage"));
         cleanUp();
         Log.log(Level.FINE, "END SCENARIO EXECUTION: " + scenario.getName() + "\n\n");
     }
@@ -47,7 +50,7 @@ public class Hooks {
     private void cleanUp()
             throws IOException, ParserConfigurationException, SAXException {
         //First, remove leftovers in root folder. Just keeping the skeleton items
-        /*ArrayList<OCFile> filesRoot = world.getFilesAPI().listItems("");
+        ArrayList<OCFile> filesRoot = world.getFilesAPI().listItems("");
         for (OCFile iterator: filesRoot) {
             Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
             world.getFilesAPI().removeItem(iterator.getName());
@@ -55,6 +58,6 @@ public class Hooks {
         world.getTrashbinAPI().emptyTrashbin();
         if (world.getAuthAPI().isOidc()){ //remove spaces
             world.getGraphAPI().removeSpacesOfUser();
-        }*/
+        }
     }
 }

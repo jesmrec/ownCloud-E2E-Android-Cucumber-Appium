@@ -6,6 +6,7 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.date.DateUtils;
@@ -23,37 +23,37 @@ import utils.log.Log;
 public class SharePage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/addUserButton")
-    private MobileElement addPrivateShare;
+    private WebElement addPrivateShare;
 
     @AndroidFindBy(id = "com.owncloud.android:id/addPublicLinkButton")
-    private MobileElement addPublicLink;
+    private WebElement addPublicLink;
 
     @AndroidFindBy(id = "com.owncloud.android:id/editShareButton")
-    private MobileElement editPrivateShare;
+    private WebElement editPrivateShare;
 
     @AndroidFindBy(id = "com.owncloud.android:id/editPublicLinkButton")
-    private MobileElement editPublicLink;
+    private WebElement editPublicLink;
 
     @AndroidFindBy(id = "com.owncloud.android:id/unshareButton")
-    private MobileElement removePrivateShare;
+    private WebElement removePrivateShare;
 
     @AndroidFindBy(id = "com.owncloud.android:id/deletePublicLinkButton")
-    private MobileElement removePublicLink;
+    private WebElement removePublicLink;
 
     @AndroidFindBy(id = "android:id/button1")
-    private MobileElement acceptDeletion;
+    private WebElement acceptDeletion;
 
     @AndroidFindBy(id = "android:id/button3")
-    private MobileElement cancelDeletion;
+    private WebElement cancelDeletion;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareNoUsers")
-    private MobileElement noPrivateShares;
+    private WebElement noPrivateShares;
 
     @AndroidFindBy(id = "com.owncloud.android:id/shareNoPublicLinks")
-    private MobileElement noPublicLinks;
+    private WebElement noPublicLinks;
 
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    private MobileElement close;
+    private WebElement close;
 
     public SharePage() {
         super();

@@ -10,6 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,12 +22,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileElement;
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
@@ -40,7 +41,7 @@ import utils.log.Log;
 public class CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/nav_all_files")
-    private MobileElement toRoot;
+    private WebElement toRoot;
 
     protected static AndroidDriver driver = AppiumManager.getManager().getDriver();
     protected static Actions actions;
@@ -52,91 +53,91 @@ public class CommonPage {
 
     /* Finders */
 
-    public MobileElement findId(String id){
-        return (MobileElement) driver.findElement(MobileBy.id(id));
+    public WebElement findId(String id) {
+        return (WebElement) driver.findElement(AppiumBy.id(id));
     }
 
-    public List<MobileElement> findListId(String id){
-        return (List<MobileElement>) driver.findElements(MobileBy.id(id));
+    public List<WebElement> findListId(String id) {
+        return (List<WebElement>) driver.findElements(AppiumBy.id(id));
     }
 
-    public MobileElement findXpath(String xpath){
-        return (MobileElement) driver.findElement(MobileBy.xpath(xpath));
+    public WebElement findXpath(String xpath) {
+        return (WebElement) driver.findElement(AppiumBy.xpath(xpath));
     }
 
-    public List<MobileElement> findListXpath(String xpath){
-        return (List<MobileElement>) driver.findElements(MobileBy.xpath(xpath));
+    public List<WebElement> findListXpath(String xpath) {
+        return (List<WebElement>) driver.findElements(AppiumBy.xpath(xpath));
     }
 
-    public MobileElement findUIAutomatorText(String text){
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+    public WebElement findUIAutomatorText(String text) {
+        return (WebElement) driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiSelector().textContains(\"" + text + "\");"));
     }
 
-    public MobileElement findUIAutomatorSubText(String text){
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+    public WebElement findUIAutomatorSubText(String text) {
+        return (WebElement) driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiSelector().textContains(\"" + text + "\");"));
     }
 
-    public MobileElement findUIAutomatorDescription(String description){
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
+    public WebElement findUIAutomatorDescription(String description) {
+        return (WebElement) driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiSelector().description(\"" + description + "\");"));
     }
 
-    public List<MobileElement> findListUIAutomatorText(String finder){
-        return (List<MobileElement>) driver.findElements(MobileBy.AndroidUIAutomator(
+    public List<WebElement> findListUIAutomatorText(String finder) {
+        return (List<WebElement>) driver.findElements(AppiumBy.androidUIAutomator(
                 "new UiSelector().textContains(\"" + finder + "\");"));
     }
 
-    public MobileElement findAccesibility(String id){
-        return (MobileElement) driver.findElement(new MobileBy.ByAccessibilityId(id));
+    public WebElement findAccesibility(String id) {
+        return (WebElement) driver.findElement(new AppiumBy.ByAccessibilityId(id));
     }
 
-    public List<MobileElement> findListAccesibility(String id){
-        return (List<MobileElement>) driver.findElements(new MobileBy.ByAccessibilityId(id));
+    public List<WebElement> findListAccesibility(String id) {
+        return (List<WebElement>) driver.findElements(new AppiumBy.ByAccessibilityId(id));
     }
 
     /* Waiters by different parameters */
 
     public static void waitByXpath(int timeToWait, String resourceXpath) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(MobileBy.xpath(resourceXpath)));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.xpath(resourceXpath)));
     }
 
     public static void waitById(int timeToWait, String resourceId) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(MobileBy.id(resourceId)));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.id(resourceId)));
     }
 
-    public static void waitById(int timeToWait, MobileElement mobileElement) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
+    public static void waitById(int timeToWait, WebElement mobileElement) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
         wait.until(ExpectedConditions.visibilityOf(mobileElement));
     }
 
     public static void waitByIdInvisible(int timeToWait, String resourceId) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(MobileBy.id(resourceId)));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(AppiumBy.id(resourceId)));
     }
 
-    public static void waitByIdInvisible(int timeToWait, MobileElement mobileElement) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
+    public static void waitByIdInvisible(int timeToWait, WebElement mobileElement) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
         wait.until(ExpectedConditions.invisibilityOf(mobileElement));
     }
 
     public static void waitByTextVisible(int timeToWait, String text) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
-        MobileElement mobileElement = (MobileElement)
-                driver.findElement(MobileBy.AndroidUIAutomator
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
+        WebElement mobileElement = (WebElement)
+                driver.findElement(AppiumBy.androidUIAutomator
                         ("new UiSelector().text(\"" + text + "\");"));
         wait.until(ExpectedConditions.textToBePresentInElement(mobileElement, text));
     }
 
     public void waitByTextInvisible(int timeToWait, String text) {
-        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
-        MobileElement mobileElement = (MobileElement)
-                driver.findElement(MobileBy.AndroidUIAutomator
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
+        WebElement mobileElement = (WebElement)
+                driver.findElement(AppiumBy.androidUIAutomator
                         ("new UiSelector().text(\"" + text + "\");"));
-        wait.until(ExpectedConditions.invisibilityOfElementWithText(MobileBy.AndroidUIAutomator(
+        wait.until(ExpectedConditions.invisibilityOfElementWithText(AppiumBy.androidUIAutomator(
                 "new UiSelector().textContains(\"Download enqueued\");"), "Download enqueued"));
     }
 
@@ -144,7 +145,7 @@ public class CommonPage {
     // scenario. Blocking the thread is not desirable and using it is not a good solution.
     public static void wait(int seconds) {
         try {
-            Thread.sleep(seconds*1000);
+            Thread.sleep(seconds * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -171,10 +172,10 @@ public class CommonPage {
                 .moveTo(PointOption.point(endX, endY)).release().perform();
     }
 
-    public static void longPress(MobileElement element) {
+    public static void longPress(WebElement element) {
         AndroidTouchAction touch = new AndroidTouchAction(driver);
         touch.longPress(LongPressOptions.longPressOptions()
-                        .withElement(ElementOption.element(element))).perform();
+                .withElement(ElementOption.element(element))).perform();
     }
 
     /* Browsing methods used in several pages */
@@ -199,13 +200,13 @@ public class CommonPage {
      * Receives: path to a folder. If path does not contain "/", folder is in root.
      * Otherwise browsing to.
      */
-    public void browseToFolder(String path){
+    public void browseToFolder(String path) {
         if (path.equals("/")) { //Go to Root
             browseRoot();
         } else if (path.contains("/")) { //browsing to the folder
             int i = 0;
             String[] route = path.split("/");
-            for (i = 0; i < route.length ; i++) {
+            for (i = 0; i < route.length; i++) {
                 Log.log(Level.FINE, "browsing to " + route[i]);
                 browseInto(route[i]);
             }
@@ -223,7 +224,7 @@ public class CommonPage {
         String[] route = path.split("/");
         int i = 0;
         if (route.length > 0) { //browse
-            for (i = 0; i < route.length -1 ; i++) {
+            for (i = 0; i < route.length - 1; i++) {
                 Log.log(Level.FINE, "browsing to " + route[i]);
                 browseInto(route[i]);
             }

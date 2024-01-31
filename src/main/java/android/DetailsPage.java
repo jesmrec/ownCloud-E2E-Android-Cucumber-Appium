@@ -6,12 +6,12 @@
 
 package android;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 import java.util.logging.Level;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -21,31 +21,31 @@ import utils.log.Log;
 public class DetailsPage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/lytName")
-    private MobileElement thumbnail;
+    private WebElement thumbnail;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fdFilename")
-    private MobileElement itemName;
+    private WebElement itemName;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fdType")
-    private MobileElement itemType;
+    private WebElement itemType;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fdSize")
-    private MobileElement itemSize;
+    private WebElement itemSize;
 
     @AndroidFindBy(id = "com.owncloud.android:id/fdProgressText")
-    private MobileElement downloading;
+    private WebElement downloading;
 
     @AndroidFindBy(id = "com.owncloud.android:id/text_preview")
-    private MobileElement textPreview;
+    private WebElement textPreview;
 
     @AndroidFindBy(id = "toolbar")
-    private List<MobileElement> toolbar;
+    private List<WebElement> toolbar;
 
     @AndroidFindBy(id = "android:id/contentPanel")
-    private MobileElement contentPanel;
+    private WebElement contentPanel;
 
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    private MobileElement navigateUp;
+    private WebElement navigateUp;
 
     public DetailsPage() {
         super();
@@ -84,15 +84,15 @@ public class DetailsPage extends CommonPage {
         }
     }
 
-    public void downloadFromThumbnail(){
+    public void downloadFromThumbnail() {
         thumbnail.click();
     }
 
-    public boolean textInFile(String text){
+    public boolean textInFile(String text) {
         return findUIAutomatorText(text).isDisplayed();
     }
 
-    public boolean shareSheetDisplayed(String itemName){
+    public boolean shareSheetDisplayed(String itemName) {
         return contentPanel.isDisplayed();
     }
 }
