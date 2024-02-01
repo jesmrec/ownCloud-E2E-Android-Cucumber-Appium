@@ -15,7 +15,7 @@ import utils.parser.DrivesJSONHandler;
 
 public class CommonAPI {
 
-    protected OkHttpClient httpClient =  oCHttpClient.getUnsafeOkHttpClient();
+    protected OkHttpClient httpClient = oCHttpClient.getUnsafeOkHttpClient();
 
     protected String urlServer = System.getProperty("server");
     protected String userAgent = LocProperties.getProperties().getProperty("userAgent");
@@ -57,16 +57,16 @@ public class CommonAPI {
         AuthAPI authAPI = new AuthAPI();
         //ftm, OIDC == oCIS. Bad.
         //if (authAPI.checkAuthMethod().equals("OIDC")){
-        if (authAPI.isOidc()){
+        if (authAPI.isOidc()) {
             space = getPersonalDrives(urlServer);
             davEndpoint = spacesEndpoint + space;
         } else {
-            davEndpoint = webdavEndpoint+"/"+user;
+            davEndpoint = webdavEndpoint + "/" + user;
         }
         Log.log(Level.FINE, "Endpoint: " + davEndpoint);
     }
 
-    public String getEndpoint(){
+    public String getEndpoint() {
         return davEndpoint;
     }
 
@@ -104,13 +104,13 @@ public class CommonAPI {
     }
 
     protected Request postRequest(String url, RequestBody body, String userName) {
-        Log.log(Level.FINE, "Username: " + userName + " - url: " +url);
+        Log.log(Level.FINE, "Username: " + userName + " - url: " + url);
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("OCS-APIREQUEST", "true")
                 .addHeader("User-Agent", userAgent)
                 .addHeader("Authorization", "Basic " +
-                        Base64.getEncoder().encodeToString((userName+":a").getBytes()))
+                        Base64.getEncoder().encodeToString((userName + ":a").getBytes()))
                 .addHeader("Host", host)
                 .post(body)
                 .build();
@@ -149,7 +149,7 @@ public class CommonAPI {
                 .addHeader("OCS-APIREQUEST", "true")
                 .addHeader("User-Agent", userAgent)
                 .addHeader("Authorization", "Basic " +
-                        Base64.getEncoder().encodeToString((userName+":a").getBytes()))
+                        Base64.getEncoder().encodeToString((userName + ":a").getBytes()))
                 .addHeader("Host", host)
                 .get()
                 .build();
@@ -178,7 +178,7 @@ public class CommonAPI {
 
     private String getSharesDrives(String url)
             throws IOException {
-        Log.log(Level.FINE, "Starts: GET personal drives: " + url );
+        Log.log(Level.FINE, "Starts: GET personal drives: " + url);
         Request request = getRequest(url + graphDrivesEndpoint, user);
         Response response = httpClient.newCall(request).execute();
         String body = response.body().string();
@@ -198,7 +198,7 @@ public class CommonAPI {
         return spaceId;
     }
 
-    private String credentialsBuilder (String userName) {
-        return Base64.getEncoder().encodeToString((userName.toLowerCase()+":"+password).getBytes());
+    private String credentialsBuilder(String userName) {
+        return Base64.getEncoder().encodeToString((userName.toLowerCase() + ":" + password).getBytes());
     }
 }

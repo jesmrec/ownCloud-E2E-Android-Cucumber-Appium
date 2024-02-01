@@ -67,6 +67,7 @@ Feature: Set items as available offline (downloaded and synced)
           | file   | avoff4.txt   |
         When Alice selects to set as av.offline the item avoff4.txt
         And file avoff4.txt is modified externally adding "updated"
+        And Alice selects to Download the item avoff4.txt
         Then Alice should see the file avoff4.txt with "updated"
 
     @unsetavoffline

@@ -31,4 +31,5 @@ Feature: Download a file in the account
     And Alice selects to Download the item downloadMe3.txt
     When Alice closes the preview
     And file downloadMe3.txt is modified externally adding "updated"
+    And Alice selects to Download the item downloadMe3.txt
     Then Alice should see the file downloadMe3.txt with "updated"

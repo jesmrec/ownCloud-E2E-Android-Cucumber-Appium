@@ -44,7 +44,7 @@ Feature: Public Links
           | folder | Links3     | link3 | aa55AA.. |
           | file   | Links4.txt | link4 | aa55AA.. |
 
-  @nooc10
+      @nooc10
       Scenario Outline: Create a public link with expiration date
         Given the following items have been created in the account
           | <type>   | <item>  |

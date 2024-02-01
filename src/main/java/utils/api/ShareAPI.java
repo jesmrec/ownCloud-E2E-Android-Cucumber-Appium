@@ -25,9 +25,7 @@ public class ShareAPI extends CommonAPI {
 
     private String sharingEndpoint = "/ocs/v1.php/apps/files_sharing/api/v1/shares";
     private String pendingEndpoint = "/pending";
-    private final String owner = LocProperties.getProperties().getProperty("userName1");
     private final String shareeU = LocProperties.getProperties().getProperty("userToShare");
-    private final String shareeG = LocProperties.getProperties().getProperty("groupToShare");
     private AuthAPI authAPI = new AuthAPI();
 
     public ShareAPI() throws IOException {
@@ -41,7 +39,8 @@ public class ShareAPI extends CommonAPI {
         Log.log(Level.FINE, "Starts: Create Share - " + sharingUser + " " + sharee + " "
                 + itemPath + " " + type + " " + " " + password + " " + permissions);
         Log.log(Level.FINE, "URL: " + url);
-        Request request = postRequest(url, createBodyShare(itemPath, sharee, type, permissions, name, password, sharelevel), sharingUser);
+        Request request = postRequest(url, createBodyShare(itemPath, sharee, type, permissions,
+                name, password, sharelevel), sharingUser);
         Response response = httpClient.newCall(request).execute();
         Log.log(Level.FINE, "Response Code: " + response.code());
         Log.log(Level.FINE, "Response Body: " + response.body().string());
@@ -71,7 +70,7 @@ public class ShareAPI extends CommonAPI {
         Response response = httpClient.newCall(request).execute();
         Log.log(Level.FINE, "Response code: " + response.code());
         ArrayList<OCShare> shares = getSharesFromRequest(response);
-        Log.log(Level.FINE, "Shares from user " + userName+ ": " + shares.size());
+        Log.log(Level.FINE, "Shares from user " + userName + ": " + shares.size());
         response.close();
         return shares;
     }
@@ -94,11 +93,12 @@ public class ShareAPI extends CommonAPI {
     public boolean isSharedWithMe(String itemName, String userName, boolean isGroup)
             throws IOException, ParserConfigurationException, SAXException {
         String url = urlServer + sharingEndpoint + "?shared_with_me=true";
-        Log.log(Level.FINE, "Starts: Request items shared with me - " + itemName + " " + userName);
+        Log.log(Level.FINE, "Starts: Request items shared with me - " + itemName + " "
+                + userName);
         Log.log(Level.FINE, "URL: " + url);
         Request request;
         //if it is a group, we use a predefined sharee inside the group (user2)
-        if (isGroup){
+        if (isGroup) {
             request = getRequest(url, shareeU);
         } else {
             request = getRequest(url, userName);
@@ -108,9 +108,10 @@ public class ShareAPI extends CommonAPI {
         ArrayList<OCShare> myShares = getSharesFromRequest(response);
         Log.log(Level.FINE, myShares.size() + " shares found");
         response.close();
-        for (OCShare share: myShares) {
-            Log.log(Level.FINE, "ItemName: " + itemName + " ShareName: " + share.getItemName());
-            if (share.getItemName().contains(itemName)){ //Current item found
+        for (OCShare share : myShares) {
+            Log.log(Level.FINE, "ItemName: " + itemName + " ShareName: "
+                    + share.getItemName());
+            if (share.getItemName().contains(itemName)) { //Current item found
                 return share.getShareeName().equalsIgnoreCase(userName);
             }
         }
@@ -128,14 +129,14 @@ public class ShareAPI extends CommonAPI {
 
     public void acceptAllShares(String type, String userName)
             throws IOException, ParserConfigurationException, SAXException {
-        Log.log(Level.FINE, "ACCEPT ALL SHARES FROM "+ type + " - " + userName);
+        Log.log(Level.FINE, "ACCEPT ALL SHARES FROM " + type + " - " + userName);
         String userToShare = userName;
-        if (type.equals("group")){
+        if (type.equals("group")) {
             userToShare = "bob"; //Using Bob as default user inside group to test.
         }
         Log.log(Level.FINE, "User to share: " + userToShare);
         ArrayList<OCShare> sharesToAccept = getSharesByUser(userToShare);
-        for (OCShare share: sharesToAccept) {
+        for (OCShare share : sharesToAccept) {
             String url = urlServer + sharingEndpoint + pendingEndpoint + "/" + share.getId();
             Log.log(Level.FINE, "URL: " + url);
             Request request = postRequest(url, acceptPendingShare(share.getId()), userToShare);
@@ -146,9 +147,11 @@ public class ShareAPI extends CommonAPI {
     }
 
     private RequestBody createBodyShare(String itemPath, String sharee, String type,
-                                        String permissions, String name, String password, int isReshare)
-                    throws IOException {
-        Log.log(Level.FINE, "BODY SHARE: path " + itemPath+ " sharee: " + sharee + " type: " + type + " permi: " + permissions + " name:" + name);
+                                        String permissions, String name, String password,
+                                        int isReshare)
+            throws IOException {
+        Log.log(Level.FINE, "BODY SHARE: path " + itemPath + " sharee: "
+                + sharee + " type: " + type + " permi: " + permissions + " name:" + name);
         FormBody.Builder body = new FormBody.Builder();
         if (isReshare == 1 && authAPI.isOidc()) {
             body.add("path", "/Shares/" + itemPath);

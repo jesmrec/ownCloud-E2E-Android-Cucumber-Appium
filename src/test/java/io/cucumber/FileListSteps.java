@@ -435,7 +435,6 @@ public class FileListSteps {
     public void user_should_see_the_file_with_text(String itemName, String text){
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().downloadAction(itemName);
         assertTrue(world.getDetailsPage().itemPreviewed() &&
                 world.getDetailsPage().textInFile(text));
     }

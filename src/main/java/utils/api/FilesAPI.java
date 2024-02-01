@@ -52,7 +52,7 @@ public class FilesAPI extends CommonAPI {
         Log.log(Level.FINE, "Starts: Request create file");
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),
-                "text Example");
+                "textExample");
         Request request = davRequest(url, "PUT", body, user);
         Response response = httpClient.newCall(request).execute();
         response.close();

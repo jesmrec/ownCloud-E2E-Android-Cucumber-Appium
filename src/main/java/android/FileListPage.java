@@ -12,7 +12,6 @@ import org.openqa.selenium.support.PageFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -280,13 +279,13 @@ public class FileListPage extends CommonPage {
         browseToFolder(path); // Mover a la carpeta
         String userName1 = LocProperties.getProperties().getProperty("userName1");
         return listServer.stream().filter(
-            ocfile -> !ocfile.getName().equalsIgnoreCase(userName1) && ocfile.getName().length() <= 15)
-            .allMatch(ocfile -> {
-                while (!isItemInList(ocfile.getName()) && !endList(listServer.size())) {
-                    refreshList();
-                }
-                return isItemInList(ocfile.getName());
-            });
+                        ocfile -> !ocfile.getName().equalsIgnoreCase(userName1) && ocfile.getName().length() <= 15)
+                .allMatch(ocfile -> {
+                    while (!isItemInList(ocfile.getName()) && !endList(listServer.size())) {
+                        refreshList();
+                    }
+                    return isItemInList(ocfile.getName());
+                });
     }
 
     private boolean endList(int numberItems) {
@@ -309,31 +308,29 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Create private link: " + scheme + " " + linkOriginal);
         String originalScheme = getScheme(linkOriginal);
         Log.log(Level.FINE, "Original scheme: " + originalScheme);
-        String linkToOpen = linkOriginal.replace(originalScheme, scheme);
-        String linkToOpen2 = linkToOpen.replace("%21", "!");
-        Log.log(Level.FINE, "Link to open: " + linkToOpen + " " + linkToOpen2);
-        return linkToOpen2;
+        String linkToOpen = linkOriginal.replace(originalScheme, scheme)
+                .replace("%21", "!");;
+        //String linkToOpen2 = linkToOpen.replace("%21", "!");
+        Log.log(Level.FINE, "Link to open: " + linkToOpen);
+        return linkToOpen;
     }
 
     private String getScheme(String originalURL) {
         return originalURL.split("://")[0];
     }
 
-    public void openPrivateLink(String privateLink) throws MalformedURLException {
+    public void openPrivateLink(String privateLink) {
         Log.log(Level.FINE, "Starts: Open private link: " + privateLink);
         driver.get(privateLink);
-        //Let some time to load... did not found a reliable condition to avoid this ugly wait
-        wait(5);
     }
 
     public void openFakePrivateLink() {
         Log.log(Level.FINE, "Starts: Open fake private link");
         String originalScheme = getScheme(System.getProperty("server"));
-        String fakeURL = System.getProperty("server").replace(originalScheme, "owncloud") + "/f/11111111111";
+        String fakeURL = System.getProperty("server").replace(originalScheme, "owncloud")
+                + "/f/11111111111";
         Log.log(Level.FINE, "Fake URL: " + fakeURL);
         driver.get(fakeURL);
-        //Let some time to load... did not found a reliable condition to avoid this ugly wait
-        wait(5);
     }
 
     public boolean itemOpened(String itemType, String itemName) {
