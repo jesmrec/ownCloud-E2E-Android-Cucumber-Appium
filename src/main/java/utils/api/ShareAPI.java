@@ -75,20 +75,26 @@ public class ShareAPI extends CommonAPI {
         return shares;
     }
 
-    //To get shares from Alice. Needed for public links
-    public ArrayList<OCShare> getSharesByDefault()
+    public ArrayList<OCShare> getLinksByDefault()
             throws IOException, SAXException, ParserConfigurationException {
         String url = urlServer + sharingEndpoint + "?state=all&shared_with_me=true";
-        Log.log(Level.FINE, "Starts: Request Shares by user - Alice");
+        Log.log(Level.FINE, "Starts: Request Links by user - Alice");
         Log.log(Level.FINE, "URL: " + url);
         Request request = getRequest(url, "alice");
         Response response = httpClient.newCall(request).execute();
         Log.log(Level.FINE, "Response code: " + response.code());
         ArrayList<OCShare> shares = getSharesFromRequest(response);
-        Log.log(Level.FINE, "Shares from user Alice: " + shares.size());
+        ArrayList<OCShare> linksInShares = new ArrayList<>();
+        for (OCShare linkInShare : shares) {
+            if (linkInShare.getType().equals("3")) {
+                linksInShares.add(linkInShare);
+            }
+        }
+        Log.log(Level.FINE, "Links from user Alice: " + linksInShares.size());
         response.close();
-        return shares;
+        return linksInShares;
     }
+
 
     public boolean isSharedWithMe(String itemName, String userName, boolean isGroup)
             throws IOException, ParserConfigurationException, SAXException {
