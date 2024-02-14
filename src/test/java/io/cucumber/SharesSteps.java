@@ -230,7 +230,7 @@ public class SharesSteps {
     @Then("{usertype} {word} should have access to {word}")
     public void sharee_should_not_have_access_the_item(String type, String shareeName, String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (type.equalsIgnoreCase("user")) {
             assertTrue(world.getShareAPI().isSharedWithMe(itemName, shareeName, false));

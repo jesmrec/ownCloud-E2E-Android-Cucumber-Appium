@@ -110,7 +110,6 @@ public class ShareAPI extends CommonAPI {
             request = getRequest(url, userName);
         }
         Response response = httpClient.newCall(request).execute();
-        //OCShare share = getId(response);
         ArrayList<OCShare> myShares = getSharesFromRequest(response);
         Log.log(Level.FINE, myShares.size() + " shares found");
         response.close();

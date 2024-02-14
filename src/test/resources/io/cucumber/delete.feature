@@ -11,12 +11,12 @@ Feature: Delete item
   @smoke
   Scenario Outline: Delete an existent item
     Given the following items have been created in the account
-      | <type>   | <name>  |
+      | <type> | <name> |
     When Alice selects to Remove the <type> <name>
     And Alice accepts the deletion
     Then Alice should not see <name> in the filelist anymore
 
     Examples:
-      | type     |  name            |
-      | folder   |  Deletefolder    |
-      | file     |  Deletefile.txt  |
+      | type   | name           |
+      | folder | Deletefolder   |
+      | file   | Deletefile.txt |

@@ -10,7 +10,7 @@ Feature: Rename an item
   @smoke
   Scenario Outline: Rename an item
     Given the following items have been created in the account
-      | <type>   |  <name>  |
+      | <type> | <name> |
     When Alice selects to Rename the <type> <name>
     And Alice sets <newName> as new name
     Then Alice should see <newName> in the filelist
