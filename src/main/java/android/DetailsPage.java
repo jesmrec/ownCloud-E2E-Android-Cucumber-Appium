@@ -38,6 +38,18 @@ public class DetailsPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/text_preview")
     private WebElement textPreview;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/visual_area")
+    private WebElement visualArea;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/media_controller")
+    private WebElement mediaControls;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/photo_view")
+    private WebElement photoPreview;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/video_player")
+    private WebElement videoPreview;
+
     @AndroidFindBy(id = "toolbar")
     private List<WebElement> toolbar;
 
@@ -76,6 +88,24 @@ public class DetailsPage extends CommonPage {
 
     public boolean itemPreviewed() {
         return textPreview.isDisplayed();
+    }
+
+    public boolean imagePreviewed() {
+        return photoPreview.isDisplayed();
+    }
+
+    public boolean audioPreviewed() {
+        boolean isArtDisplayed = visualArea.isDisplayed();
+        boolean areControlsDisplayed = mediaControls.isDisplayed();
+        return isArtDisplayed && areControlsDisplayed;
+    }
+
+    public boolean videoPreviewed() {
+        return videoPreview.isDisplayed();
+    }
+
+    public void displayControls() {
+        photoPreview.click();
     }
 
     public void removeShareSheet() {

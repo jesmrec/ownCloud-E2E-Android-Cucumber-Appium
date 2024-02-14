@@ -3,6 +3,7 @@ package utils.api;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -53,6 +54,48 @@ public class FilesAPI extends CommonAPI {
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),
                 "textExample");
+        Request request = davRequest(url, "PUT", body, user);
+        Response response = httpClient.newCall(request).execute();
+        response.close();
+    }
+
+    public void pushPic(String itemName)
+            throws IOException {
+        String url = urlServer + getEndpoint() + "/" + itemName + "/";
+        File rootPath = new File(System.getProperty("user.dir"));
+        Log.log(Level.FINE, "Starts: Request create file");
+        Log.log(Level.FINE, "URL: " + url);
+        File appDir = new File(rootPath, "src/test/resources");
+        File image = new File(appDir, "io/cucumber/example-files/" + itemName);
+        RequestBody body = RequestBody.create(MediaType.parse("image/jpg"), image);
+        Request request = davRequest(url, "PUT", body, user);
+        Response response = httpClient.newCall(request).execute();
+        response.close();
+    }
+
+    public void pushMusic(String itemName)
+            throws IOException {
+        String url = urlServer + getEndpoint() + "/" + itemName + "/";
+        File rootPath = new File(System.getProperty("user.dir"));
+        Log.log(Level.FINE, "Starts: Request create file");
+        Log.log(Level.FINE, "URL: " + url);
+        File appDir = new File(rootPath, "src/test/resources");
+        File image = new File(appDir, "io/cucumber/example-files/" + itemName);
+        RequestBody body = RequestBody.create(MediaType.parse("audio/mpeg3"), image);
+        Request request = davRequest(url, "PUT", body, user);
+        Response response = httpClient.newCall(request).execute();
+        response.close();
+    }
+
+    public void pushVideo(String itemName)
+            throws IOException {
+        String url = urlServer + getEndpoint() + "/" + itemName + "/";
+        File rootPath = new File(System.getProperty("user.dir"));
+        Log.log(Level.FINE, "Starts: Request create file");
+        Log.log(Level.FINE, "URL: " + url);
+        File appDir = new File(rootPath, "src/test/resources");
+        File image = new File(appDir, "io/cucumber/example-files/" + itemName);
+        RequestBody body = RequestBody.create(MediaType.parse("video/mp4"), image);
         Request request = davRequest(url, "PUT", body, user);
         Response response = httpClient.newCall(request).execute();
         response.close();

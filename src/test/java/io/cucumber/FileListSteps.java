@@ -57,6 +57,12 @@ public class FileListSteps {
                     world.getFilesAPI().createFolder(name);
                 } else if (type.equalsIgnoreCase("file")) {
                     world.getFilesAPI().pushFile(name);
+                } else if (type.equalsIgnoreCase("image")) {
+                    world.getFilesAPI().pushPic(name);
+                } else if (type.equalsIgnoreCase("audio")) {
+                    world.getFilesAPI().pushMusic(name);
+                } else if (type.equalsIgnoreCase("video")) {
+                    world.getFilesAPI().pushVideo(name);
                 }
             }
         }
@@ -404,9 +410,34 @@ public class FileListSteps {
 
     @Then("the item {word} should be opened and previewed")
     public void item_should_be_opened_and_previewed(String itemName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         assertTrue(world.getDetailsPage().itemPreviewed());
+        world.getDetailsPage().backListFiles();
+    }
+
+    @Then("the image {word} should be opened and previewed")
+    public void image_should_be_opened_and_previewed(String itemName) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.getDetailsPage().imagePreviewed());
+        world.getDetailsPage().displayControls();
+        world.getDetailsPage().backListFiles();
+    }
+
+    @Then("the audio {word} should be opened and previewed")
+    public void audio_should_be_opened_and_previewed(String itemName) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.getDetailsPage().audioPreviewed());
+        world.getDetailsPage().backListFiles();
+    }
+
+    @Then("the video {word} should be opened and previewed")
+    public void video_should_be_opened_and_previewed(String itemName) {
+        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.getDetailsPage().videoPreviewed());
         world.getDetailsPage().backListFiles();
     }
 
