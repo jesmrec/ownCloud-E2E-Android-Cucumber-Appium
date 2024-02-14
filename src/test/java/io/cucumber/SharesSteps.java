@@ -216,7 +216,7 @@ public class SharesSteps {
         }
         //Asserts in server via API
         OCShare share = world.getShareAPI().getShare(itemName);
-        assertTrue(world.getSharePage().checkCorrectShare(share, listItems));
+        assertTrue(world.getSharePage().isShareCorrect(share, listItems));
     }
 
     @Then("{word} should not have access to {word}")

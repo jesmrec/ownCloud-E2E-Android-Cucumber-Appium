@@ -99,7 +99,7 @@ public class PublicLinksPage extends CommonPage {
         uploadOnlyOption.click();
     }
 
-    public boolean checkPermissions(String permissions) {
+    public boolean arePermissionsCorrect(String permissions) {
         Log.log(Level.FINE, "Starts: Check permissions: " + permissions);
         switch (permissions) {
             case ("1"): {
@@ -160,7 +160,7 @@ public class PublicLinksPage extends CommonPage {
         okButton.click();
     }
 
-    public boolean checkExpiration(String days) {
+    public boolean isExpirationCorrect(String days) {
         Log.log(Level.FINE, "Starts: Check expiration in days: " + days);
         boolean switchEnabled;
         boolean dateCorrect = false;

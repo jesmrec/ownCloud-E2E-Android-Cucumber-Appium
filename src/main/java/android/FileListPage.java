@@ -224,7 +224,7 @@ public class FileListPage extends CommonPage {
         closeSelectionMode.click();
     }
 
-    public boolean fileIsMarkedAsDownloaded(String path) {
+    public boolean isFileMarkedAsDownloaded(String path) {
         Log.log(Level.FINE, "Check if file is downloaded: " + path);
         selectItemList(path);
         List<WebElement> downloadOptions = findListId(downloadoption_id);
@@ -232,13 +232,13 @@ public class FileListPage extends CommonPage {
         return downloadOptions.isEmpty() && !syncOptions.isEmpty();
     }
 
-    public boolean itemIsMarkedAsAvOffline(String path) {
+    public boolean isItemMarkedAsAvOffline(String path) {
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(avofflineoption_id).isEmpty();
     }
 
-    public boolean itemIsMarkedAsUnAvOffline(String path) {
+    public boolean isItemMarkedAsUnAvOffline(String path) {
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(unavofflineoption_id).isEmpty();
@@ -254,13 +254,13 @@ public class FileListPage extends CommonPage {
         findUIAutomatorText(operationName).click();
     }
 
-    public boolean operationAvailable(String operationName) {
+    public boolean isOperationAvailable(String operationName) {
         Log.log(Level.FINE, "Starts: Check if operation is available: " + operationName);
         openMenuActions();
         return !findListUIAutomatorText(operationName).isEmpty();
     }
 
-    public boolean conflictDisplayed() {
+    public boolean isConflictDisplayed() {
         Log.log(Level.FINE, "Starts: Conflict displayed");
         return conflictTitle.isDisplayed();
     }
@@ -274,7 +274,7 @@ public class FileListPage extends CommonPage {
         }
     }
 
-    public boolean displayedList(String path, ArrayList<OCFile> listServer) {
+    public boolean isDisplayedListCorrect(String path, ArrayList<OCFile> listServer) {
         browseToFolder(path); // Mover a la carpeta
         String userName1 = LocProperties.getProperties().getProperty("userName1");
         return listServer.stream().filter(
@@ -332,7 +332,7 @@ public class FileListPage extends CommonPage {
         driver.get(fakeURL);
     }
 
-    public boolean itemOpened(String itemType, String itemName) {
+    public boolean isItemOpened(String itemType, String itemName) {
         Log.log(Level.FINE, "Starts: checking if item is opened: " + itemType + " " + itemName);
         if (itemType.equals("file")) {
             Log.log(Level.FINE, "Opening file");

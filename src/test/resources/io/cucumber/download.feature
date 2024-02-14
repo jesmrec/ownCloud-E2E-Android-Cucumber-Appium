@@ -9,26 +9,18 @@ Feature: Download a file in the account
     Given user Alice is logged
 
   @smoke
-  Scenario: Download a file that is previewable
+  Scenario Outline: Download a file that is previewable
     Given the following items have been created in the account
-      | file | downloadMe.txt |
-    When Alice selects to Download the item downloadMe.txt
-    Then the item downloadMe.txt should be opened and previewed
-    And the item downloadMe.txt should be marked as downloaded
+      | <type> | <name> |
+    When Alice selects to Download the item <name>
+    Then the <type> <name> should be opened and previewed
+    And the <type> <name> should be marked as downloaded
 
-  Scenario: Download a image that is previewable
-    Given the following items have been created in the account
+    Examples:
+      | type  | name      |
+      | file  | text1.txt |
       | image | blank.jpg |
-    When Alice selects to Download the item blank.jpg
-    Then the image blank.jpg should be opened and previewed
-    And the item blank.jpg should be marked as downloaded
-
-  Scenario: Download an audio that is previewable
-    Given the following items have been created in the account
       | audio | sound.mp3 |
-    When Alice selects to Download the item sound.mp3
-    Then the audio sound.mp3 should be opened and previewed
-    And the item sound.mp3 should be marked as downloaded
 
   Scenario: Download a video that is previewable
     Given the following items have been created in the account
@@ -38,18 +30,18 @@ Feature: Download a file in the account
 
   Scenario: Download a file from Details view
     Given the following items have been created in the account
-      | file | downloadMe2.txt |
-    When Alice selects to Details the item downloadMe2.txt
+      | file | text2.txt |
+    When Alice selects to Details the item text2.txt
     And Alice clicks on the thumbnail
-    Then the item downloadMe2.txt should be opened and previewed
-    And the item downloadMe2.txt should be marked as downloaded
+    Then the file text2.txt should be opened and previewed
+    And the file text2.txt should be marked as downloaded
 
   @smoke
   Scenario: Download an updated file
     Given the following items have been created in the account
-      | file | downloadMe3.txt |
-    And Alice selects to Download the item downloadMe3.txt
+      | file | text3.txt |
+    And Alice selects to Download the item text3.txt
     When Alice closes the preview
-    And file downloadMe3.txt is modified externally adding "updated"
-    And Alice selects to Download the item downloadMe3.txt
-    Then Alice should see the file downloadMe3.txt with "updated"
+    And file text3.txt is modified externally adding "updated"
+    And Alice selects to Download the item text3.txt
+    Then Alice should see the file text3.txt with "updated"

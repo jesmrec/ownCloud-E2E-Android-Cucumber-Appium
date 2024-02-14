@@ -160,14 +160,14 @@ public class LinksSteps {
                 case "permission": {
                     Log.log(Level.FINE, "checking permissions: " + rows.get(1));
                     world.getSharePage().openPublicLink(itemName);
-                    assertTrue(world.getPublicLinksPage().checkPermissions(rows.get(1)));
+                    assertTrue(world.getPublicLinksPage().arePermissionsCorrect(rows.get(1)));
                     world.getPublicLinksPage().close();
                     break;
                 }
                 case "expiration days": {
                     Log.log(Level.FINE, "checking expirations day: " + rows.get(1));
                     world.getSharePage().openPublicLink(itemName);
-                    assertTrue(world.getPublicLinksPage().checkExpiration(rows.get(1)));
+                    assertTrue(world.getPublicLinksPage().isExpirationCorrect(rows.get(1)));
                     world.getPublicLinksPage().close();
                     break;
                 }
@@ -178,7 +178,7 @@ public class LinksSteps {
         //Asserts in server via API
         Log.log(Level.FINE, "Checking API/server asserts");
         OCShare share = world.getShareAPI().getShare(itemName);
-        assertTrue(world.getSharePage().checkCorrectShare(share, listItems));
+        assertTrue(world.getSharePage().isShareCorrect(share, listItems));
     }
 
     @Then("link on {word} should not exist anymore")

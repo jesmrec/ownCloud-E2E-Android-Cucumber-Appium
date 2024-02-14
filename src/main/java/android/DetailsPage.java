@@ -86,21 +86,21 @@ public class DetailsPage extends CommonPage {
         driver.pressKey(new KeyEvent(AndroidKey.BACK));
     }
 
-    public boolean itemPreviewed() {
+    public boolean isItemPreviewed() {
         return textPreview.isDisplayed();
     }
 
-    public boolean imagePreviewed() {
+    public boolean isImagePreviewed() {
         return photoPreview.isDisplayed();
     }
 
-    public boolean audioPreviewed() {
+    public boolean isAudioPreviewed() {
         boolean isArtDisplayed = visualArea.isDisplayed();
         boolean areControlsDisplayed = mediaControls.isDisplayed();
         return isArtDisplayed && areControlsDisplayed;
     }
 
-    public boolean videoPreviewed() {
+    public boolean isVideoPreviewed() {
         return videoPreview.isDisplayed();
     }
 
@@ -118,11 +118,11 @@ public class DetailsPage extends CommonPage {
         thumbnail.click();
     }
 
-    public boolean textInFile(String text) {
+    public boolean isTextInFile(String text) {
         return findUIAutomatorText(text).isDisplayed();
     }
 
-    public boolean shareSheetDisplayed(String itemName) {
+    public boolean isShareSheetDisplayed(String itemName) {
         return contentPanel.isDisplayed();
     }
 }

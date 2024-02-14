@@ -100,7 +100,7 @@ public class SharePage extends CommonPage {
         removePublicLink.click();
     }
 
-    public boolean checkCorrectShare(OCShare remoteShare, List<List<String>> dataList) {
+    public boolean isShareCorrect(OCShare remoteShare, List<List<String>> dataList) {
         Log.log(Level.FINE, "Starts: Check correct share");
         HashMap<String, String> mapFields = turnListToHashmap(dataList);
         if (remoteShare == null) {
