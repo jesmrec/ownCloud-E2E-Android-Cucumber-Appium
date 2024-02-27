@@ -135,15 +135,13 @@ public class PublicLinksPage extends CommonPage {
     }
 
     public boolean isPasswordEnabled() {
-        boolean switchEnabled;
+        boolean switchEnabled = true;
         boolean passVisible;
         if (!passwordSwitch.isEmpty()) {
             switchEnabled = parseIntBool(passwordSwitch.get(0).getAttribute("checked"));
-            passVisible = textPassword.isDisplayed();
-            return switchEnabled && passVisible;
-        } else { //password enforced, then enabled
-            return true;
         }
+        passVisible = textPassword.isDisplayed();
+        return switchEnabled && passVisible;
     }
 
     public void setExpiration(String days) {

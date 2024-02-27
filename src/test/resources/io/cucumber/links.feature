@@ -27,7 +27,6 @@ Feature: Public Links
       | folder | Links1     | link1 |
       | file   | Links2.txt | link2 |
 
-  @ignore
   Scenario Outline: Create a public link with password
     Given the following items have been created in the account
       | <type> | <item> |

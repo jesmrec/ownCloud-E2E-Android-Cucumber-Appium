@@ -86,24 +86,6 @@ public class DetailsPage extends CommonPage {
         driver.pressKey(new KeyEvent(AndroidKey.BACK));
     }
 
-    public boolean isItemPreviewed() {
-        return textPreview.isDisplayed();
-    }
-
-    public boolean isImagePreviewed() {
-        return photoPreview.isDisplayed();
-    }
-
-    public boolean isAudioPreviewed() {
-        boolean isArtDisplayed = visualArea.isDisplayed();
-        boolean areControlsDisplayed = mediaControls.isDisplayed();
-        return isArtDisplayed && areControlsDisplayed;
-    }
-
-    public boolean isVideoPreviewed() {
-        return videoPreview.isDisplayed();
-    }
-
     public void displayControls() {
         photoPreview.click();
     }
@@ -124,5 +106,23 @@ public class DetailsPage extends CommonPage {
 
     public boolean isShareSheetDisplayed(String itemName) {
         return contentPanel.isDisplayed();
+    }
+
+    public boolean isItemPreviewed() {
+        return textPreview.isDisplayed();
+    }
+
+    public boolean isImagePreviewed() {
+        return photoPreview.isDisplayed();
+    }
+
+    public boolean isAudioPreviewed() {
+        boolean isArtDisplayed = visualArea.isDisplayed();
+        boolean areControlsDisplayed = mediaControls.isDisplayed();
+        return isArtDisplayed && areControlsDisplayed;
+    }
+
+    public boolean isVideoPreviewed() {
+        return videoPreview.isDisplayed();
     }
 }
