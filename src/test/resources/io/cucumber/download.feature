@@ -28,6 +28,15 @@ Feature: Download a file in the account
     When Alice selects to Download the item video.mp4
     Then the video video.mp4 should be opened and previewed
 
+  Scenario: Markdown file rendered
+    Given the following items have been created in the account
+      | file | rendered.md |
+    When Alice selects to Download the item rendered.md
+    Then Alice should see the following items
+      | Markdown |
+      | Text     |
+    And the file rendered.md should be opened and previewed
+
   Scenario: Download a file from Details view
     Given the following items have been created in the account
       | file | text2.txt |

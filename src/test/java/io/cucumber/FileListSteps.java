@@ -407,6 +407,8 @@ public class FileListSteps {
     public void item_should_be_marked_as_downloaded(String type, String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
+        //We always reach this step from a preview... first browsing back
+        world.getDetailsPage().backListFiles();
         assertTrue(world.getFileListPage().isFileMarkedAsDownloaded(itemName));
     }
 
@@ -440,23 +442,19 @@ public class FileListSteps {
         switch (type) {
             case ("file"): {
                 assertTrue(world.getDetailsPage().isItemPreviewed());
-                world.getDetailsPage().backListFiles();
                 break;
             }
             case ("audio"): {
                 assertTrue(world.getDetailsPage().isAudioPreviewed());
-                world.getDetailsPage().backListFiles();
                 break;
             }
             case ("image"): {
                 assertTrue(world.getDetailsPage().isImagePreviewed());
                 world.getDetailsPage().displayControls();
-                world.getDetailsPage().backListFiles();
                 break;
             }
             case ("video"): {
                 assertTrue(world.getDetailsPage().isVideoPreviewed());
-                world.getDetailsPage().backListFiles();
                 break;
             }
         }
@@ -473,7 +471,7 @@ public class FileListSteps {
         assertTrue(world.getFileListPage().isDisplayedListCorrect(path, listServer));
     }
 
-    @Then("Alice should see the following error/message")
+    @Then("Alice should see the following error/message/item(s)")
     public void user_should_see_following_error(DataTable table) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
