@@ -22,10 +22,12 @@ public class UploadsPage extends CommonPage {
 
     public boolean isFileUploaded(String fileName) {
         boolean fileInList = !findUIAutomatorText(fileName).isDisplayed();
-        boolean uploadedListVisible = !findUIAutomatorText("UPLOADED").isDisplayed();
+        boolean uploadedListVisible = findUIAutomatorText("UPLOADED").isDisplayed();
         boolean failedListNotVisible = findListUIAutomatorText("FAILED").isEmpty();
+        boolean enqueuedListNotVisible = findListUIAutomatorText("ENQUEUED").isEmpty();
         boolean oneFileUploaded = !findUIAutomatorText("1 FILE").isDisplayed();
-        return fileInList && uploadedListVisible && failedListNotVisible && oneFileUploaded;
+        return fileInList && uploadedListVisible && failedListNotVisible
+                && enqueuedListNotVisible && oneFileUploaded;
     }
 
 }

@@ -1,4 +1,4 @@
-@upload @ignore
+@upload
 Feature: Upload new content
 
   As a user
@@ -34,4 +34,4 @@ Feature: Upload new content
 
       Examples:
         | name      | target  | path              | status   |
-        | land1.jpg | upload1 | upload1/land1.jpg | uploaded |
+        | blank.jpg | upload1 | upload1/blank.jpg | uploaded |
