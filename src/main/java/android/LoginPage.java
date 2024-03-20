@@ -33,13 +33,13 @@ public class LoginPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/loginButton")
     private WebElement loginButton;
 
-    @AndroidFindBy(id = "ok")
+    @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"YES\");")
     private WebElement acceptCertificate;
 
-    //For the regular tests
-    private final String server = System.getProperty("server");
+    @AndroidFindBy(id = "android:id/button1")
+    private WebElement acceptHttp;
 
-    private final String errorcredentialstext_xpath = "//*[@text='Wrong username or password']";
+    private final String server = System.getProperty("server");
 
     public LoginPage() {
         super();
@@ -55,20 +55,24 @@ public class LoginPage extends CommonPage {
     public void typeCredentials(String username, String password) {
         Log.log(Level.FINE, "Starts: Type credentials: username: "
                 + username + " - password: " + password);
-        acceptCertificate();
+        acceptWarning();
         userNameText.sendKeys(username);
         passwordText.sendKeys(password);
     }
 
     public void submitLogin() {
         Log.log(Level.FINE, "Starts: Submit login");
-        acceptCertificate();
         loginButton.click();
     }
 
-    public void acceptCertificate() {
-        if (!findListUIAutomatorText("YES").isEmpty()) {
-            findListUIAutomatorText("YES").get(0).click();
+    public void acceptWarning() {
+        Log.log(Level.FINE, "Accept warning");
+        String prefix = server.split("://")[0];
+        Log.log(Level.FINE, "Prefix: " + prefix);
+        if (prefix.equals("https")) {
+            acceptCertificate.click();
+        } else { //http
+            acceptHttp.click();
         }
     }
 }
