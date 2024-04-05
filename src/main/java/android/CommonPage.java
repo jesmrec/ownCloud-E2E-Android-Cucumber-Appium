@@ -6,12 +6,17 @@
 
 package android;
 
+import com.google.common.collect.ImmutableList;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,19 +28,15 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
-import io.appium.java_client.android.AndroidTouchAction;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import io.appium.java_client.touch.LongPressOptions;
-import io.appium.java_client.touch.offset.ElementOption;
-import io.appium.java_client.touch.offset.PointOption;
 import utils.log.Log;
 
 public class CommonPage {
@@ -167,15 +168,29 @@ public class CommonPage {
         int endY = (int) (size.height * endy);
         int startX = (int) (size.width * startx);
         int endX = (int) (size.height * endx);
-        TouchAction ts = new TouchAction(driver);
-        ts.press(PointOption.point(startX, startY))
-                .moveTo(PointOption.point(endX, endY)).release().perform();
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 1);
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(0),
+                PointerInput.Origin.viewport(), startX, startY));
+        swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(700),
+                PointerInput.Origin.viewport(), endX, endY));
+        swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Arrays.asList(swipe));
     }
 
     public static void longPress(WebElement element) {
-        AndroidTouchAction touch = new AndroidTouchAction(driver);
-        touch.longPress(LongPressOptions.longPressOptions()
-                .withElement(ElementOption.element(element))).perform();
+        Point location = element.getLocation();
+        PointerInput pointerInput = new PointerInput(PointerInput.Kind.TOUCH, "longp");
+        Sequence longPress = new Sequence(pointerInput, 0);
+        longPress.addAction(pointerInput.createPointerMove(Duration.ZERO,
+                PointerInput.Origin.viewport(), location.x, location.y));
+        longPress.addAction(pointerInput.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        longPress.addAction(pointerInput.createPointerMove(Duration.ofSeconds(1),
+                PointerInput.Origin.viewport(), location.x, location.y));
+        longPress.addAction(pointerInput.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(ImmutableList.of(longPress));
+
     }
 
     /* Browsing methods used in several pages */

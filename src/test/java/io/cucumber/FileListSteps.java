@@ -107,7 +107,6 @@ public class FileListSteps {
     public void user_selects_to_set_as_avoffline_item(String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().waitToload(itemName);
         world.getFileListPage().executeOperation("Set as available offline", itemName);
         world.getFileListPage().closeSelectionMode();
     }

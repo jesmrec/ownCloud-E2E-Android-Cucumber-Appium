@@ -17,8 +17,8 @@ Feature: Public Links
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice creates link on <type> <item> with the following fields
-      | name     | <name>   |
-      | password | aa55AA.. |
+      | name          | <name> |
+      | password-auto |        |
     Then link should be created on <item> with the following fields
       | name | <name> |
 
@@ -27,7 +27,7 @@ Feature: Public Links
       | folder | Links1     | link1 |
       | file   | Links2.txt | link2 |
 
-  Scenario Outline: Create a public link with password
+  Scenario Outline: Create a public link with custom password
     Given the following items have been created in the account
       | <type> | <item> |
     When Alice selects to share the <type> <item>
@@ -43,6 +43,22 @@ Feature: Public Links
       | folder | Links3     | link3 | aa55AA.. |
       | file   | Links4.txt | link4 | aa55AA.. |
 
+  Scenario Outline: Create a public link with generated password
+    Given the following items have been created in the account
+      | <type> | <item> |
+    When Alice selects to share the <type> <item>
+    And Alice creates link on <type> <item> with the following fields
+      | name          | <name> |
+      | password-auto |        |
+    Then link should be created on <item> with the following fields
+      | name          | <name> |
+      | password-auto |        |
+
+    Examples:
+      | type   | item       | name  |
+      | folder | Links5     | link5 |
+      | file   | Links6.txt | link6 |
+
   @nooc10
   Scenario Outline: Create a public link with expiration date
     Given the following items have been created in the account
@@ -51,33 +67,33 @@ Feature: Public Links
     And Alice creates link on <type> <item> with the following fields
       | name            | <name>       |
       | expiration days | <expiration> |
-      | password        | aa55AA..     |
+      | password-auto   |              |
     Then link should be created on <item> with the following fields
       | name            | <name>       |
       | expiration days | <expiration> |
 
     Examples:
       | type   | item       | name  | expiration |
-      | folder | Links5     | link5 | 7          |
-      | file   | Links6.txt | link6 | 17         |
+      | folder | Links7     | link7 | 7          |
+      | file   | Links8.txt | link8 | 17         |
 
   Scenario Outline: Create a public link with permissions on a folder
     Given the following items have been created in the account
       | folder | <item> |
     When Alice selects to share the folder <item>
     And Alice creates link on folder <item> with the following fields
-      | name       | <name>        |
-      | permission | <permissions> |
-      | password   | aa55AA..      |
+      | name          | <name>        |
+      | permission    | <permissions> |
+      | password-auto |               |
     Then link should be created on <item> with the following fields
       | name       | <name>        |
       | permission | <permissions> |
 
     Examples:
-      | item   | name  | permissions | description
-      | Links7 | link7 | 15          | Download / View / Upload
-      | Links8 | link8 | 4           | Upload Only (File drop)
-      | Links9 | link9 | 1           | Download / View
+      | item   | name   | permissions | description
+      | Links7 | link9  | 15          | Download / View / Upload
+      | Links8 | link10 | 4           | Upload Only (File drop)
+      | Links9 | link11 | 1           | Download / View
 
 
   @editlink
@@ -98,22 +114,22 @@ Feature: Public Links
 
     Examples:
       | item    | name   | permissions | description
-      | Links10 | link10 | 15          | Download / View / Upload
-      | Links11 | link11 | 4           | Upload Only (File drop)
-      | Links12 | link12 | 1           | Download / View
+      | Links10 | link12 | 15          | Download / View / Upload
+      | Links11 | link13 | 4           | Upload Only (File drop)
+      | Links12 | link14 | 1           | Download / View
 
   @nooc10 @ignore
   Scenario: Edit existing share on a folder, adding password and expiration
     Given the following items have been created in the account
-      | folder | Links13 |
-    And Alice has shared the folder Links13 by link
-    When Alice selects to share the folder Links13
-    And Alice edits the link on Links13 with the following fields
-      | password        | aa55AA.. |
-      | expiration days | 1        |
-    Then link should be created on Links13 with the following fields
-      | password        | aa55AA.. |
-      | expiration days | 1        |
+      | folder | Links15 |
+    And Alice has shared the folder Links15 by link
+    When Alice selects to share the folder Links15
+    And Alice edits the link on Links15 with the following fields
+      | password-auto   |   |
+      | expiration days | 1 |
+    Then link should be created on Links15 with the following fields
+      | password-auto   |   |
+      | expiration days | 1 |
 
 
   @deletelink
@@ -129,35 +145,35 @@ Feature: Public Links
 
     Examples:
       | type   | item        |
-      | folder | Links14     |
-      | file   | Links15.txt |
+      | folder | Links16     |
+      | file   | Links17.txt |
 
   @linkshortcut @noocis
   Rule: Public link Shortcut
 
   Scenario: Public link shortcut shows correct links
     Given the following items have been created in the account
-      | file   | Links16.txt |
-      | file   | Links17.txt |
-      | folder | Links18     |
-      | folder | Links19     |
-    And Alice has shared the file Links16.txt by link
-    And Alice has shared the folder Links18 by link
+      | file   | Links18.txt |
+      | file   | Links19.txt |
+      | folder | Links20     |
+      | folder | Links21     |
+    And Alice has shared the file Links18.txt by link
+    And Alice has shared the folder Links20 by link
     When Alice opens the public link shortcut
-    Then Alice should see Links16.txt in the list
-    And Alice should see Links18 in the list
-    But Alice should not see Links17.txt in the links list
-    And Alice should not see Links19 in the links list
+    Then Alice should see Links18.txt in the list
+    And Alice should see Links20 in the list
+    But Alice should not see Links19.txt in the links list
+    And Alice should not see Links21 in the links list
 
   Scenario: Remove from available offline shortcut
     Given the following items have been created in the account
-      | file | Links20.txt |
-    And Alice has shared the file Links20.txt by link
+      | file | Links22.txt |
+    And Alice has shared the file Links22.txt by link
     When Alice opens the public link shortcut
-    And Alice selects to share the file Links20.txt
-    And Alice deletes the link on Links20.txt
+    And Alice selects to share the file Links22.txt
+    And Alice deletes the link on Links22.txt
     And Alice closes share view
     And Alice refreshes the list
-    Then Alice should not see Links20.txt in the offline list
+    Then Alice should not see Links22.txt in the offline list
     And Alice should see the following message
       | No shared links |

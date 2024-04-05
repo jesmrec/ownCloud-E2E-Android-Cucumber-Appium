@@ -11,11 +11,11 @@ import android.DocumentProviderPage;
 import android.FileListPage;
 import android.FolderPickerPage;
 import android.InputNamePage;
-import android.PublicLinksPage;
 import android.LoginPage;
+import android.PrivateSharePage;
+import android.PublicLinksPage;
 import android.RemoveDialogPage;
 import android.SearchShareePage;
-import android.PrivateSharePage;
 import android.SharePage;
 import android.SpacesPage;
 import android.UploadsPage;
@@ -47,63 +47,63 @@ public class World {
 
     //APIs to call
     private ShareAPI shareAPI;
-    private FilesAPI filesAPI ;
+    private FilesAPI filesAPI;
     private GraphAPI graphAPI;
     private TrashbinAPI trashbinAPI;
     private AuthAPI authAPI;
 
-    public World() throws IOException {
+    public World() {
     }
 
-    public LoginPage getLoginPage(){
+    public LoginPage getLoginPage() {
         if (loginPage == null)
             loginPage = new LoginPage();
         return loginPage;
     }
 
-    public FileListPage getFileListPage(){
+    public FileListPage getFileListPage() {
         if (fileListPage == null)
             fileListPage = new FileListPage();
         return fileListPage;
     }
 
-    public InputNamePage getInputNamePage(){
+    public InputNamePage getInputNamePage() {
         if (inputNamePage == null)
             inputNamePage = new InputNamePage();
         return inputNamePage;
     }
 
-    public FolderPickerPage getFolderPickerPage(){
+    public FolderPickerPage getFolderPickerPage() {
         if (folderPickerPage == null)
             folderPickerPage = new FolderPickerPage();
         return folderPickerPage;
     }
 
-    public RemoveDialogPage getRemoveDialogPage(){
+    public RemoveDialogPage getRemoveDialogPage() {
         if (removeDialogPage == null)
             removeDialogPage = new RemoveDialogPage();
         return removeDialogPage;
     }
 
-    public DetailsPage getDetailsPage(){
+    public DetailsPage getDetailsPage() {
         if (detailsPage == null)
             detailsPage = new DetailsPage();
         return detailsPage;
     }
 
-    public SharePage getSharePage(){
+    public SharePage getSharePage() {
         if (sharePage == null)
             sharePage = new SharePage();
         return sharePage;
     }
 
-    public PublicLinksPage getPublicLinksPage(){
+    public PublicLinksPage getPublicLinksPage() {
         if (publicLinksPage == null)
             publicLinksPage = new PublicLinksPage();
         return publicLinksPage;
     }
 
-    public SearchShareePage getSearchShareePage(){
+    public SearchShareePage getSearchShareePage() {
         if (searchShareePage == null)
             searchShareePage = new SearchShareePage();
         return searchShareePage;
@@ -120,11 +120,13 @@ public class World {
             spacesPage = new SpacesPage();
         return spacesPage;
     }
+
     public DocumentProviderPage getDocumentProviderPage() {
         if (documentProviderPage == null)
             documentProviderPage = new DocumentProviderPage();
         return documentProviderPage;
     }
+
     public UploadsPage getUploadsPage() {
         if (uploadsPage == null)
             uploadsPage = new UploadsPage();
@@ -153,7 +155,7 @@ public class World {
     }
 
     public TrashbinAPI getTrashbinAPI()
-            throws IOException{
+            throws IOException {
         if (trashbinAPI == null)
             trashbinAPI = new TrashbinAPI();
         return trashbinAPI;

@@ -37,6 +37,9 @@ public class PublicLinksPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkPasswordValue")
     private WebElement textPassword;
 
+    @AndroidFindBy(id = "generatePasswordButton")
+    private WebElement generatePassword;
+
     @AndroidFindBy(id = "com.owncloud.android:id/shareViaLinkExpirationSwitch")
     private WebElement expirationSwitch;
 
@@ -124,14 +127,18 @@ public class PublicLinksPage extends CommonPage {
         return false;
     }
 
-    public void addPassword(String itemName, String password) {
+    public void typePassword(String itemName, String password) {
         Log.log(Level.FINE, "Starts: Add link password: " + password);
         //To avoid password keyboard to appear
         driver.hideKeyboard();
-        if (!passwordSwitch.isEmpty()) {
-            passwordSwitch.get(0).click();
-        }
         textPassword.sendKeys(password);
+    }
+
+    public void generatePassword() {
+        Log.log(Level.FINE, "Starts: Generate password");
+        //To avoid password keyboard to appear
+        driver.hideKeyboard();
+        generatePassword.click();
     }
 
     public boolean isPasswordEnabled() {
@@ -149,7 +156,8 @@ public class PublicLinksPage extends CommonPage {
         expirationSwitch.click();
         int defaultExpiration = Integer.valueOf(days);
         String dateToSet = DateUtils.dateInDaysAndroidFormat(Integer.toString(defaultExpiration));
-        Log.log(Level.FINE, "Days: " + days + ". Days to set: " + defaultExpiration + " Date to set: " + dateToSet);
+        Log.log(Level.FINE, "Days: " + days + ". Days to set: " + defaultExpiration +
+                " Date to set: " + dateToSet);
         if (findListAccesibility(dateToSet).isEmpty()) {
             Log.log(Level.FINE, "Date not found, next page");
             nextButton.click();

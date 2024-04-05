@@ -29,22 +29,21 @@ public class LinksSteps {
     }
 
     @ParameterType("item|file|folder")
-    public String itemtype(String type){
+    public String itemtype(String type) {
         return type;
     }
 
     @Given("{word} has shared the {itemtype} {word} by link")
     public void user_has_shared_the_item_by_link(String sharingUser, String type, String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getShareAPI().createShare(sharingUser, itemName, "", "3", "1", itemName, "aa55AA.." + " link", 0);
     }
 
     @When("Alice creates link on {word} {word} with the following fields")
-    public void user_creates_link_with_fields(String type, String itemName, DataTable table)
-            throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+    public void user_creates_link_with_fields(String type, String itemName, DataTable table) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getSharePage().addPublicLink();
         List<List<String>> listItems = table.asLists();
@@ -55,7 +54,11 @@ public class LinksSteps {
                     break;
                 }
                 case "password": {
-                    world.getPublicLinksPage().addPassword(itemName, rows.get(1));
+                    world.getPublicLinksPage().typePassword(itemName, rows.get(1));
+                    break;
+                }
+                case "password-auto": {
+                    world.getPublicLinksPage().generatePassword();
                     break;
                 }
                 case "permission": {
@@ -74,9 +77,8 @@ public class LinksSteps {
     }
 
     @When("Alice edits the link on {word} with the following fields")
-    public void user_edits_public_link_with_fields(String itemName, DataTable table)
-            throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+    public void user_edits_public_link_with_fields(String itemName, DataTable table) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
         world.getSharePage().openPublicLink(itemName);
@@ -109,7 +111,7 @@ public class LinksSteps {
                     break;
                 }
                 case "password": {
-                    world.getPublicLinksPage().addPassword(itemName, rows.get(1));
+                    world.getPublicLinksPage().typePassword(itemName, rows.get(1));
                     break;
                 }
                 case "expiration days": {
@@ -125,7 +127,7 @@ public class LinksSteps {
 
     @When("Alice deletes the link on {word}")
     public void user_deletes_link(String itemName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getSharePage().deletePublicShare();
         world.getSharePage().acceptDeletion();
@@ -134,7 +136,7 @@ public class LinksSteps {
     @Then("link should be created on {word} with the following fields")
     public void link_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         //Asserts in UI
         Log.log(Level.FINE, "Checking UI asserts");
@@ -184,7 +186,7 @@ public class LinksSteps {
     @Then("link on {word} should not exist anymore")
     public void link_should_not_exist_anymore(String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         Log.log(Level.FINE, "Checking if item exists: " + itemName);
         assertTrue(world.getSharePage().isListPublicLinksEmpty());
