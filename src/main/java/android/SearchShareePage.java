@@ -11,10 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Level;
 
-import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.touch.offset.PointOption;
 import utils.log.Log;
 
 public class SearchShareePage extends CommonPage {
@@ -38,11 +36,11 @@ public class SearchShareePage extends CommonPage {
     }
 
     private void selectShareeFromList(String sharee) {
-        wait(1);
-        TouchAction selectSharee = new TouchAction(driver);
         //Clicking on screen... very bad but no other solution since results are presented
         //in another provider
-        selectSharee.tap(PointOption.point(500, 470)).perform();
+        int startX = 500;
+        int startY = 470;
+        tap(startX, startY);
     }
 
     private void backListShares() {

@@ -6,7 +6,7 @@
 
 package io.cucumber;
 
-import android.AppiumManager;
+import android.AndroidManager;
 
 import org.xml.sax.SAXException;
 
@@ -27,21 +27,21 @@ public class Hooks {
 
     private World world;
 
-    public Hooks (World world){
+    public Hooks(World world) {
         this.world = world;
     }
 
     @Before
     public void setup(Scenario scenario) {
         Log.log(Level.FINE, "START SCENARIO EXECUTION: " + scenario.getName());
-        AppiumManager.getManager().getDriver().activateApp(
+        AndroidManager.getDriver().activateApp(
                 LocProperties.getProperties().getProperty("appPackage"));
     }
 
     @After
     public void tearDown(Scenario scenario)
             throws IOException, ParserConfigurationException, SAXException {
-        AppiumManager.getManager().getDriver().terminateApp(
+        AndroidManager.getDriver().terminateApp(
                 LocProperties.getProperties().getProperty("appPackage"));
         cleanUp();
         Log.log(Level.FINE, "END SCENARIO EXECUTION: " + scenario.getName() + "\n\n");
@@ -51,12 +51,12 @@ public class Hooks {
             throws IOException, ParserConfigurationException, SAXException {
         //First, remove leftovers in root folder. Just keeping the skeleton items
         ArrayList<OCFile> filesRoot = world.getFilesAPI().listItems("");
-        for (OCFile iterator: filesRoot) {
+        for (OCFile iterator : filesRoot) {
             Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
             world.getFilesAPI().removeItem(iterator.getName());
         }
         world.getTrashbinAPI().emptyTrashbin();
-        if (world.getAuthAPI().isOidc()){ //remove spaces
+        if (world.getAuthAPI().isOidc()) { //remove spaces
             world.getGraphAPI().removeSpacesOfUser();
         }
     }

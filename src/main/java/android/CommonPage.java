@@ -44,7 +44,7 @@ public class CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/nav_all_files")
     private WebElement toRoot;
 
-    protected static AndroidDriver driver = AppiumManager.getManager().getDriver();
+    protected static AndroidDriver driver = AndroidManager.getDriver();
     protected static Actions actions;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
@@ -162,7 +162,7 @@ public class CommonPage {
 
     /* Finger actions */
 
-    public static void swipe(double startx, double starty, double endx, double endy) {
+    public void swipe(double startx, double starty, double endx, double endy) {
         Dimension size = driver.manage().window().getSize();
         int startY = (int) (size.height * starty);
         int endY = (int) (size.height * endy);
@@ -179,7 +179,7 @@ public class CommonPage {
         driver.perform(Arrays.asList(swipe));
     }
 
-    public static void longPress(WebElement element) {
+    public void longPress(WebElement element) {
         Point location = element.getLocation();
         PointerInput pointerInput = new PointerInput(PointerInput.Kind.TOUCH, "longp");
         Sequence longPress = new Sequence(pointerInput, 0);
@@ -191,6 +191,17 @@ public class CommonPage {
         longPress.addAction(pointerInput.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(ImmutableList.of(longPress));
 
+    }
+
+    public void tap(int startx, int starty) {
+        wait(1);
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence tap = new Sequence(finger, 1);
+        tap.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(),
+                startx, starty));
+        tap.addAction(finger.createPointerDown(0));
+        tap.addAction(finger.createPointerUp(0));
+        driver.perform(Arrays.asList(tap));
     }
 
     /* Browsing methods used in several pages */

@@ -17,33 +17,57 @@ import utils.log.Log;
 
 public class RemoveDialogPage extends CommonPage {
 
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_remove_yes")
+    private WebElement buttonYesFiles;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_remove_local_only")
+    private WebElement buttonLocalFiles;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/dialog_remove_no")
+    private WebElement buttonNoFiles;
+
     @AndroidFindBy(id = "android:id/button1")
-    private WebElement buttonYes;
+    private WebElement buttonYesFolders;
 
     @AndroidFindBy(id = "android:id/button2")
-    private WebElement buttonLocal;
+    private WebElement buttonLocalFolders;
 
     @AndroidFindBy(id = "android:id/button3")
-    private WebElement buttonNo;
+    private WebElement buttonNoFolders;
 
     public RemoveDialogPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public void removeAll() {
+    public void removeAllFiles() {
         Log.log(Level.FINE, "Starts: Remove from server and local");
-        buttonYes.click();
+        buttonYesFiles.click();
     }
 
-    public void dontRemove() {
+    public void dontRemoveFiles() {
         Log.log(Level.FINE, "Starts: Cancel Remove");
-        buttonNo.click();
+        buttonNoFiles.click();
     }
 
-    public void onlyLocal() {
+    public void onlyLocalFiles() {
         Log.log(Level.FINE, "Starts: Remove only from local");
-        buttonLocal.click();
+        buttonLocalFiles.click();
+    }
+
+    public void removeAllFolders() {
+        Log.log(Level.FINE, "Starts: Remove from server and local");
+        buttonYesFolders.click();
+    }
+
+    public void dontRemoveFolders() {
+        Log.log(Level.FINE, "Starts: Cancel Remove");
+        buttonNoFolders.click();
+    }
+
+    public void onlyLocalFolders() {
+        Log.log(Level.FINE, "Starts: Remove only from local");
+        buttonLocalFolders.click();
     }
 
 }

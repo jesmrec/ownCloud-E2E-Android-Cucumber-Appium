@@ -13,7 +13,7 @@ Feature: Delete item
     Given the following items have been created in the account
       | <type> | <name> |
     When Alice selects to Remove the <type> <name>
-    And Alice accepts the deletion
+    And Alice accepts the deletion of <type>
     Then Alice should not see <name> in the filelist anymore
 
     Examples:

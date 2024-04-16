@@ -22,17 +22,15 @@ import io.appium.java_client.android.AndroidDriver;
 import utils.LocProperties;
 import utils.log.Log;
 
-public class AppiumManager {
+public class AndroidManager {
 
     private static final String driverDefect = LocProperties.getProperties().getProperty("appiumURL");
     private static final String driverURL = System.getProperty("appium");
     private static final String device = System.getProperty("device");
-    private static AppiumManager appiumManager;
-    private static AndroidDriver driver;
+    private static AndroidDriver driver = null;
     private static File app;
 
-    private AppiumManager() {
-        init();
+    private AndroidManager() {
     }
 
     private static void init() {
@@ -68,15 +66,14 @@ public class AppiumManager {
                 driver.getCapabilities().getCapability("deviceApiLevel") + "\n");
 
         Log.log(Level.FINE, "Device UDID: " + device);
-
     }
 
     //Singletonize
-    public static AppiumManager getManager() {
-        if (appiumManager == null) {
-            appiumManager = new AppiumManager();
+    public static AndroidDriver getDriver() {
+        if (driver == null) {
+            init();
         }
-        return appiumManager;
+        return driver;
     }
 
     //Check https://appium.io/docs/en/writing-running-appium/caps/
@@ -101,9 +98,5 @@ public class AppiumManager {
         if (device != null) {
             capabilities.setCapability("udid", device);
         }
-    }
-
-    public AndroidDriver getDriver() {
-        return driver;
     }
 }

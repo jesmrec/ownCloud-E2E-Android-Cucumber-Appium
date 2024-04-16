@@ -178,11 +178,15 @@ public class FileListSteps {
         world.getFileListPage().refreshList();
     }
 
-    @When("Alice accepts the deletion")
-    public void user_accepts_deletion() {
+    @When("Alice accepts the deletion of {word}")
+    public void user_accepts_deletion(String type) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getRemoveDialogPage().removeAll();
+        if (type.equals("file")){
+            world.getRemoveDialogPage().removeAllFiles();
+        } else { //folder
+            world.getRemoveDialogPage().removeAllFolders();
+        }
     }
 
     @When("the {word} has been deleted remotely")

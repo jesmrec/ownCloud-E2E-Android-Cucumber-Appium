@@ -6,11 +6,12 @@
 
 package io.cucumber;
 
-import android.AppiumManager;
+import android.AndroidManager;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+
 import java.util.logging.Level;
 
 import io.cucumber.junit.Cucumber;
@@ -32,11 +33,11 @@ public class RunCucumberTest {
     @AfterClass
     public static void afterclass() {
         //remove the oC app
-        AppiumManager.getManager().getDriver().removeApp(
+        AndroidManager.getDriver().removeApp(
                 LocProperties.getProperties().getProperty("appPackage"));
         //remove Appium Settings
-        AppiumManager.getManager().getDriver().removeApp("io.appium.settings");
-        AppiumManager.getManager().getDriver().quit();
+        AndroidManager.getDriver().removeApp("io.appium.settings");
+        AndroidManager.getDriver().quit();
         Log.log(Level.FINE, "END EXECUTION\n");
     }
 }
