@@ -41,5 +41,5 @@ Feature: Spaces
       And Alice refreshes the list
       Then Alice should see the following spaces
         | Space6 | Sixth space |
-      And Alice should not see the following spaces
+      But Alice should not see the following spaces
         | Space5 | Fifth space |

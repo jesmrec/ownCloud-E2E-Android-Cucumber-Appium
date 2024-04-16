@@ -47,7 +47,7 @@ Feature: Private Share
         # DELETE -> 8
         # SHARE -> 16
 
-  @resharing @noocis
+  @resharing
   Rule: Resharing
 
   Scenario: Reshare allowed

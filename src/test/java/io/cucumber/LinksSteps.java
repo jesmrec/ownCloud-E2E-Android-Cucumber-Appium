@@ -133,7 +133,7 @@ public class LinksSteps {
         world.getSharePage().acceptDeletion();
     }
 
-    @Then("link should be created on {word} with the following fields")
+    @Then("link should be created/edited on {word} with the following fields")
     public void link_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
@@ -148,6 +148,7 @@ public class LinksSteps {
                     assertTrue(world.getSharePage().isItemInListPublicShares(rows.get(1)));
                     break;
                 }
+                case "password-auto":
                 case "password": {
                     world.getSharePage().openPublicLink(itemName);
                     assertTrue(world.getPublicLinksPage().isPasswordEnabled());

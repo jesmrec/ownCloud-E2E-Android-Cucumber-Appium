@@ -99,7 +99,6 @@ Feature: Public Links
   @editlink
   Rule: Edit a public link
 
-  @noocis
   Scenario Outline: Edit existing share on a folder, changing permissions
     Given the following items have been created in the account
       | folder | <item> |
@@ -108,7 +107,7 @@ Feature: Public Links
     And Alice edits the link on <item> with the following fields
       | permissions | <permissions> |
       | name        | <name>        |
-    Then link should be created on <item> with the following fields
+    Then link should be edited on <item> with the following fields
       | permissions | <permissions> |
       | name        | <name>        |
 
@@ -118,19 +117,16 @@ Feature: Public Links
       | Links11 | link13 | 4           | Upload Only (File drop)
       | Links12 | link14 | 1           | Download / View
 
-  @nooc10 @ignore
-  Scenario: Edit existing share on a folder, adding password and expiration
+  @nooc10
+  Scenario: Edit existing share on a folder, adding expiration date
     Given the following items have been created in the account
       | folder | Links15 |
     And Alice has shared the folder Links15 by link
     When Alice selects to share the folder Links15
     And Alice edits the link on Links15 with the following fields
-      | password-auto   |   |
       | expiration days | 1 |
     Then link should be created on Links15 with the following fields
-      | password-auto   |   |
       | expiration days | 1 |
-
 
   @deletelink
   Rule: Delete a public link
@@ -165,7 +161,7 @@ Feature: Public Links
     But Alice should not see Links19.txt in the links list
     And Alice should not see Links21 in the links list
 
-  Scenario: Remove from available offline shortcut
+  Scenario: Remove from link shortcut
     Given the following items have been created in the account
       | file | Links22.txt |
     And Alice has shared the file Links22.txt by link
