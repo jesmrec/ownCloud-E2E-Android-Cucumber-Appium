@@ -32,8 +32,5 @@ public class DocumentProviderPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Select File to Upload: " + fileName);
         openDownloadsInHamburger();
         findUIAutomatorText(fileName).click();
-        //Give some seconds the file to be uploaded
-        wait(3);
     }
-
 }

@@ -90,10 +90,10 @@ Feature: Public Links
       | permission | <permissions> |
 
     Examples:
-      | item   | name   | permissions | description
-      | Links7 | link9  | 15          | Download / View / Upload
-      | Links8 | link10 | 4           | Upload Only (File drop)
-      | Links9 | link11 | 1           | Download / View
+      | item    | name   | permissions | description
+      | Links9  | link9  | 15          | Download / View / Upload
+      | Links10 | link10 | 4           | Upload Only (File drop)
+      | Links11 | link11 | 1           | Download / View
 
 
   @editlink
@@ -113,9 +113,9 @@ Feature: Public Links
 
     Examples:
       | item    | name   | permissions | description
-      | Links10 | link12 | 15          | Download / View / Upload
-      | Links11 | link13 | 4           | Upload Only (File drop)
-      | Links12 | link14 | 1           | Download / View
+      | Links12 | link12 | 15          | Download / View / Upload
+      | Links13 | link13 | 4           | Upload Only (File drop)
+      | Links14 | link14 | 1           | Download / View
 
   @nooc10
   Scenario: Edit existing share on a folder, adding expiration date

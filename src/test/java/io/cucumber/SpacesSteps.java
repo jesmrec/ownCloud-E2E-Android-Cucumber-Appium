@@ -44,8 +44,6 @@ public class SpacesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getFileListPage().openSpaces();
-        //BAD. But no other way to wait for server response ftm.
-        Thread.sleep(3000);
     }
 
     @When("following space is disabled in server")

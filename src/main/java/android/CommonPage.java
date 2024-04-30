@@ -142,16 +142,6 @@ public class CommonPage {
                 "new UiSelector().textContains(\"Download enqueued\");"), "Download enqueued"));
     }
 
-    // The following method should be used only in case implicit/explicit waits are not valid for the
-    // scenario. Blocking the thread is not desirable and using it is not a good solution.
-    public static void wait(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     protected HashMap turnListToHashmap(List<List<String>> dataList) {
         HashMap<String, String> mapFields = new HashMap<String, String>();
         for (List<String> rows : dataList) {
@@ -194,10 +184,9 @@ public class CommonPage {
     }
 
     public void tap(int startx, int starty) {
-        wait(1);
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence tap = new Sequence(finger, 1);
-        tap.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(),
+        tap.addAction(finger.createPointerMove(Duration.ofSeconds(1), PointerInput.Origin.viewport(),
                 startx, starty));
         tap.addAction(finger.createPointerDown(0));
         tap.addAction(finger.createPointerUp(0));

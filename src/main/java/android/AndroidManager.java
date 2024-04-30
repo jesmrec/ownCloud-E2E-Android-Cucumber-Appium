@@ -76,7 +76,7 @@ public class AndroidManager {
         return driver;
     }
 
-    //Check https://appium.io/docs/en/writing-running-appium/caps/
+    //Check https://appium.io/docs/en/2.5/guides/caps/
     private static void setCapabilities(DesiredCapabilities capabilities) {
 
         capabilities.setCapability("appium:deviceName", "test");

@@ -169,7 +169,7 @@ public class SharePage extends CommonPage {
                 }
                 case "expiration days": {
                     String dateRemote = remoteShare.getExpiration();
-                    int expiration = Integer.valueOf(entry.getValue());
+                    int expiration = Integer.parseInt(entry.getValue());
                     String expDate = DateUtils.dateInDaysWithServerFormat(Integer.toString(expiration));
                     Log.log(Level.FINE, "Expiration dates: Remote: " + dateRemote
                             + " - Expected: " + expDate);
@@ -186,10 +186,6 @@ public class SharePage extends CommonPage {
 
     public void acceptDeletion() {
         acceptDeletion.click();
-    }
-
-    public void cancelDeletion() {
-        cancelDeletion.click();
     }
 
     public void close() {
