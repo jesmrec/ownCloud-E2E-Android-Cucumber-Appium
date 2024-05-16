@@ -26,11 +26,11 @@ public class GraphAPI extends CommonAPI {
     public GraphAPI() throws IOException {
     }
 
-    public void createSpace(String name, String description) throws IOException {
+    public void createSpace(String name, String description, String userName) throws IOException {
         Log.log(Level.FINE, "CREATE SPACE: " + name + " " + description);
         String url = urlServer + graphPath + drives;
         Log.log(Level.FINE, "URL: " + url);
-        Request request = postRequest(url, createBodySpace(name, description), "alice");
+        Request request = postRequest(url, createBodySpace(name, description), userName);
         Response response = httpClient.newCall(request).execute();
         Log.log(Level.FINE, "Response Code: " + response.code());
         Log.log(Level.FINE, "Response Body: " + response.body().string());
@@ -113,7 +113,9 @@ public class GraphAPI extends CommonAPI {
     private String getSpaceIdFromName(String name, String description) throws IOException {
         List<OCSpace> mySpaces = geyMySpaces();
         for (OCSpace space : mySpaces) {
-            if (space.getName().trim().equals(name) && space.getDescription().trim().equals(description)) {
+            if (space.getName().trim().equals(name) &&
+                    space.getDescription().trim().equals(description)) {
+                Log.log(Level.FINE, "ID of space: " + space.getId() + " " + space.getName());
                 return space.getId();
             }
         }

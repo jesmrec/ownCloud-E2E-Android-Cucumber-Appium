@@ -13,7 +13,7 @@ Feature: Private Share
 
   @smoke
   Scenario Outline: Correct share with user
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice selects user Bob as sharee
@@ -27,7 +27,7 @@ Feature: Private Share
       | folder | Share2     |
 
   Scenario Outline: Correct share with group
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice selects group test as sharee
@@ -51,7 +51,7 @@ Feature: Private Share
   Rule: Resharing
 
   Scenario: Reshare allowed
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | Share5.txt |
     When Alice selects to share the file Share5.txt
     And Alice selects user Bob as sharee
@@ -63,7 +63,7 @@ Feature: Private Share
 
       #not an Android, keeping ftm...
   Scenario: Reshare not allowed
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | Share6.txt |
     And Alice has shared file Share6.txt with Bob with permissions 3
     When Bob has reshared file Share6.txt with Charles with permissions 31
@@ -71,7 +71,7 @@ Feature: Private Share
     But Charles should not have access to Share6.txt
 
   Scenario: Reshare reflected
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | Share7.txt |
     And Alice has shared file Share7.txt with Bob with permissions 31
     And Bob has reshared file Share7.txt with Charles with permissions 31
@@ -83,7 +83,7 @@ Feature: Private Share
   Rule: Edit an existing share
 
   Scenario Outline: Edit existing share on a file, changing permissions
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | <item> |
     And Alice has shared file <item> with <user> with permissions 31
     When Alice selects to share the file <item>
@@ -101,7 +101,7 @@ Feature: Private Share
       | Share11.txt | Bob  | 1           | only read
 
   Scenario Outline: Edit existing share on a folder, changing permissions
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | <item> |
     And Alice has shared folder <item> with <user> with permissions 31
     When Alice selects to share the folder <item>
@@ -123,7 +123,7 @@ Feature: Private Share
   Rule: Delete a share
 
   Scenario Outline: Delete existing share
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | <type> | <item> |
     And Alice has shared folder <item> with Bob with permissions 31
     When Alice selects to share the <type> <item>
@@ -135,3 +135,9 @@ Feature: Private Share
       | type   | item        |
       | file   | Share17.txt |
       | folder | Share18     |
+
+  @shareshortcut
+  Scenario: content in shares shortcut
+    Given the following items have been created in Bob account
+      | folder | test |
+    And Bob has shared file test with Alice with permissions 31

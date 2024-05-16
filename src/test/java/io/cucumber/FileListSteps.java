@@ -48,8 +48,8 @@ public class FileListSteps {
         world.getFileListPage().pushFile(itemName);
     }
 
-    @Given("the following items have been created in the account")
-    public void items_have_been_created_in_account(DataTable table) throws Throwable {
+    @Given("the following items have been created in {word} account")
+    public void items_have_been_created_in_account(String userName, DataTable table) throws Throwable {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
@@ -61,11 +61,11 @@ public class FileListSteps {
                 switch (type) {
                     case ("folder"):
                     case ("item"): {
-                        world.getFilesAPI().createFolder(name);
+                        world.getFilesAPI().createFolder(name, userName);
                         break;
                     }
                     case ("file"): {
-                        world.getFilesAPI().pushFile(name);
+                        world.getFilesAPI().pushFile(name, userName);
                         break;
                     }
                     case ("image"): {
@@ -89,10 +89,10 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (!world.getFilesAPI().itemExist(folderName)) {
-            world.getFilesAPI().createFolder(folderName);
+            world.getFilesAPI().createFolder(folderName, "alice");
         }
         for (int i = 0; i < files; i++) {
-            world.getFilesAPI().pushFile(folderName + "/file_" + i + ".txt");
+            world.getFilesAPI().pushFile(folderName + "/file_" + i + ".txt", "Alice");
         }
     }
 
@@ -249,7 +249,7 @@ public class FileListSteps {
             throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFilesAPI().pushFile(itemName, text);
+        world.getFilesAPI().pushFile(itemName, text, "Alice");
     }
 
     @When("Alice closes the preview")

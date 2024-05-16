@@ -9,7 +9,7 @@ Feature: Rename an item
 
   @smoke
   Scenario Outline: Rename an item
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | <type> | <name> |
     When Alice selects to Rename the <type> <name>
     And Alice sets <newName> as new name
@@ -22,7 +22,7 @@ Feature: Rename an item
       | file   | file2.txt | Rename2.txt |
 
   Scenario: Rename an item with an existing name
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | folder3 |
       | folder | folder4 |
     When Alice selects to Rename the folder folder3

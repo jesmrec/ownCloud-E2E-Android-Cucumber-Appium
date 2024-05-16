@@ -18,7 +18,7 @@ Feature: List of files is correctly retrieved from server.
         | /    |
 
     Scenario: Check items in the list of files of a created folder
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | Many |
       And the folder Many contains 5 files
       Then the list of files in /Many folder should match with the server
@@ -26,13 +26,13 @@ Feature: List of files is correctly retrieved from server.
   Rule: Changes in the list
 
     Scenario: New item created remotely
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | file | newFile.txt |
       When Alice refreshes the list
       Then Alice should see newFile.txt in the filelist
 
     Scenario: Item deleted remotely
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | file | newFile2.txt |
       When Alice refreshes the list
       And the newFile2.txt has been deleted remotely

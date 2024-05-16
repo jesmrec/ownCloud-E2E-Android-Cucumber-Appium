@@ -13,13 +13,13 @@ Feature: Set items as available offline (downloaded and synced)
 
   @smoke
   Scenario: Set a file as available offline
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | av.offline.pdf |
     When Alice selects to set as av.offline the item av.offline.pdf
     Then Alice should see the file av.offline.pdf as av.offline
 
   Scenario: Set a folder as available offline
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | avOffFolder             |
       | file   | avOffFolder/example.txt |
     When Alice selects to set as av.offline the item avOffFolder
@@ -30,7 +30,7 @@ Feature: Set items as available offline (downloaded and synced)
   Rule: Moving av.offline items
 
   Scenario: Moving an av.offline item to other location does not lose the av.offline condition
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file   | avOff1.txt   |
       | folder | avOfffolder1 |
     When Alice selects to set as av.offline the item avOff1.txt
@@ -40,7 +40,7 @@ Feature: Set items as available offline (downloaded and synced)
     Then Alice should see the file avOff1.txt as av.offline
 
   Scenario: Moving a file inside an av.offline folder, turns the file av.offline
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file   | avoff2.pdf   |
       | folder | avOffFolder2 |
     When Alice selects to set as av.offline the item avOffFolder2
@@ -50,7 +50,7 @@ Feature: Set items as available offline (downloaded and synced)
     And Alice should see the item avoff2.pdf as av.offline
 
   Scenario: Moving a file that is inside an av.offline folder to a non av.offline folder, turns not av.offline
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | avOffFolder3            |
       | file   | avOffFolder3/avoff3.txt |
     When Alice selects to set as av.offline the item avOffFolder3
@@ -63,7 +63,7 @@ Feature: Set items as available offline (downloaded and synced)
   Rule: Av.offline file modification
 
   Scenario: Update over an av.offline file
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | avoff4.txt |
     When Alice selects to set as av.offline the item avoff4.txt
     And file avoff4.txt is modified externally adding "updated"
@@ -74,7 +74,7 @@ Feature: Set items as available offline (downloaded and synced)
   Rule: Unset as av.offline
 
   Scenario Outline: Unset an item as available offline
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | <type> | <item> |
     And Alice selects to set as av.offline the item <item>
     When Alice selects to unset as av.offline the item <item>
@@ -86,7 +86,7 @@ Feature: Set items as available offline (downloaded and synced)
       | folder | avOff6     |
 
   Scenario: Not posible to unset an item as available offline if parent is av. offline
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | avOff7            |
       | file   | avOff7/avOff8.txt |
     When Alice selects to set as av.offline the item avOff7
@@ -97,7 +97,7 @@ Feature: Set items as available offline (downloaded and synced)
   Rule: Av. offline shortcut
 
   Scenario: Available offline shortcut
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file   | avOffs1.txt |
       | folder | avOffs2     |
     And Alice selects to set as av.offline the item avOffs1.txt
@@ -106,7 +106,7 @@ Feature: Set items as available offline (downloaded and synced)
     But Alice should not see avOffs2 in the offline list
 
   Scenario: Remove from available offline shortcut
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | avOffs3.txt |
     And Alice selects to set as av.offline the item avOffs3.txt
     When Alice opens the available offline shortcut

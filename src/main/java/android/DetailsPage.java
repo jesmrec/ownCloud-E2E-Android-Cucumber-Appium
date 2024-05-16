@@ -56,8 +56,8 @@ public class DetailsPage extends CommonPage {
     @AndroidFindBy(id = "android:id/contentPanel")
     private WebElement contentPanel;
 
-    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    private WebElement navigateUp;
+    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Back\"]")
+    private WebElement back;
 
     public DetailsPage() {
         super();
@@ -78,7 +78,7 @@ public class DetailsPage extends CommonPage {
 
     public void backListFiles() {
         Log.log(Level.FINE, "Start: Back to the list of files");
-        navigateUp.click();
+        back.click();
     }
 
     public void closeOpenIn() {

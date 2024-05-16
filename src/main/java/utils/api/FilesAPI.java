@@ -37,19 +37,19 @@ public class FilesAPI extends CommonAPI {
         response.close();
     }
 
-    public void createFolder(String folderName)
+    public void createFolder(String folderName, String userName)
             throws IOException {
-        String url = urlServer + getEndpoint() + "/" + folderName + "/";
+        String url = urlServer + getEndpoint(userName) + "/" + folderName + "/";
         Log.log(Level.FINE, "Starts: Request create folder");
         Log.log(Level.FINE, "URL: " + url);
-        Request request = davRequest(url, "MKCOL", null, user);
+        Request request = davRequest(url, "MKCOL", null, userName);
         Response response = httpClient.newCall(request).execute();
         response.close();
     }
 
-    public void pushFile(String fileName)
+    public void pushFile(String fileName, String userName)
             throws IOException {
-        String url = urlServer + getEndpoint() + "/" + fileName + "/";
+        String url = urlServer + getEndpoint(userName) + "/" + fileName + "/";
         Log.log(Level.FINE, "Starts: Request create file");
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),
@@ -101,9 +101,9 @@ public class FilesAPI extends CommonAPI {
         response.close();
     }
 
-    public void pushFile(String fileName, String content)
+    public void pushFile(String fileName, String content, String userName)
             throws IOException {
-        String url = urlServer + getEndpoint() + "/" + fileName + "/";
+        String url = urlServer + getEndpoint(userName) + "/" + fileName + "/";
         Log.log(Level.FINE, "Starts: Request modification file");
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),

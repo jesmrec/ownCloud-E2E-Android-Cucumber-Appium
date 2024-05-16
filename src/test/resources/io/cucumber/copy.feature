@@ -12,7 +12,7 @@ Feature: Copy item
 
     @smoke
     Scenario Outline: Copy an existent item to another location
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | <type> | <name>    |
         | folder | Documents |
       When Alice selects to Copy the <type> <name>
@@ -27,7 +27,7 @@ Feature: Copy item
         | file   | copy2.txt | Documents | Personal |
 
     Scenario Outline: Copy an existent item to a new created folder in the picker
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | <type> | <name> |
       When Alice selects to Copy the <type> <name>
       And Alice selects <space> as space
@@ -41,9 +41,9 @@ Feature: Copy item
 
     @nooc10
     Scenario Outline: Copy an existent item to another space (root folder)
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | <type> | <name> |
-      And the following spaces have been created in the account
+      And the following spaces have been created in Alice account
         | <space> | <space> |
       When Alice selects to Copy the <type> <name>
       And Alice selects <space> as space
@@ -56,7 +56,7 @@ Feature: Copy item
 
     @nooc10 @copyconflicts
     Scenario Outline: Copy a file to same place (duplication)
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | <type> | <name> |
       When Alice selects to Copy the <type> <name>
       And Alice selects <space> as space
@@ -72,7 +72,7 @@ Feature: Copy item
     Rule: Copy with conflicts
 
     Scenario: Copy a folder to another place with same item name, fixing conflict with keep both
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | copy7       |
         | folder | copy8       |
         | folder | copy8/copy7 |
@@ -83,7 +83,7 @@ Feature: Copy item
       Then Alice should see 'copy7 (1)' inside the folder copy8
 
     Scenario: Copy a folder to another place with same item name, fixing conflict with replace
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | file   | copy9.txt        |
         | folder | copy10           |
         | file   | copy10/copy9.txt |
@@ -95,7 +95,7 @@ Feature: Copy item
 
     @nooc10
     Scenario: More than one conflict at the time
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | test11            |
         | file   | copy11.txt        |
         | file   | copy12.txt        |
@@ -116,7 +116,7 @@ Feature: Copy item
   Rule: Copy negative cases
 
     Scenario: Copy a folder to itself
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | copy14 |
       When Alice selects to Copy the folder copy14
       And Alice selects Personal as space
@@ -125,7 +125,7 @@ Feature: Copy item
         | It is not possible to copy a folder into a descendant |
 
     Scenario: Copy a folder to descendant
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | copy15        |
         | folder | copy15/copy16 |
       When Alice selects to Copy the folder copy15

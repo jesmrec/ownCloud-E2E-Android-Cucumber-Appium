@@ -12,7 +12,7 @@ Feature: Move item
 
     @smoke
     Scenario Outline: Move an existent folder to another location
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | <type> | <name>   |
         | folder | <target> |
       When Alice selects to Move the <type> <name>
@@ -26,7 +26,7 @@ Feature: Move item
         | file   | move2.txt | Documents |
 
     Scenario Outline: Move an existent item to a new created folder in the picker
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | <type> | <name> |
       When Alice selects to Move the <type> <name>
       And Alice creates new folder <target> in the folder picker
@@ -42,7 +42,7 @@ Feature: Move item
     Rule: Move with conflicts
 
     Scenario: Move a folder to another place with same item name
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | move5       |
         | folder | move6       |
         | folder | move6/move5 |
@@ -52,7 +52,7 @@ Feature: Move item
       Then Alice should see 'move5 (1)' inside the folder move6
 
     Scenario: Move a folder to another place with same item name
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | move7       |
         | folder | move8       |
         | folder | move8/move7 |
@@ -64,7 +64,7 @@ Feature: Move item
   Rule: Move negative cases
 
     Scenario: Move a folder to itself
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | move9 |
       When Alice selects to Move the folder move9
       And Alice selects move9 as target folder
@@ -72,7 +72,7 @@ Feature: Move item
         | It is not possible to move a folder into a descendant |
 
     Scenario: Move a folder to same location
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | file | move10.txt |
       When Alice selects to Move the file move10.txt
       And Alice selects / as target folder
@@ -80,7 +80,7 @@ Feature: Move item
         | The file exists already in the destination folder |
 
     Scenario: Move a folder to descendant
-      Given the following items have been created in the account
+      Given the following items have been created in Alice account
         | folder | move11        |
         | folder | move11/move12 |
       When Alice selects to Move the folder move11

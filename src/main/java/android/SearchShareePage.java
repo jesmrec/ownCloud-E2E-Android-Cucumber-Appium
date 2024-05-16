@@ -20,8 +20,8 @@ public class SearchShareePage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
     private WebElement shareeUserName;
 
-    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    private WebElement navigateUp;
+    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Back\"]")
+    private WebElement back;
 
     public SearchShareePage() {
         super();
@@ -45,6 +45,6 @@ public class SearchShareePage extends CommonPage {
 
     private void backListShares() {
         Log.log(Level.FINE, "Starts: Back to the list of shares");
-        navigateUp.click();
+        back.click();
     }
 }

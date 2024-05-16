@@ -10,7 +10,7 @@ Feature: Download a file in the account
 
   @smoke
   Scenario Outline: Download a file that is previewable
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | <type> | <name> |
     When Alice selects to Download the item <name>
     Then the <type> <name> should be opened and previewed
@@ -23,13 +23,13 @@ Feature: Download a file in the account
       | audio | sound.mp3 |
 
   Scenario: Download a video that is previewable
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | video | video.mp4 |
     When Alice selects to Download the item video.mp4
     Then the video video.mp4 should be opened and previewed
 
   Scenario: Markdown file rendered
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | rendered.md |
     When Alice selects to Download the item rendered.md
     Then Alice should see the following items
@@ -38,7 +38,7 @@ Feature: Download a file in the account
     And the file rendered.md should be opened and previewed
 
   Scenario: Download a file from Details view
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | text2.txt |
     When Alice selects to Details the item text2.txt
     And Alice clicks on the thumbnail
@@ -47,7 +47,7 @@ Feature: Download a file in the account
 
   @smoke
   Scenario: Download an updated file
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | file | text3.txt |
     And Alice selects to Download the item text3.txt
     When Alice closes the preview

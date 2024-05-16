@@ -16,7 +16,7 @@ Feature: Create a new folder
 
   @ignore
   Scenario: Create a new folder with a correct name in non-root
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | create2 |
     When Alice browses into create2
     And Alice selects the option Create Folder
@@ -24,7 +24,7 @@ Feature: Create a new folder
     Then Alice should see create3 in the filelist
 
   Scenario: Create a new folder with an existing name
-    Given the following items have been created in the account
+    Given the following items have been created in Alice account
       | folder | create4 |
     When Alice selects the option Create Folder
     And Alice sets create4 as new name

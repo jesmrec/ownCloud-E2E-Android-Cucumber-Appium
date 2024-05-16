@@ -2,6 +2,7 @@ package utils.api;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
@@ -29,7 +30,8 @@ public class CommonAPI {
     protected final String spacesEndpoint = "/dav/spaces/";
     protected final String graphDrivesEndpoint = "/graph/v1.0/me/drives";
     protected String davEndpoint = "";
-    protected String space = "";
+    boolean isOidc;
+    protected HashMap<String, String> personalSpaces;
 
     protected String basicPropfindBody = "<?xml version='1.0' encoding='UTF-8' ?>\n" +
             "<propfind xmlns=\"DAV:\" xmlns:CAL=\"urn:ietf:params:xml:ns:caldav\"" +
@@ -55,19 +57,35 @@ public class CommonAPI {
 
     public CommonAPI() throws IOException {
         AuthAPI authAPI = new AuthAPI();
+        isOidc = authAPI.isOidc();
         //ftm, OIDC == oCIS. Bad.
-        //if (authAPI.checkAuthMethod().equals("OIDC")){
-        if (authAPI.isOidc()) {
-            space = getPersonalDrives(urlServer);
-            davEndpoint = spacesEndpoint + space;
+        if (isOidc) {
+            personalSpaces = new HashMap<>();
+            personalSpaces.put("Alice", getPersonalDrives(urlServer, "Alice"));
+            personalSpaces.put("Bob", getPersonalDrives(urlServer, "Bob"));
+            personalSpaces.put("Charles", getPersonalDrives(urlServer, "Charles"));
         } else {
             davEndpoint = webdavEndpoint + "/" + user;
         }
         Log.log(Level.FINE, "Endpoint: " + davEndpoint);
     }
 
+    public String getEndpoint(String userName) {
+        String endpoint;
+        if (isOidc) {
+            endpoint = spacesEndpoint + personalSpaces.get(userName);
+        } else {
+            endpoint = davEndpoint = webdavEndpoint + "/" + user;
+        }
+        return endpoint;
+    }
+
     public String getEndpoint() {
-        return davEndpoint;
+        if (isOidc) {
+            return spacesEndpoint + personalSpaces.get("Alice");
+        } else {
+            return davEndpoint = webdavEndpoint + "/" + user;
+        }
     }
 
     public String getSharedEndpoint() throws IOException {
@@ -166,8 +184,8 @@ public class CommonAPI {
         return host;
     }
 
-    private String getPersonalDrives(String url) throws IOException {
-        Request request = getRequest(url + graphDrivesEndpoint);
+    private String getPersonalDrives(String url, String userName) throws IOException {
+        Request request = getRequest(url + graphDrivesEndpoint, userName);
         Response response = httpClient.newCall(request).execute();
         String body = response.body().string();
         response.close();
@@ -186,16 +204,6 @@ public class CommonAPI {
         String sharesId = DrivesJSONHandler.getSharesDriveId(body);
         Log.log(Level.FINE, "Shares Drive ID: " + sharesId);
         return sharesId;
-    }
-
-    protected String getSpaceId(String url, String spaceName) throws IOException {
-        Request request = getRequest(url + graphDrivesEndpoint);
-        Response response = httpClient.newCall(request).execute();
-        String body = response.body().string();
-        response.close();
-        String spaceId = DrivesJSONHandler.getSpaceId(body, spaceName);
-        Log.log(Level.FINE, "Space ID: " + spaceId);
-        return spaceId;
     }
 
     private String credentialsBuilder(String userName) {
