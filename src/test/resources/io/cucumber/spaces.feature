@@ -43,3 +43,17 @@ Feature: Spaces
         | Space6 | Sixth space |
       But Alice should not see the following spaces
         | Space5 | Fifth space |
+
+    Scenario: Filter a space
+      Given the following spaces have been created in Alice account
+        | Space7 | Seventh space |
+        | Space8 | Eighth space  |
+        | Space9 | Nineth space  |
+      And Alice selects the spaces view
+      When Alice filters the list using Space8
+      Then Alice should see the following spaces
+        | Space8 | Eighth space |
+      But Alice should not see the following spaces
+        | Space7 | Seventh space |
+        | Space9 | Nineth space  |
+

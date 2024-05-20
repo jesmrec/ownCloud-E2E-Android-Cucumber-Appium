@@ -23,6 +23,12 @@ public class SpacesPage extends CommonPage {
     @AndroidFindBy(id = "spaces_list_item_card")
     private List<WebElement> deviceSpacesList;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar_title")
+    private WebElement searchBar;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
+    private WebElement searchInput;
+
     private final String spaceNameId = "com.owncloud.android:id/spaces_list_item_name";
     private final String spaceSubtitleId = "com.owncloud.android:id/spaces_list_item_subtitle";
 
@@ -73,6 +79,12 @@ public class SpacesPage extends CommonPage {
                 return true;
         }
         return false;
+    }
+
+    public void typeSearch(String pattern) {
+        Log.log(Level.FINE, "Starts: type search " + pattern);
+        searchBar.click();
+        searchInput.sendKeys(pattern);
     }
 
     public WebElement getSpace(String spaceName) {
