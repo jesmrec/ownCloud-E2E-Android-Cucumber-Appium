@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   ocis:
-    image: owncloud/ocis:3.0.0
+    image: owncloud/ocis:5.0.4
     ports:
       - 9200:9200
       - 9215:9215
@@ -12,6 +12,13 @@ services:
       IDM_CREATE_DEMO_USERS: "true"
       IDM_ADMIN_PASSWORD: "admin"
       PROXY_ENABLE_BASIC_AUTH: "true"
+      OCIS_PASSWORD_POLICY_MIN_CHARACTERS: "8"
+      OCIS_PASSWORD_POLICY_MIN_LOWERCASE_CHARACTERS: "1"
+      OCIS_PASSWORD_POLICY_MIN_UPPERCASE_CHARACTERS: "1"
+      OCIS_PASSWORD_POLICY_MIN_DIGITS: "1"
+      OCIS_PASSWORD_POLICY_MIN_SPECIAL_CHARACTERS: "1"
+      OCIS_SERVICE_ACCOUNT_ID: "b0fbfad7-3dd6-49cb-b468-3f588f2f82be"
+      OCIS_SERVICE_ACCOUNT_SECRET: "asaGE4DF"
     restart: "no"
     entrypoint:
       - /bin/sh
