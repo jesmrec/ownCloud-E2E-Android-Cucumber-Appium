@@ -52,7 +52,7 @@ public class SharePage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/shareNoPublicLinks")
     private WebElement noPublicLinks;
 
-    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
+    @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Back\"]")
     private WebElement close;
 
     public SharePage() {

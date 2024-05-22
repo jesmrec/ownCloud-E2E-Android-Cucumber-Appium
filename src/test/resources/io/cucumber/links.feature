@@ -11,7 +11,7 @@ Feature: Public Links
   @createlink
   Rule: Create a public link
 
-  @smoke
+  @smoke @nooc10
   Scenario Outline: Create a public link with name
     Given the following items have been created in Alice account
       | <type> | <item> |
@@ -43,6 +43,7 @@ Feature: Public Links
       | folder | Links3     | link3 | aa55AA.. |
       | file   | Links4.txt | link4 | aa55AA.. |
 
+  @nooc10
   Scenario Outline: Create a public link with generated password
     Given the following items have been created in Alice account
       | <type> | <item> |
@@ -77,6 +78,7 @@ Feature: Public Links
       | folder | Links7     | link7 | 7          |
       | file   | Links8.txt | link8 | 17         |
 
+  @nooc10
   Scenario Outline: Create a public link with permissions on a folder
     Given the following items have been created in Alice account
       | folder | <item> |
