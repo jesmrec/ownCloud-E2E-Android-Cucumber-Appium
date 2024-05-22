@@ -123,15 +123,6 @@ public class ShareAPI extends CommonAPI {
         return false;
     }
 
-    public void removeShare(String id)
-            throws IOException {
-        String url = urlServer + sharingEndpoint + "/" + id;
-        Log.log(Level.FINE, "Starts: Remove Share from server");
-        Log.log(Level.FINE, "URL: " + url);
-        Request request = deleteRequest(url);
-        httpClient.newCall(request).execute();
-    }
-
     public void acceptAllShares(String type, String userName)
             throws IOException, ParserConfigurationException, SAXException {
         Log.log(Level.FINE, "ACCEPT ALL SHARES FROM " + type + " - " + userName);

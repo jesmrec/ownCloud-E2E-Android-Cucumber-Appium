@@ -127,8 +127,7 @@ public class CommonAPI {
                 .url(url)
                 .addHeader("OCS-APIREQUEST", "true")
                 .addHeader("User-Agent", userAgent)
-                .addHeader("Authorization", "Basic " +
-                        Base64.getEncoder().encodeToString((userName + ":a").getBytes()))
+                .addHeader("Authorization", "Basic " + credentialsBuilder(userName))
                 .addHeader("Host", host)
                 .post(body)
                 .build();
@@ -136,12 +135,12 @@ public class CommonAPI {
         return request;
     }
 
-    protected Request deleteRequest(String url) {
+    protected Request deleteRequest(String url, String userName) {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("OCS-APIREQUEST", "true")
                 .addHeader("User-Agent", userAgent)
-                .addHeader("Authorization", "Basic " + credentialsB64)
+                .addHeader("Authorization", "Basic " + credentialsBuilder(userName))
                 .addHeader("Host", host)
                 .delete()
                 .build();
@@ -166,8 +165,7 @@ public class CommonAPI {
                 .url(url)
                 .addHeader("OCS-APIREQUEST", "true")
                 .addHeader("User-Agent", userAgent)
-                .addHeader("Authorization", "Basic " +
-                        Base64.getEncoder().encodeToString((userName + ":a").getBytes()))
+                .addHeader("Authorization", "Basic " + credentialsBuilder(userName))
                 .addHeader("Host", host)
                 .get()
                 .build();

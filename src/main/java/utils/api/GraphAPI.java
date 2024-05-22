@@ -61,7 +61,7 @@ public class GraphAPI extends CommonAPI {
             String url = urlServer + graphPath + drives + space.getId();
             Log.log(Level.FINE, "URL remove space: " + url);
             //First, disable
-            Request requestDisable = deleteRequest(url);
+            Request requestDisable = deleteRequest(url, "Alice");
             httpClient.newCall(requestDisable).execute();
             //Then, delete
             Request requestDelete = deleteSpaceRequest(url);
@@ -74,7 +74,7 @@ public class GraphAPI extends CommonAPI {
         String spaceId = getSpaceIdFromName(name, description);
         String url = urlServer + graphPath + drives + spaceId;
         Log.log(Level.FINE, "URL: " + url);
-        Request request = deleteRequest(url);
+        Request request = deleteRequest(url, "Alice");
         Response response = httpClient.newCall(request).execute();
         Log.log(Level.FINE, "Response Code: " + response.code());
         Log.log(Level.FINE, "Response Body: " + response.body().string());

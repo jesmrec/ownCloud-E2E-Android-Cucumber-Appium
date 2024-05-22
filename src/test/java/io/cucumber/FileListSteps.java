@@ -194,7 +194,7 @@ public class FileListSteps {
             throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFilesAPI().removeItem(fileName);
+        world.getFilesAPI().removeItem(fileName, "Alice");
         world.getFileListPage().refreshList();
     }
 
@@ -290,7 +290,7 @@ public class FileListSteps {
             throws Throwable {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        OCFile item = world.getFilesAPI().listItems(filePath).get(0);
+        OCFile item = world.getFilesAPI().listItems(filePath, "Alice").get(0);
         String privateLink = world.getFileListPage().getPrivateLink(scheme, item.getPrivateLink());
         world.getFileListPage().openPrivateLink(privateLink);
     }
@@ -484,7 +484,7 @@ public class FileListSteps {
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getFileListPage().refreshList();
         world.getFileListPage().browseToFolder(path);
-        ArrayList<OCFile> listServer = world.getFilesAPI().listItems(path);
+        ArrayList<OCFile> listServer = world.getFilesAPI().listItems(path, "Alice");
         assertTrue(world.getFileListPage().isDisplayedListCorrect(path, listServer));
     }
 

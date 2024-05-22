@@ -27,12 +27,12 @@ public class FilesAPI extends CommonAPI {
         super();
     }
 
-    public void removeItem(String itemName)
+    public void removeItem(String itemName, String userName)
             throws IOException {
-        String url = urlServer + getEndpoint() + "/" + itemName + "/";
+        String url = urlServer + getEndpoint(userName) + "/" + itemName + "/";
         Log.log(Level.FINE, "Starts: Request remove item from server");
         Log.log(Level.FINE, "URL: " + url);
-        Request request = deleteRequest(url);
+        Request request = deleteRequest(url, userName);
         Response response = httpClient.newCall(request).execute();
         response.close();
     }
@@ -156,15 +156,15 @@ public class FilesAPI extends CommonAPI {
         return listItems;
     }
 
-    public ArrayList<OCFile> listItems(String path)
+    public ArrayList<OCFile> listItems(String path, String userName)
             throws IOException, SAXException, ParserConfigurationException {
         Response response;
-        String url = urlServer + getEndpoint() + "/" + path;
+        String url = urlServer + getEndpoint(userName) + "/" + path;
         Log.log(Level.FINE, "Starts: Request to fetch list of items from server");
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("application/xml; charset=utf-8"),
                 basicPropfindBody);
-        Request request = davRequest(url, "PROPFIND", body, user);
+        Request request = davRequest(url, "PROPFIND", body, userName);
         response = httpClient.newCall(request).execute();
         ArrayList<OCFile> listItems = getList(response);
         response.close();

@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,13 +50,17 @@ public class Hooks {
 
     private void cleanUp()
             throws IOException, ParserConfigurationException, SAXException {
-        //First, remove leftovers in root folder. Just keeping the skeleton items
-        ArrayList<OCFile> filesRoot = world.getFilesAPI().listItems("");
-        for (OCFile iterator : filesRoot) {
-            Log.log(Level.FINE, "CLEANUP: removing " + iterator.getName());
-            world.getFilesAPI().removeItem(iterator.getName());
+        //First, remove leftovers in root folder for every user
+        ArrayList<String> userNames = new ArrayList<>(Arrays.asList("Alice", "Bob"));
+        for (String userToClean: userNames) {
+            ArrayList<OCFile> filesRoot = world.getFilesAPI().listItems("", userToClean);
+            for (OCFile iterator : filesRoot) {
+                world.getFilesAPI().removeItem(iterator.getName(), userToClean);
+            }
+            //Empty trashbins
+            world.getTrashbinAPI().emptyTrashbin(userToClean);
         }
-        world.getTrashbinAPI().emptyTrashbin();
+        //Remove spaces
         if (world.getAuthAPI().isOidc()) { //remove spaces
             world.getGraphAPI().removeSpacesOfUser();
         }
