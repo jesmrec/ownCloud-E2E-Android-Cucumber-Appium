@@ -303,13 +303,12 @@ public class FileListPage extends CommonPage {
         }
     }
 
-    public String getPrivateLink(String scheme, String linkOriginal) {
-        Log.log(Level.FINE, "Starts: Create private link: " + scheme + " " + linkOriginal);
-        String originalScheme = getScheme(linkOriginal);
-        Log.log(Level.FINE, "Original scheme: " + originalScheme);
-        String linkToOpen = linkOriginal.replace(originalScheme, scheme)
-                .replace("%21", "!");;
-        //String linkToOpen2 = linkToOpen.replace("%21", "!");
+    public String getPrivateLink(String scheme, String privateLink) {
+        Log.log(Level.FINE, "Starts: Create private link: " + scheme + " " + privateLink);
+        String originalScheme = getScheme(privateLink);
+        //Scaping the $... will improve with something native
+        String linkToOpen = privateLink.replace(originalScheme, scheme)
+                .replace("$", "\\$");
         Log.log(Level.FINE, "Link to open: " + linkToOpen);
         return linkToOpen;
     }

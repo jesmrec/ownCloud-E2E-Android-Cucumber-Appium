@@ -318,6 +318,13 @@ public class FileListSteps {
         world.getFileListPage().openFakePrivateLink();
     }
 
+    @When("Alice opens the share shortcut")
+    public void open_share_shortcut() {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getFileListPage().openFakePrivateLink();
+    }
+
     @Then("Alice should see {word} in the (file)list")
     public void user_should_see_item_in_filelist(String itemName) throws Throwable {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
@@ -341,6 +348,13 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         assertFalse(world.getFileListPage().isItemInList(itemName));
+    }
+
+    @Then("Alice should see {word} in the shares list")
+    public void user_not_see_item_in_shares_list(String itemName) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.getFileListPage().isItemInList(itemName));
     }
 
     //Variant with word parameter

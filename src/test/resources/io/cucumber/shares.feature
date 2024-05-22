@@ -136,8 +136,12 @@ Feature: Private Share
       | file   | Share17.txt |
       | folder | Share18     |
 
-  @shareshortcut
-  Scenario: content in shares shortcut
+  @shareshortcut @nooc10
+  Rule: Public link Shortcut
+
+  Scenario: Content in shares shortcut
     Given the following items have been created in Bob account
-      | folder | test |
-    And Bob has shared file test with Alice with permissions 31
+      | folder | Share19 |
+    And Bob has shared folder Share19 with Alice with permissions 31
+    When Alice opens the public link shortcut
+    Then Alice should see Share19 in the shares list

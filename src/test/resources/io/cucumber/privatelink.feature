@@ -1,4 +1,4 @@
-@privatelink @noocis
+@privatelink @nooc10
 Feature: Private Links
 
   As a user
@@ -20,6 +20,7 @@ Feature: Private Links
       | file   | privlink/privateLink1.pdf | privateLink1.pdf |
       | folder | privlink/privateLink2     | privateLink2     |
 
+  @smoke
   Scenario Outline: Previewable file in non root folder
     Given the following items have been created in Alice account
       | <type> | <path> |
@@ -29,4 +30,9 @@ Feature: Private Links
     Examples:
       | type | path             | name             |
       | file | privateLink3.txt | privateLink3.txt |
+
+  Scenario: File not existing
+    When Alice opens a private link pointing to non-existing item
+    Then Alice should see the following message
+      | The user doesn't have access to file |
 
