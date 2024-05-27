@@ -47,6 +47,9 @@ public class DetailsPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/photo_view")
     private WebElement photoPreview;
 
+    @AndroidFindBy(id = "android:id/ok")
+    private List<WebElement> gotIt;
+
     @AndroidFindBy(id = "com.owncloud.android:id/video_player")
     private WebElement videoPreview;
 
@@ -113,6 +116,10 @@ public class DetailsPage extends CommonPage {
     }
 
     public boolean isImagePreviewed() {
+        //If Android's ugly dialog is displayed
+        if (gotIt.size() > 0){
+            gotIt.get(0).click();
+        }
         return photoPreview.isDisplayed();
     }
 
