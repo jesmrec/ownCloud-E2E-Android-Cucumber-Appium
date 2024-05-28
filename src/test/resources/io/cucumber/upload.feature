@@ -10,7 +10,6 @@ Feature: Upload new content
 
   Rule: Upload a single file
 
-    @smoke
     Scenario Outline: Upload a single file to root folder
       Given a file <name> exists in the device
       When Alice selects the option upload
