@@ -10,6 +10,7 @@ Feature: Upload new content
 
   Rule: Upload a single file
 
+    @smoke
     Scenario Outline: Upload a single file to root folder
       Given a file <name> exists in the device
       When Alice selects the option upload
@@ -34,3 +35,9 @@ Feature: Upload new content
       Examples:
         | name      | target  | path              | status   |
         | blank.jpg | upload1 | upload1/blank.jpg | uploaded |
+
+    Scenario: Upload a picture from the camera
+      When Alice selects the option Picture
+      And Alice takes a picture
+      Then Alice should see the following item
+        | IMG_ |

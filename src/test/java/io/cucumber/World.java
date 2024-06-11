@@ -6,6 +6,7 @@
 
 package io.cucumber;
 
+import android.CameraPage;
 import android.DetailsPage;
 import android.DocumentProviderPage;
 import android.FileListPage;
@@ -44,6 +45,7 @@ public class World {
     private SpacesPage spacesPage;
     private DocumentProviderPage documentProviderPage;
     private UploadsPage uploadsPage;
+    private CameraPage cameraPage;
 
     //APIs to call
     private ShareAPI shareAPI;
@@ -131,6 +133,12 @@ public class World {
         if (uploadsPage == null)
             uploadsPage = new UploadsPage();
         return uploadsPage;
+    }
+
+    public CameraPage getCameraPage() {
+        if (cameraPage == null)
+            cameraPage = new CameraPage();
+        return cameraPage;
     }
 
     public ShareAPI getShareAPI()

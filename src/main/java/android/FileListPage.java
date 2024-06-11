@@ -47,6 +47,9 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/upload_from_files_item_view")
     private WebElement uploadFiles;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/upload_from_camera_item_view")
+    private WebElement uploadPic;
+
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar")
     private List<WebElement> toolbar;
 
@@ -120,11 +123,15 @@ public class FileListPage extends CommonPage {
         createFolder.click();
     }
 
-    public void uploadFiles() {
+    public void uploadFiles(String operation) {
         Log.log(Level.FINE, "Starts: upload");
         fabButton.click();
         uploadOption.click();
-        uploadFiles.click();
+        if (operation.equals("upload")) {
+            uploadFiles.click();
+        } else {
+            uploadPic.click();
+        }
     }
 
     public void pushFile(String itemName) {

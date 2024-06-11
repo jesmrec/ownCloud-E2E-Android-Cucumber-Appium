@@ -164,11 +164,11 @@ public class FileListSteps {
         world.getInputNamePage().setItemName(targetFolder);
     }
 
-    @When("Alice selects the option upload")
-    public void user_selects_option_upload() {
+    @When("Alice selects the option {word}")
+    public void user_selects_option_upload(String operation) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().uploadFiles();
+        world.getFileListPage().uploadFiles(operation);
     }
 
     @When("Alice refreshes the list")
@@ -323,6 +323,13 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getFileListPage().openFakePrivateLink();
+    }
+
+    @When("Alice takes a picture")
+    public void takes_picture() {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getCameraPage().takePicture();
     }
 
     @Then("Alice should see {word} in the (file)list")
