@@ -117,7 +117,7 @@ public class DetailsPage extends CommonPage {
 
     public boolean isImagePreviewed() {
         //If Android's ugly dialog is displayed
-        if (gotIt.size() > 0){
+        if (!gotIt.isEmpty()){
             gotIt.get(0).click();
         }
         return photoPreview.isDisplayed();

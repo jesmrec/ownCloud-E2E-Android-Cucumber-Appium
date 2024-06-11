@@ -191,7 +191,7 @@ public class LinksSteps {
         Log.log(Level.FINE, "----STEP----: " + stepName);
         Log.log(Level.FINE, "Checking if item exists: " + itemName);
         assertTrue(world.getSharePage().isListPublicLinksEmpty());
-        assertTrue(world.getShareAPI().getLinksByDefault().size() == 0);
+        assertTrue(world.getShareAPI().getLinksByDefault().isEmpty());
         assertFalse(world.getSharePage().isItemInListPublicShares(itemName + " link"));
     }
 }

@@ -54,7 +54,7 @@ public class FilesAPI extends CommonAPI {
         Log.log(Level.FINE, "URL: " + url);
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"),
                 "textExample");
-        Request request = davRequest(url, "PUT", body, user);
+        Request request = davRequest(url, "PUT", body, userName);
         Response response = httpClient.newCall(request).execute();
         response.close();
     }

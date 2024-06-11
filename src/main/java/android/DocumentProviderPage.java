@@ -21,11 +21,11 @@ public class DocumentProviderPage extends CommonPage {
 
     public void openDownloadsInHamburger() {
         Log.log(Level.FINE, "Starts: Open Hamburguer in documents provider");
-        //For any unknown reason, first time files. Needs to do a second one.
+        //For any unknown reason, first time fails. Needs to do a second one.
         hamburger.click();
         findUIAutomatorText("Downloads").click();
-        hamburger.click();
-        findUIAutomatorText("Downloads").click();
+        //hamburger.click();
+        //findUIAutomatorText("Downloads").click();
     }
 
     public void selectFileToUpload(String fileName) {
