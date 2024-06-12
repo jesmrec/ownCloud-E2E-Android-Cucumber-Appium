@@ -31,8 +31,14 @@ public class SharePage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/editShareButton")
     private WebElement editPrivateShare;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/userOrGroupName")
+    private List<WebElement> shareeInfo;
+
     @AndroidFindBy(id = "com.owncloud.android:id/editPublicLinkButton")
     private WebElement editPublicLink;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/sharePublicLinksList")
+    private List<WebElement> linkInfo;
 
     @AndroidFindBy(id = "com.owncloud.android:id/unshareButton")
     private WebElement removePrivateShare;
@@ -81,11 +87,13 @@ public class SharePage extends CommonPage {
     }
 
     public boolean isItemInListPrivateShares(String sharee) {
-        return !findListUIAutomatorText(sharee).isEmpty();
+        return !shareeInfo.isEmpty() &&
+                !findListUIAutomatorText(sharee).isEmpty();
     }
 
     public boolean isItemInListPublicShares(String itemName) {
-        return !findListUIAutomatorText(itemName).isEmpty();
+        return !linkInfo.isEmpty() &&
+                !findListUIAutomatorText(itemName).isEmpty();
     }
 
     public boolean isListPublicLinksEmpty() {
