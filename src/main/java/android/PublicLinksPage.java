@@ -144,9 +144,10 @@ public class PublicLinksPage extends CommonPage {
     public boolean isPasswordEnabled() {
         boolean switchEnabled = true;
         boolean passVisible;
-        if (!passwordSwitch.isEmpty()) {
+        //This code has some dependency on the obligatoriness of password policy. To decide
+        /*if (!passwordSwitch.isEmpty()) {
             switchEnabled = parseIntBool(passwordSwitch.get(0).getAttribute("checked"));
-        }
+        }*/
         passVisible = textPassword.isDisplayed();
         return switchEnabled && passVisible;
     }

@@ -184,7 +184,7 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName = path.contains("/") ? browseToFile(path) : path;
         WebElement element = getElementFromFileList(fileName);
-        waitByTextVisible(5, fileName);
+        refreshList();
         longPress(element);
     }
 
