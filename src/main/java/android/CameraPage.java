@@ -18,6 +18,9 @@ public class CameraPage extends CommonPage {
     @AndroidFindBy(id = "com.android.camera2:id/shutter_button")
     private WebElement shutterButton;
 
+    @AndroidFindBy(id = "com.google.android.GoogleCamera:id/shutter_button")
+    private WebElement shutterButtonLegacy;
+
     @AndroidFindBy(id = "com.android.camera2:id/done_button")
     private WebElement doneButton;
 
