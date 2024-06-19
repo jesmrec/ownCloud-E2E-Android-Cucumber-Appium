@@ -129,7 +129,7 @@ public class FileListPage extends CommonPage {
         uploadOption.click();
         if (operation.equals("upload")) {
             uploadFiles.click();
-        } else {
+        } else if (operation.equals("picture")) {
             uploadPic.click();
         }
     }

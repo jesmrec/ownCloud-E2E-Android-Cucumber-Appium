@@ -36,8 +36,9 @@ Feature: Upload new content
         | name      | target  | path              | status   |
         | blank.jpg | upload1 | upload1/blank.jpg | uploaded |
 
+      @camera
     Scenario: Upload a picture from the camera
-      When Alice selects the option Picture
+      When Alice selects the option picture
       And Alice takes a picture
       Then Alice should see the following item
         | IMG_ |
