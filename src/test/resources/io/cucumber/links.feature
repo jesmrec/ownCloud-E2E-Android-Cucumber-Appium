@@ -60,7 +60,7 @@ Feature: Public Links
       | folder | Links5     | link5 |
       | file   | Links6.txt | link6 |
 
-  @nooc10
+  @nooc10 @expiration
   Scenario Outline: Create a public link with expiration date
     Given the following items have been created in Alice account
       | <type> | <item> |
@@ -126,7 +126,8 @@ Feature: Public Links
     And Alice has shared the folder Links15 by link
     When Alice selects to share the folder Links15
     And Alice edits the link on Links15 with the following fields
-      | expiration days | 1 |
+      | expiration days | 1       |
+      | name            | links15 |
     Then link should be created on Links15 with the following fields
       | expiration days | 1 |
 

@@ -190,6 +190,8 @@ public class PublicLinksPage extends CommonPage {
 
     public void submitLink() {
         Log.log(Level.FINE, "Starts: Submit public link");
+        //Depending on the screen size, the save button could need some scroll
+        swipe(0.50, 0.60, 0.50, 0.20);
         saveButton.click();
     }
 }
