@@ -12,10 +12,10 @@ import utils.log.Log;
 public class ShortcutDialogPage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/create_shortcut_dialog_url_value")
-    private WebElement shortcutName;
+    private WebElement shortcutURL;
 
     @AndroidFindBy(id = "com.owncloud.android:id/create_shortcut_dialog_name_file_value")
-    private WebElement shortcutURL;
+    private WebElement shortcutName;
 
     @AndroidFindBy(id = "com.owncloud.android:id/createButton")
     private WebElement submitShortcut;

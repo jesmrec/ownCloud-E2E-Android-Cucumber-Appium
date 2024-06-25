@@ -54,7 +54,7 @@ public class AndroidManager {
             Log.log(Level.SEVERE, "Driver could not be created: " + e.getMessage());
             e.printStackTrace();
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         Log.log(Level.FINE, "Device: " +
                 driver.getCapabilities().getCapability("deviceManufacturer") + " " +
