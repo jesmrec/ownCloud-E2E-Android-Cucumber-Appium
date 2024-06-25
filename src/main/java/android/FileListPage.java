@@ -50,6 +50,9 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/upload_from_camera_item_view")
     private WebElement uploadPic;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/fab_newshortcut")
+    private WebElement createShortcut;
+
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar")
     private List<WebElement> toolbar;
 
@@ -116,22 +119,30 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Loaded");
     }
 
-    public void createFolder() {
+    public void selectCreateFolder() {
         Log.log(Level.FINE, "Starts: create folder");
-        refreshList();
         fabButton.click();
         createFolder.click();
     }
 
-    public void uploadFiles(String operation) {
-        Log.log(Level.FINE, "Starts: upload");
+    public void selectUploadFiles() {
+        Log.log(Level.FINE, "Starts: upload file");
         fabButton.click();
         uploadOption.click();
-        if (operation.equals("upload")) {
-            uploadFiles.click();
-        } else if (operation.equals("picture")) {
-            uploadPic.click();
-        }
+        uploadFiles.click();
+    }
+
+    public void selectUploadPicture() {
+        Log.log(Level.FINE, "Starts: upload picture");
+        fabButton.click();
+        uploadOption.click();
+        uploadPic.click();
+    }
+
+    public void selectCreateShortcut() {
+        Log.log(Level.FINE, "Starts: create shortcut");
+        fabButton.click();
+        createShortcut.click();
     }
 
     public void pushFile(String itemName) {

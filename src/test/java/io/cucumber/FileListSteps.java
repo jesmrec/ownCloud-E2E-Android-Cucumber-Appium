@@ -41,6 +41,11 @@ public class FileListSteps {
         return type;
     }
 
+    @ParameterType("Upload File|Picture from Camera|Create Shortcut|Create Folder")
+    public String optionsFab(String type) {
+        return type;
+    }
+
     @Given("there is an item called {word} in the folder Downloads of the device")
     public void there_is_an_item_in_folder_downloads(String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
@@ -74,11 +79,18 @@ public class FileListSteps {
                     }
                     case ("audio"): {
                         world.getFilesAPI().pushMusic(name);
+                        break;
                     }
                     case ("video"): {
                         world.getFilesAPI().pushVideo(name);
+                        break;
                     }
-
+                    case ("shortcut"): {
+                        world.getFilesAPI().pushShortcut(name, userName);
+                        break;
+                    }
+                    default:
+                        break;
                 }
             }
         }
@@ -94,13 +106,6 @@ public class FileListSteps {
         for (int i = 0; i < files; i++) {
             world.getFilesAPI().pushFile(folderName + "/file_" + i + ".txt", "Alice");
         }
-    }
-
-    @When("Alice selects the option Create Folder")
-    public void user_selects_option_create_folder() {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().createFolder();
     }
 
     @When("Alice selects to set as av.offline the item {word}")
@@ -164,11 +169,30 @@ public class FileListSteps {
         world.getInputNamePage().setItemName(targetFolder);
     }
 
-    @When("Alice selects the option {word}")
+    @When("Alice selects the option {optionsFab}")
     public void user_selects_option_upload(String operation) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().uploadFiles(operation);
+        switch (operation){
+            case "Upload File": {
+                world.getFileListPage().selectUploadFiles();
+                break;
+            }
+            case "Picture from Camera":{
+                world.getFileListPage().selectUploadPicture();
+                break;
+            }
+            case "Create Folder":{
+                world.getFileListPage().selectCreateFolder();
+                break;
+            }
+            case "Create Shortcut":{
+                world.getFileListPage().selectCreateShortcut();
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     @When("Alice refreshes the list")
@@ -182,11 +206,7 @@ public class FileListSteps {
     public void user_accepts_deletion(String type) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        if (type.equals("file")){
-            world.getRemoveDialogPage().removeAllFiles();
-        } else { //folder
-            world.getRemoveDialogPage().removeAllFolders();
-        }
+        world.getRemoveDialogPage().removeAll();
     }
 
     @When("the {word} has been deleted remotely")
@@ -330,6 +350,33 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         world.getCameraPage().takePicture();
+    }
+
+    @When("Alice creates a web shortcut with the following fields")
+    public void creates_shortcut(DataTable table) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        List<List<String>> listItems = table.asLists();
+        for (List<String> rows : listItems) {
+            String name = rows.get(0);
+            String url = rows.get(1);
+            world.getShortcutDialogPage().typeURLName(name, url);
+            world.getShortcutDialogPage().submitShortcut();
+        }
+    }
+
+    @When ("Alice opens the shortcut {word}.url")
+    public void opens_shortcut(String name) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getFileListPage().downloadAction(name+".url");
+    }
+
+    @When ("Alice opens the link")
+    public void opens_link() {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        world.getShortcutDialogPage().openShortcut();
     }
 
     @Then("Alice should see {word} in the (file)list")
@@ -544,5 +591,12 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         assertTrue(world.getFileListPage().isItemOpened(itemType, itemName));
+    }
+
+    @Then("Alice should see the browser")
+    public void bowser_displayed() {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.getShortcutDialogPage().isBrowserOpen());
     }
 }

@@ -13,7 +13,7 @@ Feature: Upload new content
     @smoke
     Scenario Outline: Upload a single file to root folder
       Given a file <name> exists in the device
-      When Alice selects the option upload
+      When Alice selects the option Upload File
       And Alice selects <name> to upload
       Then Alice should see <name> in the filelist
       And Alice should see <name> as <status> in the uploads view
@@ -27,7 +27,7 @@ Feature: Upload new content
         | folder | <target> |
       And a file <name> exists in the device
       And Alice browses into <target>
-      When Alice selects the option upload
+      When Alice selects the option Upload File
       And Alice selects <name> to upload
       Then Alice should see <path> in the filelist
       And Alice should see <name> as <status> in the uploads view
@@ -38,7 +38,7 @@ Feature: Upload new content
 
       @camera
     Scenario: Upload a picture from the camera
-      When Alice selects the option picture
+      When Alice selects the option Picture from Camera
       And Alice takes a picture
       Then Alice should see the following item
         | IMG_ |

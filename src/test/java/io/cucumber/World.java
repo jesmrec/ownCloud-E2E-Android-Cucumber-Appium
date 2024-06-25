@@ -18,6 +18,7 @@ import android.PublicLinksPage;
 import android.RemoveDialogPage;
 import android.SearchShareePage;
 import android.SharePage;
+import android.ShortcutDialogPage;
 import android.SpacesPage;
 import android.UploadsPage;
 
@@ -46,6 +47,7 @@ public class World {
     private DocumentProviderPage documentProviderPage;
     private UploadsPage uploadsPage;
     private CameraPage cameraPage;
+    private ShortcutDialogPage shortcutDialogPage;
 
     //APIs to call
     private ShareAPI shareAPI;
@@ -139,6 +141,12 @@ public class World {
         if (cameraPage == null)
             cameraPage = new CameraPage();
         return cameraPage;
+    }
+
+    public ShortcutDialogPage getShortcutDialogPage() {
+        if (shortcutDialogPage == null)
+            shortcutDialogPage = new ShortcutDialogPage();
+        return shortcutDialogPage;
     }
 
     public ShareAPI getShareAPI()
