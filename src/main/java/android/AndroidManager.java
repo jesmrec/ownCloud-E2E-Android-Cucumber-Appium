@@ -54,7 +54,7 @@ public class AndroidManager {
             Log.log(Level.SEVERE, "Driver could not be created: " + e.getMessage());
             e.printStackTrace();
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         Log.log(Level.FINE, "Device: " +
                 driver.getCapabilities().getCapability("deviceManufacturer") + " " +
@@ -89,6 +89,7 @@ public class AndroidManager {
                 "com.owncloud.android.ui.activity.SplashActivity");
         capabilities.setCapability("appWaitPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
+        capabilities.setCapability("appium:appWaitForLaunch","true");
         capabilities.setCapability("autoGrantPermissions", true);
         capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", true);

@@ -39,16 +39,17 @@ public class LoginPage extends CommonPage {
     @AndroidFindBy(id = "android:id/button1")
     private WebElement acceptHttp;
 
-    private final String server = System.getProperty("server");
+    private String server;
 
     public LoginPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public void typeURL() {
+    public void typeURL(String server) {
         Log.log(Level.FINE, "Starts: Type URL.");
         urlServer.get(0).sendKeys(server);
+        this.server = server;
         checkServerButton.click();
     }
 
