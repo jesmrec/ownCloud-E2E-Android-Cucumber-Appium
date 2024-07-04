@@ -183,14 +183,14 @@ public class CommonPage {
 
     }
 
-    public void tap(int startx, int starty) {
+    public void tap(int X, int Y) {
+        Log.log(Level.FINE, "Starts: tap on X: " + X + ", Y: " + Y);
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-        Sequence tap = new Sequence(finger, 1);
-        tap.addAction(finger.createPointerMove(Duration.ofSeconds(1), PointerInput.Origin.viewport(),
-                startx, starty));
-        tap.addAction(finger.createPointerDown(0));
-        tap.addAction(finger.createPointerUp(0));
-        driver.perform(Arrays.asList(tap));
+        Sequence tapSeq = new Sequence(finger, 1);
+        tapSeq.addAction(finger.createPointerMove(Duration.ofSeconds(1), PointerInput.Origin.viewport(), X, Y))
+                .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Arrays.asList(tapSeq));
     }
 
     /* Browsing methods used in several pages */

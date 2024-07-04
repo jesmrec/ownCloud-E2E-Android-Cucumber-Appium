@@ -1,5 +1,6 @@
 package android;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -15,12 +16,6 @@ public class CameraPage extends CommonPage {
     @AndroidFindBy(id = "android:id/ok")
     private List<WebElement> gotIt;
 
-    @AndroidFindBy(id = "com.android.camera2:id/shutter_button")
-    private WebElement shutterButton;
-
-    @AndroidFindBy(id = "com.google.android.GoogleCamera:id/shutter_button")
-    private WebElement shutterButtonLegacy;
-
     @AndroidFindBy(id = "com.android.camera2:id/done_button")
     private WebElement doneButton;
 
@@ -31,7 +26,18 @@ public class CameraPage extends CommonPage {
 
     public void takePicture() {
         Log.log(Level.FINE, "Starts: taking picture from camera");
-        shutterButton.click();
+        String cameraViewId = "com.android.camera2:id/activity_root_view";
+        waitById(5, cameraViewId);
+        clickShutterByCoordinate();
         doneButton.click();
+    }
+
+    private void clickShutterByCoordinate() {
+        Log.log(Level.FINE, "Starts: Clicking on shutter coordinate");
+        //Clicking in the shutter by coordinate because id changes in Android emus and versions
+        Dimension size = driver.manage().window().getSize();
+        double X = (double) (size.width) / 2;
+        double Y = (double) (size.height) * 0.90;
+        tap((int) X, (int) Y);
     }
 }
