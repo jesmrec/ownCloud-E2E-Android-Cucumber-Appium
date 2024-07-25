@@ -14,7 +14,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -45,11 +44,9 @@ public class CommonPage {
     private WebElement toRoot;
 
     protected static AndroidDriver driver = AndroidManager.getDriver();
-    protected static Actions actions;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
     public CommonPage() {
-        actions = new Actions(driver);
     }
 
     /* Finders */

@@ -36,7 +36,7 @@ Feature: Upload new content
         | name      | target  | path              | status   |
         | blank.jpg | upload1 | upload1/blank.jpg | uploaded |
 
-      @camera
+    @camera @noci
     Scenario: Upload a picture from the camera
       When Alice selects the option Picture from Camera
       And Alice takes a picture
