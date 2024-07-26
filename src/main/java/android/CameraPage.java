@@ -27,7 +27,7 @@ public class CameraPage extends CommonPage {
     public void takePicture() {
         Log.log(Level.FINE, "Starts: taking picture from camera");
         String cameraViewId = "com.android.camera2:id/activity_root_view";
-        waitById(5, cameraViewId);
+        waitById(WAIT_TIME, cameraViewId);
         clickShutterByCoordinate();
         doneButton.click();
     }

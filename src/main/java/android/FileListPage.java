@@ -102,7 +102,7 @@ public class FileListPage extends CommonPage {
 
     public void refreshList() {
         Log.log(Level.FINE, "Refresh list");
-        waitById(5, bottomBar);
+        waitById(WAIT_TIME, bottomBar);
         swipe(0.50, 0.30, 0.50, 0.80);
     }
 
@@ -111,7 +111,7 @@ public class FileListPage extends CommonPage {
         String listFiles_id = "com.owncloud.android:id/list_root";
         try {
             //if list of files is not loaded, we should swipe to get the file list
-            waitById(5, listFiles_id);
+            waitById(WAIT_TIME, listFiles_id);
         } catch (Exception e) {
             Log.log(Level.FINE, "Swipe needed to get the list");
             refreshList();
@@ -177,7 +177,6 @@ public class FileListPage extends CommonPage {
 
     public boolean isItemInList(String itemName) {
         Log.log(Level.FINE, "Starts: Check if item is in list: " + itemName);
-        waitById(5, bottomBar);
         return !findListUIAutomatorText(itemName).isEmpty();
     }
 
@@ -225,7 +224,7 @@ public class FileListPage extends CommonPage {
 
     public void openAvOffhortcut() {
         Log.log(Level.FINE, "Starts: open av offline shortcut");
-        waitByTextInvisible(5, "Download enqueued");
+        waitByTextInvisible(WAIT_TIME, "Download enqueued");
         avOffShortcut.click();
     }
 
