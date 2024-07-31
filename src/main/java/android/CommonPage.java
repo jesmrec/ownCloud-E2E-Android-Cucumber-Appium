@@ -158,10 +158,10 @@ public class CommonPage {
         int endX = (int) (size.width * endx);
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence swipe = new Sequence(finger, 1);
-        swipe.addAction(finger.createPointerMove(Duration.ofMillis(0),
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(1000),
                 PointerInput.Origin.viewport(), startX, startY));
         swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-        swipe.addAction(finger.createPointerMove(Duration.ofMillis(700),
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(1000),
                 PointerInput.Origin.viewport(), endX, endY));
         swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(Arrays.asList(swipe));
