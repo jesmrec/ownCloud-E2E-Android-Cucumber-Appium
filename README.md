@@ -35,7 +35,7 @@ file](https://github.com/owncloud/android-scenario-testing/archive/master.zip)
 
 Different requirements:
 
-* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium. Last Appium review: v2.0.0-beta.66
+* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium. Last Appium review: v2.11.2 (2024/07/10)
 
 * At least, one device/emulator attached and reachable via adb. Check command
 `adb devices` to ensure `Appium` will get the device reference to
@@ -54,8 +54,8 @@ First, build the [app](https://github.com/owncloud/android) from the expected br
 ```
 gsed -i 's/<bool name="wizard_enabled">true<\/bool>/<bool name="wizard_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
 gsed -i 's/<bool name="release_notes_enabled">true<\/bool>/<bool name="release_notes_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
-gsed -i '325,326d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
-gsed -i '332,364d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
+gsed -i '375,376d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
+gsed -i '380,414d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
 ```
 These instructions:
 
@@ -90,7 +90,7 @@ To execute all tests but the ignored ones (or any other tagged ones):
 
 	export UDID_DEVICE=emulator-5554
 	export OC_SERVER_URL=https://my.owncloud.server
-	export APPIUM_URL=localhost:4723/wd/hub
+	export APPIUM_URL=localhost:4723
 	./executeTests -t "not @ignore"
 
 The execution will display step by step how the scenario is being executed.
@@ -135,6 +135,6 @@ Up to date: 15/Feb/2024
 |||
 |:-- |:-: |
 | [Cucumber version](https://cucumber.io/docs/installation/java/) | 7.14.0 |
-| [Appium version](https://github.com/appium/appium/releases)| 2.5.1|
+| [Appium version](https://github.com/appium/appium/releases)| 2.11.2|
 | [Appium uiautomator2 driver version](https://github.com/appium/appium-uiautomator2-driver/releases)| 2.45.1
 | [Java client version](https://github.com/appium/java-client/releases) | 9.1.0 |
