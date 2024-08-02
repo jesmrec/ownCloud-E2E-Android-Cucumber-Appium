@@ -39,7 +39,7 @@ public class SearchShareePage extends CommonPage {
         //Clicking on screen... very bad but no other solution since results are presented
         //in another provider
         int startX = 500;
-        int startY = 470;
+        int startY = 270;
         tap(startX, startY);
     }
 
