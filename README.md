@@ -130,7 +130,7 @@ repository, which contains the base skeleton to start working.
 
 ## Versioning
 
-Up to date: 15/Feb/2024
+Up to date: 02/Aug/2024
 
 |||
 |:-- |:-: |

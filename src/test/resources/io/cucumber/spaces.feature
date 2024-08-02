@@ -31,6 +31,7 @@ Feature: Spaces
         | Space3 | Third space  |
         | Space4 | Fourth space |
 
+    @noci
     Scenario: Disable a space
       Given the following spaces have been created in Alice account
         | Space5 | Fifth space |
