@@ -59,9 +59,6 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/bottom_nav_view")
     WebElement bottomBar;
 
-    @AndroidFindBy(id = "com.owncloud.android:id/list_root")
-    private WebElement listFiles;
-
     @AndroidFindBy(id = "com.owncloud.android:id/file_list_constraint_layout")
     private WebElement fileCell;
 
@@ -106,17 +103,9 @@ public class FileListPage extends CommonPage {
         swipe(0.50, 0.30, 0.50, 0.80);
     }
 
-    public void waitToload(String itemName) {
-        Log.log(Level.FINE, "Waiting to load");
-        String listFiles_id = "com.owncloud.android:id/list_root";
-        try {
-            //if list of files is not loaded, we should swipe to get the file list
-            waitById(WAIT_TIME, listFiles_id);
-        } catch (Exception e) {
-            Log.log(Level.FINE, "Swipe needed to get the list");
-            refreshList();
-        }
-        Log.log(Level.FINE, "Loaded");
+    public void waitToload() {
+        waitById(WAIT_TIME, bottomBar);
+        refreshList();
     }
 
     public void selectCreateFolder() {
@@ -161,7 +150,7 @@ public class FileListPage extends CommonPage {
 
     public void executeOperation(String operation, String itemName) {
         Log.log(Level.FINE, "Starts: execute operation: " + operation + " " + itemName);
-        waitToload(itemName);
+        waitToload();
         selectItemList(itemName);
         selectOperation(operation);
     }
@@ -194,7 +183,6 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName = path.contains("/") ? browseToFile(path) : path;
         WebElement element = getElementFromFileList(fileName);
-        refreshList();
         longPress(element);
     }
 
@@ -250,12 +238,14 @@ public class FileListPage extends CommonPage {
     }
 
     public boolean isItemMarkedAsAvOffline(String path) {
+        waitToload();
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(avofflineoption_id).isEmpty();
     }
 
     public boolean isItemMarkedAsUnAvOffline(String path) {
+        waitToload();
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(unavofflineoption_id).isEmpty();

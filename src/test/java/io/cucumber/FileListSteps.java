@@ -494,7 +494,6 @@ public class FileListSteps {
     public void user_should_not_see_item_marked_as_avOffline(String type, String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().waitToload(itemName);
         assertTrue(world.getFileListPage().isItemMarkedAsUnAvOffline(itemName));
     }
 
