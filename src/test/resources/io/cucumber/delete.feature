@@ -20,3 +20,18 @@ Feature: Delete item
       | type   | name           |
       | folder | Deletefolder   |
       | file   | Deletefile.txt |
+
+  Scenario: Delete several shows correct message
+    Given the following items have been created in Alice account
+      | file | delete1.txt |
+      | file | delete2.txt |
+      | file | delete3.txt |
+      | file | delete4.txt |
+      | file | delete5.txt |
+    When Alice long presses over delete1.txt
+    When Alice multiselects the following items
+      | delete2.txt |
+      | delete3.txt |
+    And Alice selects to Delete
+    Then Alice should see the following message
+      | Do you really want to remove these 3 items? |  |

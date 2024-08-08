@@ -28,6 +28,7 @@ public class FileListPage extends CommonPage {
     private final String unavofflineoption_id = "com.owncloud.android:id/action_set_unavailable_offline";
     private final String downloadoption_id = "com.owncloud.android:id/action_download_file";
     private final String syncoption_id = "com.owncloud.android:id/action_sync_file";
+    private final String deleteoption_id = "com.owncloud.android:id/action_remove_file";
 
     @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.owncloud.android:id/action_mode_close_button\");")
     private WebElement closeSelectionMode;
@@ -189,10 +190,15 @@ public class FileListPage extends CommonPage {
     public void selectOperation(String operationName) {
         if (operationName.equals("share")) {  //placed in toolbar
             findId(shareoption_id).click();
-        } else {
-            Log.log(Level.FINE, "Operation: " + operationName + " placed in menu");
-            selectOperationMenu(operationName);
+            return;
         }
+        if (operationName.equals("Delete")) { //placed in toolbar when multiselection
+            findId(deleteoption_id).click();
+            return;
+        }
+        Log.log(Level.FINE, "Operation: " + operationName + " placed in menu");
+        selectOperationMenu(operationName);
+
     }
 
     public void longPress(String itemName) {
