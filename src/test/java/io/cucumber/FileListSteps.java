@@ -155,7 +155,6 @@ public class FileListSteps {
             throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        //if (world.getAuthAPI().checkAuthMethod().equals("OIDC")) {
         if (world.getAuthAPI().isOidc()) {
             world.getFolderPickerPage().selectSpace(spaceName);
         }

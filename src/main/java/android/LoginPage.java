@@ -48,6 +48,8 @@ public class LoginPage extends CommonPage {
 
     public void typeURL(String server) {
         Log.log(Level.FINE, "Starts: Type URL.");
+        //App takes a while in charging
+        waitById(10, urlServer.get(0));
         urlServer.get(0).sendKeys(server);
         this.server = server;
         checkServerButton.click();

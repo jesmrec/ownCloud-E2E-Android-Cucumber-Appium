@@ -24,8 +24,6 @@ public class DocumentProviderPage extends CommonPage {
         //For any unknown reason, first time fails. Needs to do a second one.
         hamburger.click();
         findUIAutomatorText("Downloads").click();
-        //hamburger.click();
-        //findUIAutomatorText("Downloads").click();
     }
 
     public void selectFileToUpload(String fileName) {
