@@ -31,7 +31,6 @@ Feature: Spaces
         | Space3 | Third space  |
         | Space4 | Fourth space |
 
-    @noci
     Scenario: Disable a space
       Given the following spaces have been created in Alice account
         | Space5 | Fifth space |
@@ -52,6 +51,7 @@ Feature: Spaces
         | Space9 | Nineth space  |
       And Alice selects the spaces view
       When Alice filters the list using Space8
+      And Alice refreshes the list
       Then Alice should see the following spaces
         | Space8 | Eighth space |
       But Alice should not see the following spaces

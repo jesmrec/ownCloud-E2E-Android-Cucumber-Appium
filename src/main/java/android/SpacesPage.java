@@ -58,7 +58,6 @@ public class SpacesPage extends CommonPage {
             if (!description.equals(spacesInDevice.get(name))) {
                 return false;
             }
-            ;
         }
         return true;
     }
