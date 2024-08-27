@@ -236,7 +236,7 @@ public class FileListPage extends CommonPage {
     }
 
     public boolean isFileMarkedAsDownloaded(String path) {
-        Log.log(Level.FINE, "Check if file is downloaded: " + path);
+        Log.log(Level.FINE, "Starts: Check if file is downloaded: " + path);
         selectItemList(path);
         List<WebElement> downloadOptions = findListId(downloadoption_id);
         List<WebElement> syncOptions = findListId(syncoption_id);
@@ -244,6 +244,7 @@ public class FileListPage extends CommonPage {
     }
 
     public boolean isItemMarkedAsAvOffline(String path) {
+        Log.log(Level.FINE, "Starts: Check is file is av. offline: " + path);
         waitToload();
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
@@ -251,6 +252,7 @@ public class FileListPage extends CommonPage {
     }
 
     public boolean isItemMarkedAsUnAvOffline(String path) {
+        Log.log(Level.FINE, "Starts: Check is file is unav. offline: " + path);
         waitToload();
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
