@@ -45,6 +45,7 @@ public class SpacesPage extends CommonPage {
     public boolean areAllSpacesVisible(List<List<String>> spaces) {
         Log.log(Level.FINE, "Starts: check all spaces are visible");
         HashMap<String, String> spacesInDevice = new HashMap<>();
+        waitById(WAIT_TIME, spaceNameId);
         for (WebElement individualSpace : deviceSpacesList) {
             String spaceName = individualSpace.findElement(By.id(spaceNameId))
                     .getAttribute("text").trim();
