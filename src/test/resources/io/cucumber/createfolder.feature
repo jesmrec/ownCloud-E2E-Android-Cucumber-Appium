@@ -21,7 +21,7 @@ Feature: Create a new folder
     When Alice browses into create2
     And Alice selects the option Create Folder
     And Alice sets create3 as new name
-    Then Alice should see create3 in the filelist
+    Then Alice should see create2/create3 in the filelist
 
   Scenario: Create a new folder with an existing name
     Given the following items have been created in Alice account

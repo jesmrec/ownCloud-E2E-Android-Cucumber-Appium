@@ -27,6 +27,7 @@ Feature: Public Links
       | folder | Links1     | link1 |
       | file   | Links2.txt | link2 |
 
+  @nooc10
   Scenario Outline: Create a public link with custom password
     Given the following items have been created in Alice account
       | <type> | <item> |
