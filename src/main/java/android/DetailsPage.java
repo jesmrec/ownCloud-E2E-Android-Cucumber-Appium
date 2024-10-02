@@ -8,7 +8,10 @@ package android;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -43,6 +46,12 @@ public class DetailsPage extends CommonPage {
 
     @AndroidFindBy(id = "com.owncloud.android:id/media_controller")
     private WebElement mediaControls;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/currentTimeText")
+    private WebElement currentTime;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/totalTimeText")
+    private WebElement totalTime;
 
     @AndroidFindBy(id = "com.owncloud.android:id/photo_view")
     private WebElement photoPreview;
@@ -117,7 +126,7 @@ public class DetailsPage extends CommonPage {
 
     public boolean isImagePreviewed() {
         //If Android's ugly dialog is displayed
-        if (!gotIt.isEmpty()){
+        if (!gotIt.isEmpty()) {
             gotIt.get(0).click();
         }
         return photoPreview.isDisplayed();
@@ -126,6 +135,9 @@ public class DetailsPage extends CommonPage {
     public boolean isAudioPreviewed() {
         boolean isArtDisplayed = visualArea.isDisplayed();
         boolean areControlsDisplayed = mediaControls.isDisplayed();
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIME));
+        wait1.until(ExpectedConditions.textToBePresentInElement(totalTime, "00:02"));
+        wait1.until(ExpectedConditions.textToBePresentInElement(currentTime, "00:02"));
         return isArtDisplayed && areControlsDisplayed;
     }
 
