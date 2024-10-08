@@ -74,19 +74,19 @@ public class FileListSteps {
                         break;
                     }
                     case ("image"): {
-                        world.getFilesAPI().pushPic(name);
+                        world.getFilesAPI().pushFileByMime(name, "image/jpg");
                         break;
                     }
                     case ("audio"): {
-                        world.getFilesAPI().pushMusic(name);
+                        world.getFilesAPI().pushFileByMime(name, "audio/mpeg3");
                         break;
                     }
                     case ("video"): {
-                        world.getFilesAPI().pushVideo(name);
+                        world.getFilesAPI().pushFileByMime(name, "video/mp4");
                         break;
                     }
                     case ("shortcut"): {
-                        world.getFilesAPI().pushShortcut(name, userName);
+                        world.getFilesAPI().pushFileByMime(name, "text/uri-list");
                         break;
                     }
                     default:
