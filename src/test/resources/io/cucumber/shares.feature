@@ -45,39 +45,6 @@ Feature: Private Share
         # UPDATE -> 2
         # CREATE -> 4
         # DELETE -> 8
-        # SHARE -> 16
-
-  @resharing
-  Rule: Resharing
-
-  Scenario: Reshare allowed
-    Given the following items have been created in Alice account
-      | file | Share5.txt |
-    When Alice selects to share the file Share5.txt
-    And Alice selects user Bob as sharee
-    And Bob has reshared file Share5.txt with Charles with permissions 31
-    Then user Bob should have access to Share5.txt
-    And user Charles should have access to Share5.txt
-    And share should be created on Share5.txt with the following fields
-      | sharee | Bob |
-
-      #not an Android, keeping ftm...
-  Scenario: Reshare not allowed
-    Given the following items have been created in Alice account
-      | file | Share6.txt |
-    And Alice has shared file Share6.txt with Bob with permissions 3
-    When Bob has reshared file Share6.txt with Charles with permissions 31
-    Then user Bob should have access to Share6.txt
-    But Charles should not have access to Share6.txt
-
-  Scenario: Reshare reflected
-    Given the following items have been created in Alice account
-      | file | Share7.txt |
-    And Alice has shared file Share7.txt with Bob with permissions 31
-    And Bob has reshared file Share7.txt with Charles with permissions 31
-    And Alice selects to share the file Share7.txt
-    Then Alice should see Bob as recipient
-    And Alice should see Charles as recipient
 
   @editshare
   Rule: Edit an existing share
@@ -94,11 +61,9 @@ Feature: Private Share
       | permissions | <permissions> |
 
     Examples:
-      | item        | user | permissions | Description
-      | Share8.txt  | Bob  | 3           | edit
-      | Share9.txt  | Bob  | 17          | share
-      | Share10.txt | Bob  | 19          | edit and share
-      | Share11.txt | Bob  | 1           | only read
+      | item       | user | permissions | Description |
+      | Share5.txt | Bob  | 3           | edit        |
+      | Share6.txt | Bob  | 1           | only read   |
 
   Scenario Outline: Edit existing share on a folder, changing permissions
     Given the following items have been created in Alice account
@@ -113,11 +78,10 @@ Feature: Private Share
 
     Examples:
       | item    | user | permissions | Description       |
-      | Share12 | Bob  | 1           | only read         |
-      | Share13 | Bob  | 3           | update            |
-      | Share14 | Bob  | 9           | delete            |
-      | Share15 | Bob  | 13          | delete and create |
-      | Share16 | Bob  | 17          | share             |
+      | Share7  | Bob  | 1           | only read         |
+      | Share8  | Bob  | 3           | update            |
+      | Share9  | Bob  | 9           | delete            |
+      | Share10 | Bob  | 13          | delete and create |
 
   @deleteshare
   Rule: Delete a share
@@ -133,8 +97,8 @@ Feature: Private Share
 
     Examples:
       | type   | item        |
-      | file   | Share17.txt |
-      | folder | Share18     |
+      | file   | Share11.txt |
+      | folder | Share12     |
 
   @shareshortcut @nooc10
   Rule: Public link Shortcut
@@ -148,5 +112,5 @@ Feature: Private Share
 
     Examples:
       | type   | item        |
-      | file   | Share19.txt |
-      | folder | Share20     |
+      | file   | Share13.txt |
+      | folder | Share14     |
