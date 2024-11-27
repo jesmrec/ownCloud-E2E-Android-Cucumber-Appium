@@ -104,10 +104,10 @@ public class FileListPage extends CommonPage {
         swipe(0.50, 0.30, 0.50, 0.80);
     }
 
-    public void waitToload() {
-        waitById(WAIT_TIME, bottomBar);
+    /*public void waitToload() {
+        //waitById(WAIT_TIME, bottomBar);
         refreshList();
-    }
+    }*/
 
     public void selectCreateFolder() {
         Log.log(Level.FINE, "Starts: create folder");
@@ -151,7 +151,7 @@ public class FileListPage extends CommonPage {
 
     public void executeOperation(String operation, String itemName) {
         Log.log(Level.FINE, "Starts: execute operation: " + operation + " " + itemName);
-        waitToload();
+        refreshList();
         selectItemList(itemName);
         selectOperation(operation);
     }
@@ -245,7 +245,7 @@ public class FileListPage extends CommonPage {
 
     public boolean isItemMarkedAsAvOffline(String path) {
         Log.log(Level.FINE, "Starts: Check is file is av. offline: " + path);
-        waitToload();
+        refreshList();
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(avofflineoption_id).isEmpty();
@@ -253,7 +253,7 @@ public class FileListPage extends CommonPage {
 
     public boolean isItemMarkedAsUnAvOffline(String path) {
         Log.log(Level.FINE, "Starts: Check is file is unav. offline: " + path);
-        waitToload();
+        refreshList();
         selectItemList(path);
         findUIAutomatorDescription("More options").click();
         return findListId(unavofflineoption_id).isEmpty();
