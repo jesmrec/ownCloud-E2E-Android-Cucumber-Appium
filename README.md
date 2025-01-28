@@ -35,7 +35,7 @@ file](https://github.com/owncloud/android-scenario-testing/archive/master.zip)
 
 Different requirements:
 
-* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium. Last Appium review: v2.11.2 (2024/07/10)
+* `Appium` instance running and reachable. Check this [link](https://appium.io/docs/en/about-appium/getting-started/?lang=en) to get futher info about Appium. 
 
 * At least, one device/emulator attached and reachable via adb. Check command
 `adb devices` to ensure `Appium` will get the device reference to
@@ -49,29 +49,21 @@ pointing to the Android SDK folder
 
 ### 1. Build app
 
-First, build the [app](https://github.com/owncloud/android) from the expected branch/commit to get the test object. Before building, execute the following commands in the app's folder:
+First, build the [app](https://github.com/owncloud/android) from the expected branch/commit to get the test object. 
 
-```
-gsed -i 's/<bool name="wizard_enabled">true<\/bool>/<bool name="wizard_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
-gsed -i 's/<bool name="release_notes_enabled">true<\/bool>/<bool name="release_notes_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
-gsed -i '375,376d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
-gsed -i '380,414d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
-```
-These instructions:
+Since the app [does not have a test variant yet](https://github.com/owncloud/android/issues/3791), you'll find the way to build it in the [buildapk](https://github.com/owncloud/android-scenario-testing/tree/master/buildapk) folder of the current repository.
+
+The [buildAPK](https://github.com/owncloud/android-scenario-testing/blob/master/buildapk/buildAPK.sh) script:
 
 - will disable welcome wizard
 - will disable the release notes
 - will set basic auth as forced authentication method, required to execute the test suites
+- will build a release-signed apk with the given keystore path and pass (check script variables)
+- will move the final artifact to the correct place (`/src/test/resources` folder in the current structure)
 
-App is built via Android Studio or CLI (`gradlew`)
+As commented, check the script's variables for the proper setup in your own environment or CI system.
 
-After building, the signed `ownCloud.apk` artifact is located in:
-
-`owncloudApp/build/outputs/apk/original/release`
-
-move the `owncloud.apk` to the correct place in the current tests project: `/src/test/resources`
-
-(in the current repository will be always an `owncloud.apk` file located in the correct place.)
+In the current repository there will be always an `owncloud.apk` file located in `/src/test/resources`, as example or fallback.
 
 ### 2. Execute tests
 
@@ -79,8 +71,8 @@ The script `executeTests` will launch the tests. The following environment varia
 
 		$OC_SERVER_URL (mandatory): URL of ownCloud server to test against
 		$APPIUM_URL (optional): Appium server URL.
-			If Appium Server is not specified, will be used "localhost:4723/wd/hub"
-		$UDID_DEVICE (optional): ID of the device/simulator to execute the tests in.
+			If Appium Server is not specified, will be used "localhost:4723"
+		$UDID_DEVICE (optional): ID of the device/simulator to execute the tests onto.
 			This ID could be get by executing  `adb devices`
 
 The script needs some parameters. Check help `executeTests -h`
@@ -88,12 +80,14 @@ The script needs some parameters. Check help `executeTests -h`
 
 To execute all tests but the ignored ones (or any other tagged ones):
 
-	export UDID_DEVICE=emulator-5554
-	export OC_SERVER_URL=https://my.owncloud.server
-	export APPIUM_URL=localhost:4723
-	./executeTests -t "not @ignore"
+		export UDID_DEVICE=emulator-5554
+		export OC_SERVER_URL=https://my.owncloud.server
+		export APPIUM_URL=localhost:4723
+		./executeTests -t "not @ignore"
 
 The execution will display step by step how the scenario is being executed.
+
+** the `not @ignore` option is set by default
 
 More info in [Cucumber reference](https://cucumber.io/docs/cucumber/api/)
 
@@ -110,23 +104,20 @@ This command will execute tests that are not ignored and suitable for oCIS. If t
 `./executeTests -t "not @ignore and not @nooc10"`<br>
 This command will execute tests that are not ignored and suitable for oC10. If this command is run over an oCIS instance, some tests will fail.
 
+Every [feature file](https://github.com/owncloud/android-scenario-testing/tree/master/src/test/resources/io/cucumber), and every rule inside every feature file is also tagged, for isolated execution just in case. 
 
 ## Results
 
 In the folder `target`, you will find a report with the execution results in html and json formats.
 
-Besides of that, by setting the `cucumber.properties` file allow to integrate reports with [Cucumber reports](https://cucumber.io/docs/cucumber/reporting/?lang=java). An account in such platform (integrated with GitHub) is enough to use it. A new env variable must be set in advance in order to send reports to the platform. Token is provided in the Cucumber Reports account for every collection:
+Besides of that, by setting the `cucumber.properties` file, a nicer final report is integrated with [Cucumber reports](https://cucumber.io/docs/cucumber/reporting/?lang=java). An account in such platform (integrated with GitHub) is enough to use it. A new env variable must be set in advance in order to send reports to the platform. Token is provided in the Cucumber Reports account for every collection:
 
 	export CUCUMBER_PUBLISH_TOKEN=d97...
 
-Also, in `cucumber.properties` file with the following values (disabled by default):
+Also, add in `cucumber.properties` file the following key-values (disabled by default):
 
 	cucumber.publish.quiet=false
 	cucumber.publish.enabled=true
-
-**Note**: This repository was forked from [Cucumber-java
-skeleton](https://github.com/cucumber/cucumber-java-skeleton)
-repository, which contains the base skeleton to start working.
 
 ## Versioning
 
@@ -138,3 +129,7 @@ Up to date: 02/Aug/2024
 | [Appium version](https://github.com/appium/appium/releases)| 2.11.2|
 | [Appium uiautomator2 driver version](https://github.com/appium/appium-uiautomator2-driver/releases)| 3.7.7|
 | [Java client version](https://github.com/appium/java-client/releases) | 9.2.2 |
+
+**Note**: This repository was forked from [Cucumber-java
+skeleton](https://github.com/cucumber/cucumber-java-skeleton)
+repository, which contains the base skeleton to start working.
