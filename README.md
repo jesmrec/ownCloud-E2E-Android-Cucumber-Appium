@@ -128,7 +128,7 @@ Up to date: 03/Feb/2025
 | [Cucumber version](https://cucumber.io/docs/installation/java/) | 7.21.0 |
 | [Appium version](https://github.com/appium/appium/releases)| 2.15.0|
 | [Appium uiautomator2 driver version](https://github.com/appium/appium-uiautomator2-driver/releases)| 3.10.0|
-| [Java client version](https://github.com/appium/java-client/releases) | 9.4.0 |
+| [Java client version](https://github.com/appium/java-client/releases) | 9.2.2 |
 
 **Note**: This repository was forked from [Cucumber-java
 skeleton](https://github.com/cucumber/cucumber-java-skeleton)
