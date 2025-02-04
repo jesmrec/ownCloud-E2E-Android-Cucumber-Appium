@@ -87,17 +87,17 @@ public class AndroidManager {
                 LocProperties.getProperties().getProperty("appPackage"));
         capabilities.setCapability("appium:appActivity",
                 "com.owncloud.android.ui.activity.SplashActivity");
-        capabilities.setCapability("appWaitPackage",
+        capabilities.setCapability("appium:appWaitPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
         capabilities.setCapability("appium:appWaitForLaunch","true");
-        capabilities.setCapability("autoGrantPermissions", true);
-        capabilities.setCapability("unicodeKeyboard", true);
-        capabilities.setCapability("resetKeyboard", true);
-        capabilities.setCapability("disableWindowAnimation", true);
-        capabilities.setCapability("noReset", true);
+        capabilities.setCapability("appium:autoGrantPermissions", true);
+        capabilities.setCapability("appium:unicodeKeyboard", true);
+        capabilities.setCapability("appium:resetKeyboard", true);
+        capabilities.setCapability("appium:disableWindowAnimation", true);
+        capabilities.setCapability("appium:noReset", true);
         capabilities.setCapability("appium:newCommandTimeout", 60);
         if (device != null) {
-            capabilities.setCapability("udid", device);
+            capabilities.setCapability("appium:udid", device);
         }
     }
 }
