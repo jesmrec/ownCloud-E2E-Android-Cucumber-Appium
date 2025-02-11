@@ -1,4 +1,6 @@
 
+[![CucumberReports: Appium](https://messages.cucumber.io/api/report-collections/170f2fe7-ae28-4b57-bfe8-f6e2e95713b5/badge)](https://reports.cucumber.io/report-collections/170f2fe7-ae28-4b57-bfe8-f6e2e95713b5)
+
 Scenarios contained in feature files written in Gherkin language.
 Available scenarios can be found
 [here](src/test/resources/io/cucumber).
