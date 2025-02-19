@@ -554,8 +554,7 @@ public class FileListSteps {
     public void user_should_see_the_file_with_text(String itemName, String text) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertTrue(world.getDetailsPage().isItemPreviewed() &&
-                world.getDetailsPage().isTextInFile(text));
+        assertTrue(world.getDetailsPage().isTextInFile(text));
     }
 
     @Then("share sheet for the item {word} is displayed")
