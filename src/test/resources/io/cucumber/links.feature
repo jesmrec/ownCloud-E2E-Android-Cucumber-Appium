@@ -148,7 +148,8 @@ Feature: Public Links
       | folder | Links16     |
       | file   | Links17.txt |
 
-  @linkshortcut @noocis
+  #ignored because this feature is missing in Android app for oCIS
+  @linkshortcut @ignore
   Rule: Public link Shortcut
 
   Scenario: Public link shortcut shows correct links
