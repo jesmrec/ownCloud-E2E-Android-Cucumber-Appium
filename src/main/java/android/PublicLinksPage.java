@@ -58,9 +58,18 @@ public class PublicLinksPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/saveButton")
     private WebElement saveButton;
 
-    public PublicLinksPage() {
+    public static PublicLinksPage instance;
+
+    private PublicLinksPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static PublicLinksPage getInstance() {
+        if (instance == null) {
+            instance = new PublicLinksPage();
+        }
+        return instance;
     }
 
     public void addLinkName(String linkName) {

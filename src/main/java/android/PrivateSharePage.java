@@ -41,9 +41,18 @@ public class PrivateSharePage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/closeButton")
     private WebElement close;
 
-    public PrivateSharePage() {
+    public static PrivateSharePage instance;
+
+    private PrivateSharePage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static PrivateSharePage getInstance() {
+        if (instance == null) {
+            instance = new PrivateSharePage();
+        }
+        return instance;
     }
 
     public boolean isSharee(String user) {

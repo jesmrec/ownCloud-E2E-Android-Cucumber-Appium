@@ -14,9 +14,18 @@ public class DocumentProviderPage extends CommonPage {
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Show roots\"]")
     private WebElement hamburger;
 
-    public DocumentProviderPage() {
+    public static DocumentProviderPage instance;
+
+    private DocumentProviderPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static DocumentProviderPage getInstance() {
+        if (instance == null) {
+            instance = new DocumentProviderPage();
+        }
+        return instance;
     }
 
     public void openDownloadsInHamburger() {

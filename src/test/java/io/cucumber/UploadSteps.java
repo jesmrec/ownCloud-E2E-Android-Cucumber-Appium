@@ -17,11 +17,11 @@ public class UploadSteps {
     public void file_in_uploads(String fileName, String status) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().openUploadsView();
+        world.fileListPage.openUploadsView();
         if (status.equals("uploaded")) {
-            world.getUploadsPage().isFileUploaded(fileName);
+            world.uploadsPage.isFileUploaded(fileName);
         }
-        world.getUploadsPage().clearList();
+        world.uploadsPage.clearList();
     }
 
 }

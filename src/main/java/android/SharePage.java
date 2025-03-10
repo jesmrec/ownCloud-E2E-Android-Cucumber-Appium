@@ -61,9 +61,18 @@ public class SharePage extends CommonPage {
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Back\"]")
     private WebElement close;
 
-    public SharePage() {
+    public static SharePage instance;
+
+    private SharePage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static SharePage getInstance() {
+        if (instance == null) {
+            instance = new SharePage();
+        }
+        return instance;
     }
 
     public void addPrivateShare() {

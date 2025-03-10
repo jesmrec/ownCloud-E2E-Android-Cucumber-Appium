@@ -32,9 +32,18 @@ public class SpacesPage extends CommonPage {
     private final String spaceNameId = "com.owncloud.android:id/spaces_list_item_name";
     private final String spaceSubtitleId = "com.owncloud.android:id/spaces_list_item_subtitle";
 
-    public SpacesPage() {
+    public static SpacesPage instance;
+
+    private SpacesPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static SpacesPage getInstance() {
+        if (instance == null) {
+            instance = new SpacesPage();
+        }
+        return instance;
     }
 
     /*

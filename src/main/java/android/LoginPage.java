@@ -39,11 +39,19 @@ public class LoginPage extends CommonPage {
     @AndroidFindBy(id = "android:id/button1")
     private WebElement acceptHttp;
 
+    public static LoginPage instance;
     private String server;
 
-    public LoginPage() {
+    private LoginPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static LoginPage getInstance() {
+        if (instance == null) {
+            instance = new LoginPage();
+        }
+        return instance;
     }
 
     public void typeURL(String server) {

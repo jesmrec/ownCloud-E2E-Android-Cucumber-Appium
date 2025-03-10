@@ -23,9 +23,18 @@ public class SearchShareePage extends CommonPage {
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Back\"]")
     private WebElement back;
 
-    public SearchShareePage() {
+    public static SearchShareePage instance;
+
+    private SearchShareePage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static SearchShareePage getInstance() {
+        if (instance == null) {
+            instance = new SearchShareePage();
+        }
+        return instance;
     }
 
     public void shareWithUser(String sharee) {

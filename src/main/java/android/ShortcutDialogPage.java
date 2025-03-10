@@ -26,9 +26,18 @@ public class ShortcutDialogPage extends CommonPage {
     @AndroidFindBy(id = "com.android.chrome:id/fre_main_layout")
     private WebElement browser;
 
-    public ShortcutDialogPage() {
+    public static ShortcutDialogPage instance;
+
+    private ShortcutDialogPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static ShortcutDialogPage getInstance() {
+        if (instance == null) {
+            instance = new ShortcutDialogPage();
+        }
+        return instance;
     }
 
     public void typeURLName(String name, String url) {

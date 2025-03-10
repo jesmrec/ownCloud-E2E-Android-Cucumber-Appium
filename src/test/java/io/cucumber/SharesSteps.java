@@ -47,8 +47,8 @@ public class SharesSteps {
                                     String recipientUser, String permissions) throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getShareAPI().createShare(sharingUser, itemName, recipientUser, "0", permissions, "", "", shareLevel);
-        world.getShareAPI().acceptAllShares("user", recipientUser);
+        world.shareAPI.createShare(sharingUser, itemName, recipientUser, "0", permissions, "", "", shareLevel);
+        world.shareAPI.acceptAllShares("user", recipientUser);
     }
 
     @When("Alice selects {usertype} {word} as sharee")
@@ -56,16 +56,16 @@ public class SharesSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getSharePage().addPrivateShare();
-        world.getSearchShareePage().shareWithUser(sharee);
-        world.getShareAPI().acceptAllShares(type,sharee);
+        world.sharePage.addPrivateShare();
+        world.searchShareePage.shareWithUser(sharee);
+        world.shareAPI.acceptAllShares(type,sharee);
     }
 
     @When("Alice edits the share on {itemtype} {word} with permissions {word}")
     public void user_edits_share_with_permissions(String type, String itemName, String permissions) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getSharePage().openPrivateShare(itemName);
+        world.sharePage.openPrivateShare(itemName);
         int permissionsToInt = Integer.parseInt(permissions);
         String permissionsToString = String.format("%5s", Integer.toBinaryString(permissionsToInt))
                 .replace(" ", "0");
@@ -79,10 +79,10 @@ public class SharesSteps {
                     if (type.equalsIgnoreCase("folder")) {
                         Log.log(Level.FINE, "Check Delete");
                         char status = permissionsToString.charAt(i);
-                        boolean enabled = world.getPrivateSharePage().isDeleteSelected();
+                        boolean enabled = world.privateSharePage.isDeleteSelected();
                         Log.log(Level.FINE, "Status: " + status + ". Enabled: " + enabled);
                         if (enabled != (status == '1'))
-                            world.getPrivateSharePage().switchDelete();
+                            world.privateSharePage.switchDelete();
                     }
                     break;
                 }
@@ -90,10 +90,10 @@ public class SharesSteps {
                     if (type.equalsIgnoreCase("folder")) {
                         Log.log(Level.FINE, "Check Create");
                         char status = permissionsToString.charAt(i);
-                        boolean enabled = world.getPrivateSharePage().isCreateSelected();
+                        boolean enabled = world.privateSharePage.isCreateSelected();
                         Log.log(Level.FINE, "Status: " + status + ". Enabled: " + enabled);
                         if (enabled != (status == '1'))
-                            world.getPrivateSharePage().switchCreate();
+                            world.privateSharePage.switchCreate();
                     }
                     break;
                 }
@@ -101,16 +101,16 @@ public class SharesSteps {
                     Log.log(Level.FINE, "Check Change");
                     char status = permissionsToString.charAt(i);
                     if (type.equalsIgnoreCase("folder")) {
-                        boolean enabled = world.getPrivateSharePage().isChangeSelected();
+                        boolean enabled = world.privateSharePage.isChangeSelected();
                         Log.log(Level.FINE, "Status Folder: " + status + ". Enabled: " + enabled);
                         if (enabled != (status == '1')) {
-                            world.getPrivateSharePage().switchChange();
+                            world.privateSharePage.switchChange();
                         }
                     } else if (type.equalsIgnoreCase("file")) {
-                        boolean enabled = world.getPrivateSharePage().isEditFileEnabled();
+                        boolean enabled = world.privateSharePage.isEditFileEnabled();
                         Log.log(Level.FINE, "Status File: " + status + ". Enabled: " + enabled);
                         if (enabled != (status == '1')) {
-                            world.getPrivateSharePage().switchEditFile();
+                            world.privateSharePage.switchEditFile();
                         }
                     }
                     break;
@@ -119,22 +119,22 @@ public class SharesSteps {
                     break;
             }
         }
-        world.getPrivateSharePage().close();
+        world.privateSharePage.close();
     }
 
     @When("Alice deletes the share")
     public void user_deletes_share() {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getSharePage().deletePrivateShare();
-        world.getSharePage().acceptDeletion();
+        world.sharePage.deletePrivateShare();
+        world.sharePage.acceptDeletion();
     }
 
     @When("Alice closes share view")
     public void user_closes_shares_view() {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getSharePage().close();
+        world.sharePage.close();
     }
 
     @Then("share should be created on {word} with the following fields")
@@ -147,39 +147,39 @@ public class SharesSteps {
         for (List<String> rows : listItems) {
             switch (rows.get(0)) {
                 case "sharee": {
-                    assertTrue(world.getSharePage().isItemInListPrivateShares(rows.get(1)));
+                    assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1)));
                     break;
                 }
                 case "group": {
-                    assertTrue(world.getSharePage().isItemInListPrivateShares(rows.get(1) + " (group)"));
+                    assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1) + " (group)"));
                     break;
                 }
                 case "permissions": {
-                    world.getSharePage().openPrivateShare(itemName);
+                    world.sharePage.openPrivateShare(itemName);
                     switch (rows.get(1)) {
                         case ("1"): { //only read
                             Log.log(Level.FINE, "Only read");
-                            assertTrue(!world.getPrivateSharePage().isEditEnabled());
+                            assertTrue(!world.privateSharePage.isEditEnabled());
                             break;
                         }
                         case ("3"): { //edit
                             Log.log(Level.FINE, "Edit");
-                            Log.log(Level.FINE, Boolean.toString(world.getPrivateSharePage().isEditEnabled()));
-                            assertTrue(world.getPrivateSharePage().isEditEnabled());
+                            Log.log(Level.FINE, Boolean.toString(world.privateSharePage.isEditEnabled()));
+                            assertTrue(world.privateSharePage.isEditEnabled());
                             break;
                         }
                         case ("9"): { //delete
                             Log.log(Level.FINE, "Delete");
-                            assertTrue(!world.getPrivateSharePage().isCreateSelected() &&
-                                    !world.getPrivateSharePage().isChangeSelected() &&
-                                    world.getPrivateSharePage().isDeleteSelected());
+                            assertTrue(!world.privateSharePage.isCreateSelected() &&
+                                    !world.privateSharePage.isChangeSelected() &&
+                                    world.privateSharePage.isDeleteSelected());
                             break;
                         }
                         case ("13"): { //delete and create
                             Log.log(Level.FINE, "Delete and Create");
-                            assertTrue(world.getPrivateSharePage().isCreateSelected() &&
-                                    !world.getPrivateSharePage().isChangeSelected() &&
-                                    world.getPrivateSharePage().isDeleteSelected());
+                            assertTrue(world.privateSharePage.isCreateSelected() &&
+                                    !world.privateSharePage.isChangeSelected() &&
+                                    world.privateSharePage.isDeleteSelected());
                             break;
                         }
                         default:
@@ -191,8 +191,8 @@ public class SharesSteps {
             }
         }
         //Asserts in server via API
-        OCShare share = world.getShareAPI().getShare(itemName);
-        assertTrue(world.getSharePage().isShareCorrect(share, listItems));
+        OCShare share = world.shareAPI.getShare(itemName);
+        assertTrue(world.sharePage.isShareCorrect(share, listItems));
     }
 
     @Then("{word} should not have access to {word}")
@@ -200,7 +200,7 @@ public class SharesSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertFalse(world.getShareAPI().isSharedWithMe(itemName, userName, false));
+        assertFalse(world.shareAPI.isSharedWithMe(itemName, userName, false));
     }
 
     @Then("{usertype} {word} should have access to {word}")
@@ -209,9 +209,9 @@ public class SharesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (type.equalsIgnoreCase("user")) {
-            assertTrue(world.getShareAPI().isSharedWithMe(itemName, shareeName, false));
+            assertTrue(world.shareAPI.isSharedWithMe(itemName, shareeName, false));
         } else if (type.equalsIgnoreCase("group")) {
-            assertTrue(world.getShareAPI().isSharedWithMe(itemName, shareeName, true));
+            assertTrue(world.shareAPI.isSharedWithMe(itemName, shareeName, true));
         }
     }
 
@@ -220,13 +220,13 @@ public class SharesSteps {
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertFalse(world.getSharePage().isItemInListPrivateShares(sharee));
+        assertFalse(world.sharePage.isItemInListPrivateShares(sharee));
     }
 
     @Then("Alice should see {word} as recipient")
     public void user_should_see_recipient(String sharee) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertTrue(world.getPrivateSharePage().isSharee(sharee));
+        assertTrue(world.privateSharePage.isSharee(sharee));
     }
 }

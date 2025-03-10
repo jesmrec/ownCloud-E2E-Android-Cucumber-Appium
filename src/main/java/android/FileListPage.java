@@ -93,9 +93,18 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_title")
     WebElement conflictTitle;
 
-    public FileListPage() {
+    public static FileListPage instance;
+
+    private FileListPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static FileListPage getInstance() {
+        if (instance == null) {
+            instance = new FileListPage();
+        }
+        return instance;
     }
 
     public void refreshList() {

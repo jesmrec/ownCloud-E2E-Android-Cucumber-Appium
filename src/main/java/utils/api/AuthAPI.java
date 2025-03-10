@@ -1,10 +1,8 @@
 package utils.api;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 
-import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -20,7 +18,16 @@ public class AuthAPI {
     private String userAgent = LocProperties.getProperties().getProperty("userAgent");
     private String host = urlServer.split("//")[1];
 
-    public AuthAPI() {
+    public static AuthAPI instance;
+
+    private AuthAPI() {
+    }
+
+    public static AuthAPI getInstance() {
+        if (instance == null) {
+            instance = new AuthAPI();
+        }
+        return instance;
     }
 
     public boolean isOidc()

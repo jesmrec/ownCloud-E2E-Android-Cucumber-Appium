@@ -25,13 +25,13 @@ public class LoginSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
         Log.log(Level.FINE, "----STEP----: " + stepName);
         // Server and app MUST work with basic auth mode.
-        if(!world.getFileListPage().isFileListVisible()) {
+        if(!world.fileListPage.isFileListVisible()) {
             String server = System.getProperty("server");
             String username = LocProperties.getProperties().getProperty("userName1");
             String password = LocProperties.getProperties().getProperty("passw1");
-            world.getLoginPage().typeURL(server);
-            world.getLoginPage().typeCredentials(username, password);
-            world.getLoginPage().submitLogin();
+            world.loginPage.typeURL(server);
+            world.loginPage.typeCredentials(username, password);
+            world.loginPage.submitLogin();
         }
     }
 }

@@ -19,9 +19,18 @@ public class CameraPage extends CommonPage {
     @AndroidFindBy(id = "com.android.camera2:id/done_button")
     private WebElement doneButton;
 
-    public CameraPage() {
+    public static CameraPage instance;
+
+    private CameraPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static CameraPage getInstance() {
+        if (instance == null) {
+            instance = new CameraPage();
+        }
+        return instance;
     }
 
     public void takePicture() {

@@ -26,9 +26,18 @@ public class FolderPickerPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/view_type_selector")
     private WebElement createFolderButton;
 
-    public FolderPickerPage() {
+    public static FolderPickerPage instance;
+
+    private FolderPickerPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static FolderPickerPage getInstance() {
+        if (instance == null) {
+            instance = new FolderPickerPage();
+        }
+        return instance;
     }
 
     public void selectSpace(String spaceName) {

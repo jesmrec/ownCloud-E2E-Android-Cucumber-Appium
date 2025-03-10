@@ -35,7 +35,7 @@ public class SpacesSteps {
         for (List<String> rows : listItems) {
             String name = rows.get(0);
             String description = rows.get(1);
-            world.getGraphAPI().createSpace(name, description, userName);
+            world.graphAPI.createSpace(name, description, userName);
         }
     }
 
@@ -43,7 +43,7 @@ public class SpacesSteps {
     public void user_selects_spaces_view() {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getFileListPage().openSpaces();
+        world.fileListPage.openSpaces();
     }
 
     @When("following space is disabled in server")
@@ -55,7 +55,7 @@ public class SpacesSteps {
         for (List<String> rows : listItems) {
             String name = rows.get(0);
             String description = rows.get(1);
-            world.getGraphAPI().disableSpace(name, description);
+            world.graphAPI.disableSpace(name, description);
         }
     }
 
@@ -63,7 +63,7 @@ public class SpacesSteps {
     public void user_filters_list(String pattern) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.getSpacesPage().typeSearch(pattern);
+        world.spacesPage.typeSearch(pattern);
     }
 
     @Then("Alice should see the following spaces")
@@ -71,7 +71,7 @@ public class SpacesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
-        assertTrue(world.getSpacesPage().areAllSpacesVisible(listItems));
+        assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
     }
 
     @Then("Alice should not see the following spaces")
@@ -79,6 +79,6 @@ public class SpacesSteps {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
-        assertFalse(world.getSpacesPage().areAllSpacesVisible(listItems));
+        assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
     }
 }

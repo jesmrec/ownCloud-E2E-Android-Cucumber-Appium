@@ -29,9 +29,18 @@ public class RemoveDialogPage extends CommonPage {
     @AndroidFindBy(id = "android:id/button2")
     private WebElement buttonLocalFolders;
 
-    public RemoveDialogPage() {
+    public static RemoveDialogPage instance;
+
+    private RemoveDialogPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static RemoveDialogPage getInstance() {
+        if (instance == null) {
+            instance = new RemoveDialogPage();
+        }
+        return instance;
     }
 
     public void removeAll() {

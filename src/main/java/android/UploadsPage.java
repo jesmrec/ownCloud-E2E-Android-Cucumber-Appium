@@ -11,9 +11,18 @@ public class UploadsPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/uploadListGroupButtonClear")
     private WebElement clear;
 
-    public UploadsPage() {
+    public static UploadsPage instance;
+
+    private UploadsPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static UploadsPage getInstance() {
+        if (instance == null) {
+            instance = new UploadsPage();
+        }
+        return instance;
     }
 
     public void clearList() {

@@ -71,9 +71,18 @@ public class DetailsPage extends CommonPage {
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Back\"]")
     private WebElement back;
 
-    public DetailsPage() {
+    public static DetailsPage instance;
+
+    private DetailsPage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public static DetailsPage getInstance() {
+        if (instance == null) {
+            instance = new DetailsPage();
+        }
+        return instance;
     }
 
     public String getName() {
