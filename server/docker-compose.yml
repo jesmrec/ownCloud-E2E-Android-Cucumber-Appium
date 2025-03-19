@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   ocis:
-    image: owncloud/ocis:5.0.8
+    image: owncloud/ocis:7.0.1
     ports:
       - 9200:9200
       - 9215:9215
