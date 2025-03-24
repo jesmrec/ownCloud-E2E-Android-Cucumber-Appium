@@ -62,6 +62,9 @@ public class DetailsPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/video_player")
     private WebElement videoPreview;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/errorText")
+    private WebElement damagedPreview;
+
     @AndroidFindBy(id = "toolbar")
     private List<WebElement> toolbar;
 
@@ -152,5 +155,9 @@ public class DetailsPage extends CommonPage {
 
     public boolean isVideoPreviewed() {
         return videoPreview.isDisplayed();
+    }
+
+    public boolean isDamagedPreviewed() {
+        return damagedPreview.isDisplayed();
     }
 }

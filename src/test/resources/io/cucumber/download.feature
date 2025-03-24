@@ -28,6 +28,12 @@ Feature: Download a file in the account
     When Alice selects to Download the item video.mp4
     Then the video video.mp4 should be opened and previewed
 
+  Scenario: Download a file that is damaged and can not be previewed
+    Given the following items have been created in Alice account
+      | damaged | damaged.png |
+    When Alice selects to Download the item damaged.png
+    Then Alice should see the error previewing damaged.png
+
   Scenario: Markdown file rendered
     Given the following items have been created in Alice account
       | file | rendered.md |

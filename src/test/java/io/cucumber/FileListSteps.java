@@ -36,7 +36,7 @@ public class FileListSteps {
         return type;
     }
 
-    @ParameterType("file|audio|image|video")
+    @ParameterType("file|audio|image|video|damaged")
     public String fileType(String type) {
         return type;
     }
@@ -87,6 +87,10 @@ public class FileListSteps {
                     }
                     case ("shortcut"): {
                         world.filesAPI.pushFileByMime(name, "text/uri-list");
+                        break;
+                    }
+                    case ("damaged"): { //Our sample damaged file is a .png
+                        world.filesAPI.pushFileByMime(name, "image/png");
                         break;
                     }
                     default:
@@ -525,6 +529,10 @@ public class FileListSteps {
                 assertTrue(world.detailsPage.isVideoPreviewed());
                 break;
             }
+            case ("damaged"): {
+                assertTrue(world.detailsPage.isDamagedPreviewed());
+                break;
+            }
         }
     }
 
@@ -594,5 +602,12 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         assertTrue(world.shortcutDialogPage.isBrowserOpen());
+    }
+
+    @Then("Alice should see the error previewing {word}")
+    public void error_previewing(String fileName) {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        assertTrue(world.detailsPage.isDamagedPreviewed());
     }
 }
