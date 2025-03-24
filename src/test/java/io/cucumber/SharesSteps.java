@@ -137,7 +137,7 @@ public class SharesSteps {
         world.sharePage.close();
     }
 
-    @Then("share should be created on {word} with the following fields")
+    @Then("share should be created/edited on {word} with the following fields")
     public void share_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();

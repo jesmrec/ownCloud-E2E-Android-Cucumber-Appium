@@ -62,31 +62,26 @@ public class PrivateSharePage extends CommonPage {
 
     public void switchCreate() {
         Log.log(Level.FINE, "Starts: Click create checkbox");
-        //findId(createbox_id).click();
         create.click();
     }
 
     public void switchChange() {
         Log.log(Level.FINE, "Starts: Click change checkbox");
-        //findId(changebox_id).click();
         change.click();
     }
 
     public void switchDelete() {
         Log.log(Level.FINE, "Starts: Click delete checkbox:");
-        //findId(deletebox_id).click();
         delete.click();
     }
 
     public void switchShare() {
         Log.log(Level.FINE, "Starts: Switch share button");
-        //findId(sharebox_id).click();
         share.click();
     }
 
     public void switchEditFile() {
         Log.log(Level.FINE, "Starts: Switch edit button");
-        //findId(editbox_id).click();
         edit.click();
     }
 

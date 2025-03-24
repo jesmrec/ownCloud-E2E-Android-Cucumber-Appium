@@ -56,7 +56,7 @@ Feature: Private Share
     When Alice selects to share the file <item>
     And Alice edits the share on file <item> with permissions <permissions>
     Then user <user> should have access to <item>
-    And share should be created on <item> with the following fields
+    And share should be edited on <item> with the following fields
       | sharee      | <user>        |
       | permissions | <permissions> |
 
@@ -72,7 +72,7 @@ Feature: Private Share
     When Alice selects to share the folder <item>
     And Alice edits the share on folder <item> with permissions <permissions>
     Then user <user> should have access to <item>
-    And share should be created on <item> with the following fields
+    And share should be edited on <item> with the following fields
       | sharee      | <user>        |
       | permissions | <permissions> |
 
