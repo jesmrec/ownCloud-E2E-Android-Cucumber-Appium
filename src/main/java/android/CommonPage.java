@@ -30,12 +30,14 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import utils.LocProperties;
 import utils.log.Log;
 
 public class CommonPage {
@@ -249,6 +251,33 @@ public class CommonPage {
 
     protected boolean parseIntBool(String s) {
         return Boolean.parseBoolean(s);
+    }
+
+    public void cleanUpDevice() {
+        Log.log(Level.FINE, "Starts: Clean up device, owncloud folder");
+        // Remove owncloud folder from device
+        Map<String, Object> args = new HashMap<>();
+        args.put("command", "rm");
+        args.put("args", Arrays.asList("-rf", "sdcard/Download/owncloud/"));
+        driver.executeScript("mobile: shell", args);
+    }
+
+    public String pullList(String folderId) {
+        Log.log(Level.FINE, "Starts: pull file from: " + folderId);
+        Map<String, Object> args = new HashMap<>();
+
+        String downloadFolder = "sdcard/Download/owncloud";
+        String user = LocProperties.getProperties().getProperty("userName1");
+        String server = System.getProperty("server").substring(8); // Remove "https://"
+        String command = downloadFolder + "/" + user + "@" +
+                server.replace(":", "%3A" ) + "/" + folderId;
+        Log.log(Level.FINE, "Command to execute: " + command);
+        args.put("command", "ls");
+        args.put("args", List.of(command));
+
+        String output = (String) driver.executeScript("mobile: shell", args);
+        Log.log(Level.FINE, "List of files in given folder: " + output);
+        return output;
     }
 
     /* Methods to help debugging */

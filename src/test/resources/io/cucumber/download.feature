@@ -15,6 +15,7 @@ Feature: Download a file in the account
     When Alice selects to Download the item <name>
     Then the <type> <name> should be opened and previewed
     And the <type> <name> should be marked as downloaded
+    And file <name> should be stored in device
 
     Examples:
       | type  | name      |
@@ -33,6 +34,7 @@ Feature: Download a file in the account
       | damaged | damaged.png |
     When Alice selects to Download the item damaged.png
     Then Alice should see the error previewing damaged.png
+    And file damaged.png should be stored in device
 
   Scenario: Markdown file rendered
     Given the following items have been created in Alice account
@@ -42,6 +44,7 @@ Feature: Download a file in the account
       | Markdown |
       | Text     |
     And the file rendered.md should be opened and previewed
+    And file rendered.md should be stored in device
 
   Scenario: Download a file from Details view
     Given the following items have been created in Alice account
@@ -50,6 +53,7 @@ Feature: Download a file in the account
     And Alice clicks on the thumbnail
     Then the file text2.txt should be opened and previewed
     And the file text2.txt should be marked as downloaded
+    And file text2.txt should be stored in device
 
   @smoke
   Scenario: Download an updated file

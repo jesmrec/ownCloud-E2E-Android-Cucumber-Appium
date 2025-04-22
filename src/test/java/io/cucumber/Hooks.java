@@ -64,5 +64,7 @@ public class Hooks {
         if (world.authAPI.isOidc()) { //remove spaces
             world.graphAPI.removeSpacesOfUser();
         }
+        //Remove owncloud folder from device
+        world.fileListPage.cleanUpDevice();
     }
 }

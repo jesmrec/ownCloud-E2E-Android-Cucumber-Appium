@@ -183,6 +183,7 @@ public class CommonAPI {
     }
 
     private String getPersonalDrives(String url, String userName) throws IOException {
+        Log.log(Level.FINE, "Starts: Call get personal ID: " + url);
         Request request = getRequest(url + graphDrivesEndpoint, userName);
         Response response = httpClient.newCall(request).execute();
         String body = response.body().string();

@@ -113,11 +113,6 @@ public class FileListPage extends CommonPage {
         swipe(0.50, 0.30, 0.50, 0.80);
     }
 
-    /*public void waitToload() {
-        //waitById(WAIT_TIME, bottomBar);
-        refreshList();
-    }*/
-
     public void selectCreateFolder() {
         Log.log(Level.FINE, "Starts: create folder");
         fabButton.click();
@@ -154,7 +149,6 @@ public class FileListPage extends CommonPage {
             Log.log(Level.FINE, "File " + itemName + " pushed");
         } catch (IOException e) {
             Log.log(Level.SEVERE, "IO Exception: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

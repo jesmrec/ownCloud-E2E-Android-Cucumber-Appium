@@ -21,6 +21,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utils.entities.OCFile;
+import utils.entities.OCSpace;
 import utils.log.Log;
 
 public class FileListSteps {
@@ -205,11 +206,15 @@ public class FileListSteps {
         world.fileListPage.refreshList();
     }
 
-    @When("Alice accepts the deletion of {word}")
-    public void user_accepts_deletion(String type) {
+    @When("Alice accepts the {word} deletion of {word}")
+    public void user_accepts_deletion(String deletionType, String type) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.removeDialogPage.removeAll();
+        if ("remote".equals(deletionType)) {
+            world.removeDialogPage.removeAll();
+        } else if ("local".equals(deletionType)) {
+            world.removeDialogPage.onlyLocal();
+        }
     }
 
     @When("the {word} has been deleted remotely")
@@ -609,5 +614,29 @@ public class FileListSteps {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         assertTrue(world.detailsPage.isDamagedPreviewed());
+    }
+
+    @Then("file {word} should be stored in device")
+    public void file_downloaded_in_device(String itemName) throws IOException {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        String id = world.graphAPI.getPersonal().getId();
+        //Need to scape the "$" to be correctly interpreted by bash
+        String escapedFolderId = id.replace("$", "\\$");
+        Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
+        String listFiles = world.fileListPage.pullList(escapedFolderId);
+        assertTrue(listFiles.contains(itemName));
+    }
+
+    @Then("file {word} should not be stored in device")
+    public void file_not_downloaded_in_device(String itemName) throws IOException {
+        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
+        Log.log(Level.FINE, "----STEP----: " + stepName);
+        String id = world.graphAPI.getPersonal().getId();
+        //Need to scape the "$" to be correctly interpreted by bash
+        String escapedFolderId = id.replace("$", "\\$");
+        Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
+        String listFiles = world.fileListPage.pullList(escapedFolderId);
+        assertFalse(listFiles.contains(itemName));
     }
 }
