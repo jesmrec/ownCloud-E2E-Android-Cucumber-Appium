@@ -63,6 +63,7 @@ test {
     systemProperty "device", System.getProperty("device")
     systemProperty "server", System.getProperty("server")
     systemProperty "host", System.getProperty("host")
+    systemProperty "backend", System.getProperty("backend")
 }
 
 gradle.startParameter.continueOnFailure = true

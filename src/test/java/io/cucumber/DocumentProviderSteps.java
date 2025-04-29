@@ -18,7 +18,7 @@ public class DocumentProviderSteps {
     public void a_file_exists_in_device(String fileName) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.pushFile(fileName);
+        world.devicePage.pushFile(fileName);
     }
 
     @When("Alice selects {word} to upload")

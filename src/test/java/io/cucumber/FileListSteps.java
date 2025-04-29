@@ -51,7 +51,7 @@ public class FileListSteps {
     public void there_is_an_item_in_folder_downloads(String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.pushFile(itemName);
+        world.devicePage.pushFile(itemName);
     }
 
     @Given("the following items have been created in {word} account")
@@ -160,7 +160,7 @@ public class FileListSteps {
             throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        if (world.authAPI.isOidc()) {
+        if (System.getProperty("backend").equals("oCIS")) {
             world.folderPickerPage.selectSpace(spaceName);
         }
     }
@@ -620,11 +620,14 @@ public class FileListSteps {
     public void file_downloaded_in_device(String itemName) throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        String id = world.graphAPI.getPersonal().getId();
-        //Need to scape the "$" to be correctly interpreted by bash
-        String escapedFolderId = id.replace("$", "\\$");
-        Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
-        String listFiles = world.fileListPage.pullList(escapedFolderId);
+        String escapedFolderId = "";
+        if (System.getProperty("backend").equals("oCIS")) {
+            String id = world.graphAPI.getPersonal().getId();
+            //Need to scape the "$" to be correctly interpreted by bash for oCIS
+            escapedFolderId = id.replace("$", "\\$");
+            Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
+        }
+        String listFiles = world.devicePage.pullList(escapedFolderId);
         assertTrue(listFiles.contains(itemName));
     }
 
@@ -632,11 +635,14 @@ public class FileListSteps {
     public void file_not_downloaded_in_device(String itemName) throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        String id = world.graphAPI.getPersonal().getId();
-        //Need to scape the "$" to be correctly interpreted by bash
-        String escapedFolderId = id.replace("$", "\\$");
-        Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
-        String listFiles = world.fileListPage.pullList(escapedFolderId);
+        String escapedFolderId = "";
+        if (System.getProperty("backend").equals("oCIS")) {
+            String id = world.graphAPI.getPersonal().getId();
+            //Need to scape the "$" to be correctly interpreted by bash for oCIS
+            escapedFolderId = id.replace("$", "\\$");
+            Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
+        }
+        String listFiles = world.devicePage.pullList(escapedFolderId);
         assertFalse(listFiles.contains(itemName));
     }
 }

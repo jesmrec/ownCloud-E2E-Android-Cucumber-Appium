@@ -61,10 +61,10 @@ public class Hooks {
             world.trashbinAPI.emptyTrashbin(userToClean);
         }
         //Remove spaces
-        if (world.authAPI.isOidc()) { //remove spaces
+        if (System.getProperty("backend").equals("oCIS")) {
             world.graphAPI.removeSpacesOfUser();
         }
         //Remove owncloud folder from device
-        world.fileListPage.cleanUpDevice();
+        world.devicePage.cleanUpDevice();
     }
 }

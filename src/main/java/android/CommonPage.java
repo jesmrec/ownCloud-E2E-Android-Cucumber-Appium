@@ -253,33 +253,6 @@ public class CommonPage {
         return Boolean.parseBoolean(s);
     }
 
-    public void cleanUpDevice() {
-        Log.log(Level.FINE, "Starts: Clean up device, owncloud folder");
-        // Remove owncloud folder from device
-        Map<String, Object> args = new HashMap<>();
-        args.put("command", "rm");
-        args.put("args", Arrays.asList("-rf", "sdcard/Download/owncloud/"));
-        driver.executeScript("mobile: shell", args);
-    }
-
-    public String pullList(String folderId) {
-        Log.log(Level.FINE, "Starts: pull file from: " + folderId);
-        Map<String, Object> args = new HashMap<>();
-
-        String downloadFolder = "sdcard/Download/owncloud";
-        String user = LocProperties.getProperties().getProperty("userName1");
-        String server = System.getProperty("server").substring(8); // Remove "https://"
-        String command = downloadFolder + "/" + user + "@" +
-                server.replace(":", "%3A" ) + "/" + folderId;
-        Log.log(Level.FINE, "Command to execute: " + command);
-        args.put("command", "ls");
-        args.put("args", List.of(command));
-
-        String output = (String) driver.executeScript("mobile: shell", args);
-        Log.log(Level.FINE, "List of files in given folder: " + output);
-        return output;
-    }
-
     /* Methods to help debugging */
 
     public static void takeScreenshot(String name) {

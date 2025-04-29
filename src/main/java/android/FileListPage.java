@@ -139,19 +139,6 @@ public class FileListPage extends CommonPage {
         createShortcut.click();
     }
 
-    public void pushFile(String itemName) {
-        Log.log(Level.FINE, "Starts: push file: " + itemName);
-        File rootPath = new File(System.getProperty("user.dir"));
-        File appDir = new File(rootPath, "src/test/resources");
-        File app = new File(appDir, "io/cucumber/example-files/" + itemName);
-        try {
-            driver.pushFile("/sdcard/Download/" + itemName, app);
-            Log.log(Level.FINE, "File " + itemName + " pushed");
-        } catch (IOException e) {
-            Log.log(Level.SEVERE, "IO Exception: " + e.getMessage());
-        }
-    }
-
     public void executeOperation(String operation, String itemName) {
         Log.log(Level.FINE, "Starts: execute operation: " + operation + " " + itemName);
         refreshList();
@@ -337,6 +324,8 @@ public class FileListPage extends CommonPage {
 
     public void openPrivateLink(String privateLink) {
         Log.log(Level.FINE, "Starts: Open private link: " + privateLink);
+        //Waiting till list of files is loaded
+        waitById(WAIT_TIME, "com.owncloud.android:id/fab_expand_menu_button");
         driver.get(privateLink);
     }
 
@@ -353,13 +342,17 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: checking if item is opened: " + itemType + " " + itemName);
         if (itemType.equals("file")) {
             Log.log(Level.FINE, "Opening file");
+            //Waiting till file is opened and the dialog shown
+            waitById(WAIT_TIME, "android:id/chooser_header");
+            //To dismiss the dialog
+            tap(200,300);
             boolean fileNameVisible = findUIAutomatorText(itemName).isDisplayed();
             boolean fileTypeIconVisible = findId("com.owncloud.android:id/fdImageDetailFile").isDisplayed();
             return fileNameVisible && fileTypeIconVisible;
         } else if (itemType.equals("folder")) {
             Log.log(Level.FINE, "Opening folder");
             boolean folderNameVisible = findUIAutomatorText(itemName).isDisplayed();
-            boolean hamburgerButtonVisible = hamburgerButton.size() > 0;
+            boolean hamburgerButtonVisible = !hamburgerButton.isEmpty();
             return folderNameVisible && !hamburgerButtonVisible;
         }
         return false;

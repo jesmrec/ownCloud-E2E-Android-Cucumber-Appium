@@ -8,6 +8,7 @@ package io.cucumber;
 
 import android.CameraPage;
 import android.DetailsPage;
+import android.DevicePage;
 import android.DocumentProviderPage;
 import android.FileListPage;
 import android.FolderPickerPage;
@@ -24,7 +25,6 @@ import android.UploadsPage;
 
 import java.io.IOException;
 
-import utils.api.AuthAPI;
 import utils.api.FilesAPI;
 import utils.api.GraphAPI;
 import utils.api.ShareAPI;
@@ -48,13 +48,13 @@ public class World {
     public UploadsPage uploadsPage = UploadsPage.getInstance();
     public CameraPage cameraPage = CameraPage.getInstance();
     public ShortcutDialogPage shortcutDialogPage = ShortcutDialogPage.getInstance();
+    public DevicePage devicePage = DevicePage.getInstance();
 
     //APIs to call
     public ShareAPI shareAPI = ShareAPI.getInstance();
     public FilesAPI filesAPI = FilesAPI.getInstance();
     public GraphAPI graphAPI = GraphAPI.getInstance();
     public TrashbinAPI trashbinAPI = TrashbinAPI.getInstance();
-    public AuthAPI authAPI = AuthAPI.getInstance();
 
     public World() throws IOException {
     }
