@@ -18,7 +18,7 @@ Feature: Move item
       When Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
       Then Alice should not see <name> in the filelist anymore
-      But Alice should see <name> inside the folder <target>
+      But Alice should see '<name>' inside the folder <target>
 
       Examples:
         | type   | name      | target    |
@@ -32,14 +32,14 @@ Feature: Move item
       And Alice creates new folder <target> in the folder picker
       And Alice selects <target> as target folder
       Then Alice should not see <name> in the filelist anymore
-      But Alice should see <name> inside the folder <target>
+      But Alice should see '<name>' inside the folder <target>
 
       Examples:
         | type | name      | target |
         | file | move3.txt | move4  |
 
-    @moveconflicts
-    Rule: Move with conflicts
+  @moveconflicts
+  Rule: Move with conflicts
 
     Scenario: Move a folder to another place with same item name
       Given the following items have been created in Alice account
@@ -59,7 +59,7 @@ Feature: Move item
       When Alice selects to Move the folder move7
       And Alice selects move8 as target folder
       And Alice fixes the conflict with replace
-      Then Alice should see move7 inside the folder move8
+      Then Alice should see 'move7' inside the folder move8
 
   Rule: Move negative cases
 

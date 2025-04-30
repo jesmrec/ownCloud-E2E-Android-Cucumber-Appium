@@ -37,9 +37,14 @@ public class FileListSteps {
         return type;
     }
 
-    @ParameterType("file|audio|image|video|damaged")
+    @ParameterType("file|audio|image|video|damaged|folder")
     public String fileType(String type) {
         return type;
+    }
+
+    @ParameterType("(?: not)?")
+    public String typePosNeg(String type) {
+        return type == null ? "" : type;
     }
 
     @ParameterType("Upload File|Picture from Camera|Create Shortcut|Create Folder")
@@ -156,8 +161,7 @@ public class FileListSteps {
     }
 
     @When("Alice selects {word} as space")
-    public void user_selects_space(String spaceName)
-            throws IOException {
+    public void user_selects_space(String spaceName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         if (System.getProperty("backend").equals("oCIS")) {
@@ -405,32 +409,17 @@ public class FileListSteps {
         assertFalse(world.filesAPI.itemExist(itemName));
     }
 
-    @Then("Alice should not see {word} in the links/offline list")
-    public void user_should_not_see_item_in_links_list(String itemName) {
+    @Then("Alice should{typePosNeg} see {word} in the links/offline/shares list")
+    public void user_should_not_see_item_in_links_list(String sense, String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertFalse(world.fileListPage.isItemInList(itemName));
+        if (sense.isEmpty()) {
+            assertTrue(world.fileListPage.isItemInList(itemName));
+        } else if (sense.equals("not")) {
+            assertFalse(world.fileListPage.isItemInList(itemName));
+        }
     }
 
-    @Then("Alice should see {word} in the shares list")
-    public void user_not_see_item_in_shares_list(String itemName) {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertTrue(world.fileListPage.isItemInList(itemName));
-    }
-
-    //Variant with word parameter
-    @Then("Alice should see {word} inside the folder {word}")
-    public void user_should_see_item_inside_folder_word(String itemName, String targetFolder)
-            throws Throwable {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        world.fileListPage.browseInto(targetFolder);
-        assertTrue(world.fileListPage.isItemInList(itemName));
-        assertTrue(world.filesAPI.itemExist(targetFolder + "/" + itemName));
-    }
-
-    //Variant with string parameter, in case the itemName contain blanks
     @Then("Alice should see {string} inside the folder {word}")
     public void user_should_see_item_inside_folder_string(String itemName, String targetFolder)
             throws Throwable {
@@ -449,15 +438,6 @@ public class FileListSteps {
         world.fileListPage.openSpaces();
         world.spacesPage.openSpace(spaceName);
         assertTrue(world.fileListPage.isItemInList(itemName));
-    }
-
-    @Then("Alice should see {word} in the filelist as original")
-    public void user_should_see_item_in_filelist_as_original_word(String itemName)
-            throws Throwable {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertTrue(world.fileListPage.isItemInList(itemName.substring(itemName.lastIndexOf('/') + 1)));
-        assertTrue(world.filesAPI.itemExist(itemName));
     }
 
     @Then("Alice should see {string} in the filelist as original")
@@ -490,18 +470,15 @@ public class FileListSteps {
         assertTrue(world.fileListPage.isFileMarkedAsDownloaded(itemName));
     }
 
-    @Then("Alice should see the {itemtype} {word} as av.offline")
-    public void user_should_see_item_marked_as_avOffline(String type, String itemName) {
+    @Then("Alice should{typePosNeg} see the {itemtype} {word} as av.offline")
+    public void user_should_see_item_marked_as_avOffline(String sense, String type, String itemName) {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertTrue(world.fileListPage.isItemMarkedAsAvOffline(itemName));
-    }
-
-    @Then("Alice should not see the {itemtype} {word} as av.offline")
-    public void user_should_not_see_item_marked_as_avOffline(String type, String itemName) {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        assertTrue(world.fileListPage.isItemMarkedAsUnAvOffline(itemName));
+        if (sense.isEmpty()) {
+            assertTrue(world.fileListPage.isItemMarkedAsAvOffline(itemName));
+        } else if (sense.equals("not")) {
+            assertTrue(world.fileListPage.isItemMarkedAsUnAvOffline(itemName));
+        }
     }
 
     @Then("the item {word} should be opened and previewed")
@@ -616,33 +593,39 @@ public class FileListSteps {
         assertTrue(world.detailsPage.isDamagedPreviewed());
     }
 
-    @Then("file {word} should be stored in device")
-    public void file_downloaded_in_device(String itemName) throws IOException {
+    @Then("{fileType} {word} should{typePosNeg} be stored in device")
+    public void file_downloaded_in_device(String itemType, String itemName, String sense)
+            throws IOException {
         String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
-        String escapedFolderId = "";
-        if (System.getProperty("backend").equals("oCIS")) {
-            String id = world.graphAPI.getPersonal().getId();
-            //Need to scape the "$" to be correctly interpreted by bash for oCIS
-            escapedFolderId = id.replace("$", "\\$");
-            Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
-        }
-        String listFiles = world.devicePage.pullList(escapedFolderId);
-        assertTrue(listFiles.contains(itemName));
-    }
 
-    @Then("file {word} should not be stored in device")
-    public void file_not_downloaded_in_device(String itemName) throws IOException {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        String escapedFolderId = "";
-        if (System.getProperty("backend").equals("oCIS")) {
-            String id = world.graphAPI.getPersonal().getId();
-            //Need to scape the "$" to be correctly interpreted by bash for oCIS
-            escapedFolderId = id.replace("$", "\\$");
-            Log.log(Level.FINE, "ID from personal space: " + escapedFolderId);
+        String folderId = System.getProperty("backend").equals("oCIS")
+                ? world.graphAPI.getPersonal().getId().replace("$", "\\$")
+                : "";
+
+        if (!folderId.isEmpty()) {
+            Log.log(Level.FINE, "ID from personal space: " + folderId);
         }
-        String listFiles = world.devicePage.pullList(escapedFolderId);
-        assertFalse(listFiles.contains(itemName));
+
+        String currentPath = folderId;
+        if (itemName.contains("/")) {
+            String[] parts = itemName.split("/");
+            //Building parcial path
+            for (int i = 0; i < parts.length - 1; i++) {
+                currentPath = currentPath + "/" + parts[i];
+                world.devicePage.pullList(currentPath); // Puede almacenarse si se necesita
+            }
+            itemName = itemType.equals("file")
+                    ? parts[parts.length - 1]
+                    : parts[parts.length - 2];
+        }
+
+        String listFiles = world.devicePage.pullList(currentPath);
+        Log.log(Level.FINE, "List of files before assertion: " + listFiles + ". ItemName: " + itemName);
+        if (sense.isEmpty()) {
+            assertTrue(listFiles.contains(itemName));
+        } else if (sense.equals("not")) {
+            assertFalse(listFiles.contains(itemName));
+        }
     }
 }

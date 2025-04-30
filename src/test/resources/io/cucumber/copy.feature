@@ -18,8 +18,8 @@ Feature: Copy item
       When Alice selects to Copy the <type> <name>
       And Alice selects <space> as space
       And Alice selects <target> as target folder
-      Then Alice should see <name> in the filelist as original
-      And Alice should see <name> inside the folder <target>
+      Then Alice should see '<name>' in the filelist as original
+      And Alice should see '<name>' inside the folder <target>
 
       Examples:
         | type   | name      | target    | space    |
@@ -33,7 +33,7 @@ Feature: Copy item
       And Alice selects <space> as space
       And Alice creates new folder <target> in the folder picker
       And Alice selects <target> as target folder
-      Then Alice should see <name> inside the folder <target>
+      Then Alice should see '<name>' inside the folder <target>
 
       Examples:
         | type | name      | target | space    |
@@ -71,47 +71,47 @@ Feature: Copy item
     @copyconflicts
     Rule: Copy with conflicts
 
-    Scenario: Copy a folder to another place with same item name, fixing conflict with keep both
-      Given the following items have been created in Alice account
-        | folder | copy7       |
-        | folder | copy8       |
-        | folder | copy8/copy7 |
-      When Alice selects to Copy the folder copy7
-      And Alice selects Personal as space
-      And Alice selects copy8 as target folder
-      And Alice fixes the conflict with keep both
-      Then Alice should see 'copy7 (1)' inside the folder copy8
+      Scenario: Copy a folder to another place with same item name, fixing conflict with keep both
+        Given the following items have been created in Alice account
+          | folder | copy7       |
+          | folder | copy8       |
+          | folder | copy8/copy7 |
+        When Alice selects to Copy the folder copy7
+        And Alice selects Personal as space
+        And Alice selects copy8 as target folder
+        And Alice fixes the conflict with keep both
+        Then Alice should see 'copy7 (1)' inside the folder copy8
 
-    Scenario: Copy a folder to another place with same item name, fixing conflict with replace
-      Given the following items have been created in Alice account
-        | file   | copy9.txt        |
-        | folder | copy10           |
-        | file   | copy10/copy9.txt |
-      When Alice selects to Copy the file copy9.txt
-      And Alice selects Personal as space
-      And Alice selects copy10 as target folder
-      And Alice fixes the conflict with replace
-      Then Alice should see copy9.txt inside the folder copy10
+      Scenario: Copy a folder to another place with same item name, fixing conflict with replace
+        Given the following items have been created in Alice account
+          | file   | copy9.txt        |
+          | folder | copy10           |
+          | file   | copy10/copy9.txt |
+        When Alice selects to Copy the file copy9.txt
+        And Alice selects Personal as space
+        And Alice selects copy10 as target folder
+        And Alice fixes the conflict with replace
+        Then Alice should see 'copy9.txt' inside the folder copy10
 
-    @nooc10
-    Scenario: More than one conflict at the time
-      Given the following items have been created in Alice account
-        | folder | test11            |
-        | file   | copy11.txt        |
-        | file   | copy12.txt        |
-        | file   | copy13.txt        |
-        | file   | test11/copy11.txt |
-        | file   | test11/copy12.txt |
-        | file   | test11/copy13.txt |
-      When Alice long presses over copy11.txt
-      And Alice multiselects the following items
-        | copy12.txt |
-        | copy13.txt |
-      And Alice selects to Copy
-      And Alice selects Personal as space
-      And Alice selects test as target folder
-      Then Alice should see the conflict dialog with the following message
-        | Apply to all 3 conflicts |
+      @nooc10
+      Scenario: More than one conflict at the time
+        Given the following items have been created in Alice account
+          | folder | test11            |
+          | file   | copy11.txt        |
+          | file   | copy12.txt        |
+          | file   | copy13.txt        |
+          | file   | test11/copy11.txt |
+          | file   | test11/copy12.txt |
+          | file   | test11/copy13.txt |
+        When Alice long presses over copy11.txt
+        And Alice multiselects the following items
+          | copy12.txt |
+          | copy13.txt |
+        And Alice selects to Copy
+        And Alice selects Personal as space
+        And Alice selects test as target folder
+        Then Alice should see the conflict dialog with the following message
+          | Apply to all 3 conflicts |
 
   Rule: Copy negative cases
 

@@ -11,107 +11,159 @@ Feature: Set items as available offline (downloaded and synced)
   @setasavoffline
   Rule: Set as av.offline
 
-  @smoke
-  Scenario: Set a file as available offline
-    Given the following items have been created in Alice account
-      | file | av.offline.pdf |
-    When Alice selects to set as av.offline the item av.offline.pdf
-    Then Alice should see the file av.offline.pdf as av.offline
+    @smoke
+    Scenario Outline: Set a file as available offline
+      Given the following items have been created in Alice account
+        | <type> | <name> |
+      When Alice selects to set as av.offline the item <name>
+      Then Alice should see the <type> <name> as av.offline
+      And <type> <name> should be stored in device
 
-  Scenario: Set a folder as available offline
-    Given the following items have been created in Alice account
-      | folder | avOffFolder             |
-      | file   | avOffFolder/example.txt |
-    When Alice selects to set as av.offline the item avOffFolder
-    And Alice browses into avOffFolder
-    Then Alice should see the file example.txt as av.offline
+      Examples:
+        | type | name        |
+        | file | ao1file.pdf |
+
+    Scenario Outline: Set a folder as available offline
+      Given the following items have been created in Alice account
+        | folder | <folderName>            |
+        | file   | <folderName>/<fileName> |
+      When Alice selects to set as av.offline the item <folderName>
+      And Alice browses into <folderName>
+      Then Alice should see the file <fileName> as av.offline
+      And file <folderName>/<fileName> should be stored in device
+
+      Examples:
+        | folderName | fileName    |
+        | ao2folder  | ao2file.txt |
+
 
   @moveavoffline
   Rule: Moving av.offline items
 
-  Scenario: Moving an av.offline item to other location does not lose the av.offline condition
-    Given the following items have been created in Alice account
-      | file   | avOff1.txt   |
-      | folder | avOfffolder1 |
-    When Alice selects to set as av.offline the item avOff1.txt
-    And Alice selects to Move the file avOff1.txt
-    And Alice selects avOfffolder1 as target folder
-    And Alice browses into avOfffolder1
-    Then Alice should see the file avOff1.txt as av.offline
+    Scenario Outline: Moving an av.offline item to other location does not lose the av.offline condition
+      Given the following items have been created in Alice account
+        | file   | <fileName>   |
+        | folder | <folderName> |
+      When Alice selects to set as av.offline the item <fileName>
+      And Alice selects to Move the file <fileName>
+      And Alice selects <folderName> as target folder
+      And Alice browses into <folderName>
+      Then Alice should see the file <fileName> as av.offline
+      And file <folderName>/<fileName> should be stored in device
 
-  Scenario: Moving a file inside an av.offline folder, turns the file av.offline
-    Given the following items have been created in Alice account
-      | file   | avoff2.pdf   |
-      | folder | avOffFolder2 |
-    When Alice selects to set as av.offline the item avOffFolder2
-    And Alice selects to Move the file avoff2.pdf
-    And Alice selects avOffFolder2 as target folder
-    Then Alice browses into avOffFolder2
-    And Alice should see the item avoff2.pdf as av.offline
+      Examples:
+        | folderName | fileName    |
+        | ao3folder  | ao3file.txt |
 
-  Scenario: Moving a file that is inside an av.offline folder to a non av.offline folder, turns not av.offline
-    Given the following items have been created in Alice account
-      | folder | avOffFolder3            |
-      | file   | avOffFolder3/avoff3.txt |
-    When Alice selects to set as av.offline the item avOffFolder3
-    And Alice selects to Move the file avOffFolder3/avoff3.txt
-    And Alice selects / as target folder
-    And Alice browses to root folder
-    Then Alice should not see the file avoff3.txt as av.offline
+    Scenario Outline: Moving a file inside an av.offline folder, turns the file av.offline
+      Given the following items have been created in Alice account
+        | file   | <fileName>   |
+        | folder | <folderName> |
+      When Alice selects to set as av.offline the item <folderName>
+      And Alice selects to Move the file <fileName>
+      And Alice selects <folderName> as target folder
+      Then Alice browses into <folderName>
+      And Alice should see the item <fileName> as av.offline
+      And file <folderName>/<fileName> should be stored in device
+
+      Examples:
+        | folderName | fileName    |
+        | ao4folder  | ao4file.txt |
+
+    Scenario Outline: Moving a file that is inside an av.offline folder to a non av.offline folder, turns not av.offline
+      Given the following items have been created in Alice account
+        | folder | <folderName>            |
+        | file   | <folderName>/<fileName> |
+      When Alice selects to set as av.offline the item <folderName>
+      And Alice selects to Move the file <folderName>/<fileName>
+      And Alice selects / as target folder
+      And Alice browses to root folder
+      Then Alice should not see the file <fileName> as av.offline
+      And file <fileName> should be stored in device
+
+      Examples:
+        | folderName | fileName    |
+        | ao5folder  | ao5file.txt |
 
   @smoke
   Rule: Av.offline file modification
 
-  Scenario: Update over an av.offline file
-    Given the following items have been created in Alice account
-      | file | avoff4.txt |
-    When Alice selects to set as av.offline the item avoff4.txt
-    And file avoff4.txt is modified externally adding "updated"
-    And Alice selects to Download the item avoff4.txt
-    Then Alice should see the file avoff4.txt with "updated"
+    Scenario Outline: Update over an av.offline file
+      Given the following items have been created in Alice account
+        | file | <fileName> |
+      When Alice selects to set as av.offline the item <fileName>
+      And file <fileName> is modified externally adding "updated"
+      And Alice selects to Download the item <fileName>
+      Then Alice should see the file <fileName> with "updated"
+
+      Examples:
+        | fileName    |
+        | ao6file.txt |
 
   @unsetavoffline
   Rule: Unset as av.offline
 
-  Scenario Outline: Unset an item as available offline
-    Given the following items have been created in Alice account
-      | <type> | <item> |
-    And Alice selects to set as av.offline the item <item>
-    When Alice selects to unset as av.offline the item <item>
-    Then Alice should not see the <type> <item> as av.offline
+    Scenario Outline: Unset a file as available offline
+      Given the following items have been created in Alice account
+        | file | <fileName> |
+      And Alice selects to set as av.offline the item <fileName>
+      When Alice selects to unset as av.offline the item <fileName>
+      Then Alice should not see the file <fileName> as av.offline
+      And file <fileName> should be stored in device
 
-    Examples:
-      | type   | item       |
-      | file   | avOff5.txt |
-      | folder | avOff6     |
+      Examples:
+        | fileName    |
+        | ao7file.pdf |
 
-  Scenario: Not posible to unset an item as available offline if parent is av. offline
-    Given the following items have been created in Alice account
-      | folder | avOff7            |
-      | file   | avOff7/avOff8.txt |
-    When Alice selects to set as av.offline the item avOff7
-    And Alice browses into avOff7
-    Then Alice cannot unset as av.offline the item avOff8.txt
+  Scenario Outline: Unset a folder as available offline
+      Given the following items have been created in Alice account
+        | folder | <folderName> |
+      And Alice selects to set as av.offline the item <folderName>
+      When Alice selects to unset as av.offline the item <folderName>
+      Then Alice should not see the folder <folderName> as av.offline
+
+      Examples:
+        | folderName |
+        | ao8folder  |
+
+  Scenario Outline: Not possible to unset an item as available offline if parent is av. offline
+      Given the following items have been created in Alice account
+        | folder | <folderName>            |
+        | file   | <folderName>/<fileName> |
+      When Alice selects to set as av.offline the item <folderName>
+      And Alice browses into <folderName>
+      Then Alice cannot unset as av.offline the item <fileName>
+
+      Examples:
+        | folderName | fileName    |
+        | ao9folder  | ao9file.txt |
 
   @avofflineshortcut
   Rule: Av. offline shortcut
 
-  Scenario: Available offline shortcut
-    Given the following items have been created in Alice account
-      | file   | avOffs1.txt |
-      | folder | avOffs2     |
-    And Alice selects to set as av.offline the item avOffs1.txt
-    When Alice opens the available offline shortcut
-    Then Alice should see avOffs1.txt in the list
-    But Alice should not see avOffs2 in the offline list
+    Scenario Outline: Available offline shortcut
+      Given the following items have been created in Alice account
+        | file   | <fileName>   |
+        | folder | <folderName> |
+      And Alice selects to set as av.offline the item <fileName>
+      When Alice opens the available offline shortcut
+      Then Alice should see <fileName> in the list
+      But Alice should not see <folderName> in the offline list
 
-  Scenario: Remove from available offline shortcut
-    Given the following items have been created in Alice account
-      | file | avOffs3.txt |
-    And Alice selects to set as av.offline the item avOffs3.txt
-    When Alice opens the available offline shortcut
-    And Alice selects to unset as av.offline the item avOffs3.txt
-    Then Alice should not see avOffs3.txt in the offline list
-    And Alice should see the following message
-      | No available offline files |
+      Examples:
+        | folderName | fileName     |
+        | ao10folder | ao10file.pdf |
 
+  Scenario Outline: Remove from available offline shortcut
+        Given the following items have been created in Alice account
+          | file | <fileName> |
+      And Alice selects to set as av.offline the item <fileName>
+        When Alice opens the available offline shortcut
+        And Alice selects to unset as av.offline the item <fileName>
+        Then Alice should not see <fileName> in the offline list
+        And Alice should see the following message
+          | No available offline files |
+
+        Examples:
+          | fileName     |
+          | ao11file.txt |
