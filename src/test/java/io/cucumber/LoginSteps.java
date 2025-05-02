@@ -10,7 +10,6 @@ import java.util.logging.Level;
 
 import io.cucumber.java.en.Given;
 import utils.LocProperties;
-import utils.log.Log;
 import utils.log.StepLogger;
 
 public class LoginSteps {

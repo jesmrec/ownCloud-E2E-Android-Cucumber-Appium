@@ -4,7 +4,6 @@ import java.util.logging.Level;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import utils.log.Log;
 import utils.log.StepLogger;
 
 public class DocumentProviderSteps {

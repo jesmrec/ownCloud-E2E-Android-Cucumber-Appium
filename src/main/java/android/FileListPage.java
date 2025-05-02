@@ -93,6 +93,9 @@ public class FileListPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/dialog_file_already_exists_title")
     WebElement conflictTitle;
 
+    @AndroidFindBy(id = "android:id/chooser_header")
+    List<WebElement> chooserHeader;
+
     public static FileListPage instance;
 
     private FileListPage() {
@@ -343,9 +346,10 @@ public class FileListPage extends CommonPage {
         if (itemType.equals("file")) {
             Log.log(Level.FINE, "Opening file");
             //Waiting till file is opened and the dialog shown
-            waitById(WAIT_TIME, "android:id/chooser_header");
-            //To dismiss the dialog
-            tap(200,300);
+            if (!chooserHeader.isEmpty()) {
+                //To dismiss the dialog if the specific version shows the chooser header
+                tap(200, 300);
+            }
             boolean fileNameVisible = findUIAutomatorText(itemName).isDisplayed();
             boolean fileTypeIconVisible = findId("com.owncloud.android:id/fdImageDetailFile").isDisplayed();
             return fileNameVisible && fileTypeIconVisible;

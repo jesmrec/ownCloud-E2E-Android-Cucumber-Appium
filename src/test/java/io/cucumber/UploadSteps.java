@@ -3,7 +3,6 @@ package io.cucumber;
 import java.util.logging.Level;
 
 import io.cucumber.java.en.Then;
-import utils.log.Log;
 import utils.log.StepLogger;
 
 public class UploadSteps {
