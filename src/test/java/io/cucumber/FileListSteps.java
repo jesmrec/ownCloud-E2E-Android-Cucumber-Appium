@@ -21,7 +21,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utils.entities.OCFile;
-import utils.entities.OCSpace;
 import utils.log.Log;
 
 public class FileListSteps {

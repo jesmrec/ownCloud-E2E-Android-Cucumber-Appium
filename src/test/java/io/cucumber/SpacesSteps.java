@@ -66,19 +66,15 @@ public class SpacesSteps {
         world.spacesPage.typeSearch(pattern);
     }
 
-    @Then("Alice should see the following spaces")
-    public void user_should_see_following_spaces(DataTable table) {
+    @Then("Alice should{typePosNeg} see the following spaces")
+    public void user_should_see_following_spaces(String sense, DataTable table) {
         String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
         Log.log(Level.FINE, "----STEP----: " + stepName);
         List<List<String>> listItems = table.asLists();
-        assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
-    }
-
-    @Then("Alice should not see the following spaces")
-    public void user_should_not_see_following_spaces(DataTable table) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
-        List<List<String>> listItems = table.asLists();
-        assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
+        if (sense.isEmpty()){
+            assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
+        } else if (sense.equals("not")) {
+            assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
+        }
     }
 }
