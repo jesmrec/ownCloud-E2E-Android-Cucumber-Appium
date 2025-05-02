@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import io.cucumber.java.en.Given;
 import utils.LocProperties;
 import utils.log.Log;
+import utils.log.StepLogger;
 
 public class LoginSteps {
 
@@ -22,8 +23,7 @@ public class LoginSteps {
 
     @Given("user {word} is logged")
     public void user_is_logged(String user) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();;
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         // Server and app MUST work with basic auth mode.
         if(!world.fileListPage.isFileListVisible()) {
             String server = System.getProperty("server");

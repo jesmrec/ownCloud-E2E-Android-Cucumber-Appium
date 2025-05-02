@@ -50,6 +50,9 @@ public class Hooks {
 
     private void cleanUp()
             throws IOException, ParserConfigurationException, SAXException {
+        Log.log(Level.FINE, "-------------------------------");
+        Log.log(Level.FINE, "STARTS: CLEAN UP AFTER SCENARIO");
+        Log.log(Level.FINE, "-------------------------------");
         //First, remove leftovers in root folder for every user
         ArrayList<String> userNames = new ArrayList<>(Arrays.asList("Alice", "Bob"));
         for (String userToClean: userNames) {

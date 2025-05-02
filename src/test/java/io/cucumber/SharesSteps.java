@@ -19,6 +19,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utils.entities.OCShare;
 import utils.log.Log;
+import utils.log.StepLogger;
 
 public class SharesSteps {
 
@@ -45,8 +46,7 @@ public class SharesSteps {
     @Given("{word} has {sharelevel} {itemtype} {word} with {word} with permissions {word}")
     public void user_has_shared_item_with_permissions(String sharingUser, int shareLevel, String type, String itemName,
                                     String recipientUser, String permissions) throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.shareAPI.createShare(sharingUser, itemName, recipientUser, "0", permissions, "", "", shareLevel);
         world.shareAPI.acceptAllShares("user", recipientUser);
     }
@@ -54,8 +54,7 @@ public class SharesSteps {
     @When("Alice selects {usertype} {word} as sharee")
     public void user_selects_sharee(String type, String sharee)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.sharePage.addPrivateShare();
         world.searchShareePage.shareWithUser(sharee);
         world.shareAPI.acceptAllShares(type,sharee);
@@ -63,8 +62,7 @@ public class SharesSteps {
 
     @When("Alice edits the share on {itemtype} {word} with permissions {word}")
     public void user_edits_share_with_permissions(String type, String itemName, String permissions) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.sharePage.openPrivateShare(itemName);
         int permissionsToInt = Integer.parseInt(permissions);
         String permissionsToString = String.format("%5s", Integer.toBinaryString(permissionsToInt))
@@ -124,24 +122,21 @@ public class SharesSteps {
 
     @When("Alice deletes the share")
     public void user_deletes_share() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.sharePage.deletePrivateShare();
         world.sharePage.acceptDeletion();
     }
 
     @When("Alice closes share view")
     public void user_closes_shares_view() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.sharePage.close();
     }
 
     @Then("share should be created/edited on {word} with the following fields")
     public void share_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         //Asserts in UI
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
@@ -198,16 +193,14 @@ public class SharesSteps {
     @Then("{word} should not have access to {word}")
     public void sharee_should_not_have_access_to_item(String userName, String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         assertFalse(world.shareAPI.isSharedWithMe(itemName, userName, false));
     }
 
     @Then("{usertype} {word} should have access to {word}")
     public void sharee_should_not_have_access_the_item(String type, String shareeName, String itemName)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         if (type.equalsIgnoreCase("user")) {
             assertTrue(world.shareAPI.isSharedWithMe(itemName, shareeName, false));
         } else if (type.equalsIgnoreCase("group")) {
@@ -218,15 +211,13 @@ public class SharesSteps {
     @Then("{word} should not be shared anymore with {word}")
     public void item_should_not_be_shared_with(String itemName, String sharee)
             throws Throwable {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         assertFalse(world.sharePage.isItemInListPrivateShares(sharee));
     }
 
     @Then("Alice should see {word} as recipient")
     public void user_should_see_recipient(String sharee) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         assertTrue(world.privateSharePage.isSharee(sharee));
     }
 }

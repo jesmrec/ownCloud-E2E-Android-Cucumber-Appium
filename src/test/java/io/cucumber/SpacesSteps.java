@@ -17,7 +17,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import utils.log.Log;
+import utils.log.StepLogger;
 
 public class SpacesSteps {
 
@@ -29,8 +29,7 @@ public class SpacesSteps {
 
     @Given("the following spaces have been created in {word} account")
     public void spaces_have_been_created(String userName, DataTable table) throws IOException {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             String name = rows.get(0);
@@ -41,16 +40,14 @@ public class SpacesSteps {
 
     @When("Alice selects the spaces view")
     public void user_selects_spaces_view() {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.fileListPage.openSpaces();
     }
 
     @When("following space is disabled in server")
     public void space_disabled_server(DataTable table)
             throws IOException {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             String name = rows.get(0);
@@ -61,15 +58,13 @@ public class SpacesSteps {
 
     @When("Alice filters the list using {word}")
     public void user_filters_list(String pattern) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.spacesPage.typeSearch(pattern);
     }
 
     @Then("Alice should{typePosNeg} see the following spaces")
     public void user_should_see_following_spaces(String sense, DataTable table) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         List<List<String>> listItems = table.asLists();
         if (sense.isEmpty()){
             assertTrue(world.spacesPage.areAllSpacesVisible(listItems));

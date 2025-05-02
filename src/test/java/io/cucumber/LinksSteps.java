@@ -19,6 +19,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utils.entities.OCShare;
 import utils.log.Log;
+import utils.log.StepLogger;
 
 public class LinksSteps {
 
@@ -36,15 +37,13 @@ public class LinksSteps {
     @Given("{word} has shared the {itemtype} {word} by link")
     public void user_has_shared_the_item_by_link(String sharingUser, String type, String itemName)
             throws Throwable {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.shareAPI.createShare(sharingUser, itemName, "", "3", "1", itemName, "aa55AA.." + " link", 0);
     }
 
     @When("Alice creates link on {word} {word} with the following fields")
     public void user_creates_link_with_fields(String type, String itemName, DataTable table) {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.sharePage.addPublicLink();
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
@@ -78,8 +77,7 @@ public class LinksSteps {
 
     @When("Alice edits the link on {word} with the following fields")
     public void user_edits_public_link_with_fields(String itemName, DataTable table) {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         List<List<String>> listItems = table.asLists();
         world.sharePage.openPublicLink(itemName);
         for (List<String> rows : listItems) {
@@ -127,8 +125,7 @@ public class LinksSteps {
 
     @When("Alice deletes the link on {word}")
     public void user_deletes_link(String itemName) {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.sharePage.deletePublicShare();
         world.sharePage.acceptDeletion();
     }
@@ -136,8 +133,7 @@ public class LinksSteps {
     @Then("link should be created/edited on {word} with the following fields")
     public void link_should_be_created_with_fields(String itemName, DataTable table)
             throws Throwable {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         //Asserts in UI
         Log.log(Level.FINE, "Checking UI asserts");
         List<List<String>> listItems = table.asLists();
@@ -187,8 +183,7 @@ public class LinksSteps {
     @Then("link on {word} should not exist anymore")
     public void link_should_not_exist_anymore(String itemName)
             throws Throwable {
-        String stepName = new Object() {}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         Log.log(Level.FINE, "Checking if item exists: " + itemName);
         assertTrue(world.sharePage.isListPublicLinksEmpty());
         assertTrue(world.shareAPI.getLinksByDefault().isEmpty());

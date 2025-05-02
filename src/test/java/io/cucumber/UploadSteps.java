@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import io.cucumber.java.en.Then;
 import utils.log.Log;
+import utils.log.StepLogger;
 
 public class UploadSteps {
 
@@ -15,8 +16,7 @@ public class UploadSteps {
 
     @Then("Alice should see {word} as {word} in the uploads view")
     public void file_in_uploads(String fileName, String status) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.fileListPage.openUploadsView();
         if (status.equals("uploaded")) {
             world.uploadsPage.isFileUploaded(fileName);

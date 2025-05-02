@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import utils.log.Log;
+import utils.log.StepLogger;
 
 public class DocumentProviderSteps {
 
@@ -16,15 +17,13 @@ public class DocumentProviderSteps {
 
     @Given("a file {word} exists in the device")
     public void a_file_exists_in_device(String fileName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.devicePage.pushFile(fileName);
     }
 
     @When("Alice selects {word} to upload")
     public void user_selects_file_to_upload(String fileName) {
-        String stepName = new Object(){}.getClass().getEnclosingMethod().getName().toUpperCase();
-        Log.log(Level.FINE, "----STEP----: " + stepName);
+        StepLogger.logCurrentStep(Level.FINE);
         world.documentProviderPage.selectFileToUpload(fileName);
     }
 }
