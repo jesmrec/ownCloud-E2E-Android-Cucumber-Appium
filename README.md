@@ -76,6 +76,7 @@ The script `executeTests` will launch the tests. The following environment varia
 			If Appium Server is not specified, will be used "localhost:4723"
 		$UDID_DEVICE (optional): ID of the device/simulator to execute the tests onto.
 			This ID could be get by executing  `adb devices`
+		$BACKEND (optional): oCIS or oC10. If not specified, will be used oCIS.
 
 The script needs some parameters. Check help `executeTests -h`
 
@@ -85,6 +86,7 @@ To execute all tests but the ignored ones (or any other tagged ones):
 		export UDID_DEVICE=emulator-5554
 		export OC_SERVER_URL=https://my.owncloud.server
 		export APPIUM_URL=localhost:4723
+		export BACKEND=oCIS
 		./executeTests -t "not @ignore"
 
 The execution will display step by step how the scenario is being executed.
@@ -123,14 +125,14 @@ Also, add in `cucumber.properties` file the following key-values (disabled by de
 
 ## Versioning
 
-Up to date: 04/Feb/2025
+Up to date: 07/May/2025
 
-|||
-|:-- |:-: |
-| [Cucumber version](https://cucumber.io/docs/installation/java/) | 7.21.0 |
-| [Appium version](https://github.com/appium/appium/releases)| 2.15.0|
-| [Appium uiautomator2 driver version](https://github.com/appium/appium-uiautomator2-driver/releases)| 3.10.0|
-| [Java client version](https://github.com/appium/java-client/releases) | 9.4.0 |
+||        |
+|:-- |:------:|
+| [Cucumber version](https://cucumber.io/docs/installation/java/) | 7.21.1 |
+| [Appium version](https://github.com/appium/appium/releases)| 2.18.0 |
+| [Appium uiautomator2 driver version](https://github.com/appium/appium-uiautomator2-driver/releases)|  4.2.3  |
+| [Java client version](https://github.com/appium/java-client/releases) | 9.4.0  |
 
 **Note**: This repository was forked from [Cucumber-java
 skeleton](https://github.com/cucumber/cucumber-java-skeleton)
