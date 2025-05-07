@@ -26,6 +26,7 @@ Feature: Private Links
       | <type> | <path> |
     When Alice opens a private link pointing to <path> with scheme owncloud
     Then Alice should see the file <name> with textExample
+    And <type> <name> should be stored in device
 
     Examples:
       | type | path             | name             |

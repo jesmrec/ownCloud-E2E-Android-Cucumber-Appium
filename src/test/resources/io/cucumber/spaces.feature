@@ -48,7 +48,7 @@ Feature: Spaces
       Given the following spaces have been created in Alice account
         | Space7 | Seventh space |
         | Space8 | Eighth space  |
-        | Space9 | Nineth space  |
+        | Space9 | Ninth space   |
       And Alice selects the spaces view
       When Alice filters the list using Space8
       And Alice refreshes the list
@@ -56,5 +56,4 @@ Feature: Spaces
         | Space8 | Eighth space |
       But Alice should not see the following spaces
         | Space7 | Seventh space |
-        | Space9 | Nineth space  |
-
+        | Space9 | Ninth space   |

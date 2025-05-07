@@ -62,4 +62,4 @@ Feature: Delete item
       | delete3.txt |
     And Alice selects to Delete
     Then Alice should see the following message
-      | Do you really want to remove these 3 items? |  |
+      | Do you really want to remove these 3 items? |

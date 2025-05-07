@@ -166,15 +166,19 @@ Feature: Public Links
     But Alice should not see Links19.txt in the links list
     And Alice should not see Links21 in the links list
 
-  Scenario: Remove from link shortcut
+  Scenario Outline: Remove from link shortcut
     Given the following items have been created in Alice account
-      | file | Links22.txt |
-    And Alice has shared the file Links22.txt by link
+      | <type> | <item> |
+    And Alice has shared the <type> <item> by link
     When Alice opens the public link shortcut
-    And Alice selects to share the file Links22.txt
-    And Alice deletes the link on Links22.txt
+    And Alice selects to share the <type> <item>
+    And Alice deletes the link on <item>
     And Alice closes share view
     And Alice refreshes the list
-    Then Alice should not see Links22.txt in the offline list
+    Then Alice should not see <item> in the offline list
     And Alice should see the following message
       | No shared links |
+
+    Examples:
+      | type | item        |
+      | file | Links22.txt |

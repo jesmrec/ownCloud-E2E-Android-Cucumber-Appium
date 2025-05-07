@@ -56,52 +56,73 @@ Feature: Move item
         | type | name      | target |
         | file | move4.txt | move5  |
 
-    @moveconflicts
+  @moveconflicts
   Rule: Move with conflicts
 
-    Scenario: Move a folder to another place with same item name
+    Scenario Outline: Move a folder to another place with same item name, keeping both
       Given the following items have been created in Alice account
-        | folder | move6       |
-        | folder | move7       |
-        | folder | move7/move6 |
-      When Alice selects to Move the folder move6
-      And Alice selects move7 as target folder
+        | folder | <name>          |
+        | folder | <target>        |
+        | folder | <target>/<name> |
+      When Alice selects to Move the folder <name>
+      And Alice selects <target> as target folder
       And Alice fixes the conflict with keep both
-      Then Alice should see 'move6 (1)' inside the folder move7
+      Then Alice should see '<name> (1)' inside the folder <target>
 
-    Scenario: Move a folder to another place with same item name
+      Examples:
+        | type | name  | target |
+        | file | move6 | move7  |
+
+
+    Scenario Outline: Move a folder to another place with same item name, replacing
       Given the following items have been created in Alice account
-        | folder | move8       |
-        | folder | move9       |
-        | folder | move8/move8 |
-      When Alice selects to Move the folder move8
-      And Alice selects move9 as target folder
+        | folder | <name>          |
+        | folder | <target>        |
+        | folder | <target>/<name> |
+      When Alice selects to Move the folder <name>
+      And Alice selects <target> as target folder
       And Alice fixes the conflict with replace
-      Then Alice should see 'move8' inside the folder move9
+      Then Alice should see '<name>' inside the folder <target>
+
+      Examples:
+        | type | name  | target |
+        | file | move8 | move9  |
 
   Rule: Move negative cases
 
-    Scenario: Move a folder to itself
+    Scenario Outline: Move a folder to itself
       Given the following items have been created in Alice account
-        | folder | move10 |
-      When Alice selects to Move the folder move10
-      And Alice selects move10 as target folder
+        | folder | <name> |
+      When Alice selects to Move the folder <name>
+      And Alice selects <target> as target folder
       Then Alice should see the following error
         | It is not possible to move a folder into a descendant |
 
-    Scenario: Move a folder to same location
+      Examples:
+        | type   | name   | target |
+        | folder | move10 | move10 |
+
+    Scenario Outline: Move a folder to same location
       Given the following items have been created in Alice account
-        | file | move11.txt |
-      When Alice selects to Move the file move11.txt
+        | <type> | <name> |
+      When Alice selects to Move the file <target>
       And Alice selects / as target folder
       Then Alice should see the following error
         | The file exists already in the destination folder |
 
-    Scenario: Move a folder to descendant
+      Examples:
+        | type   | name       | target     |
+        | folder | move11.txt | move11.txt |
+
+    Scenario Outline: Move a folder to descendant
       Given the following items have been created in Alice account
-        | folder | move12        |
-        | folder | move12/move13 |
-      When Alice selects to Move the folder move12
-      And Alice selects move12/move13 as target folder
+        | folder | <name>          |
+        | folder | <name>/<target> |
+      When Alice selects to Move the folder <name>
+      And Alice selects <name>/<target> as target folder
       Then Alice should see the following error
         | It is not possible to move a folder into a descendant |
+
+      Examples:
+        | type   | name   | target |
+        | folder | move12 | move13 |
