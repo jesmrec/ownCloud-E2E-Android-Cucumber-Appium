@@ -380,7 +380,7 @@ public class FileListSteps {
         StepLogger.logCurrentStep(Level.FINE);
         if (sense.isEmpty()) {
             assertTrue(world.fileListPage.isItemInList(itemName));
-        } else if (sense.equals("not")) {
+        } else if (sense.equals(" not")) {
             assertFalse(world.fileListPage.isItemInList(itemName));
         }
     }
@@ -435,7 +435,7 @@ public class FileListSteps {
         StepLogger.logCurrentStep(Level.FINE);
         if (sense.isEmpty()) {
             assertTrue(world.fileListPage.isItemMarkedAsAvOffline(itemName));
-        } else if (sense.equals("not")) {
+        } else if (sense.equals(" not")) {
             assertTrue(world.fileListPage.isItemMarkedAsUnAvOffline(itemName));
         }
     }
@@ -560,7 +560,7 @@ public class FileListSteps {
             //Building parcial path
             for (int i = 0; i < parts.length - 1; i++) {
                 currentPath = currentPath + "/" + parts[i];
-                world.devicePage.pullList(currentPath); // Puede almacenarse si se necesita
+                world.devicePage.pullList(currentPath);
             }
             itemName = itemType.equals("file")
                     ? parts[parts.length - 1]
@@ -568,10 +568,11 @@ public class FileListSteps {
         }
 
         String listFiles = world.devicePage.pullList(currentPath);
-        Log.log(Level.FINE, "List of files before assertion: " + listFiles + ". ItemName: " + itemName);
+        Log.log(Level.FINE, "List of files before assertion: " + listFiles +
+                ". ItemName: " + itemName);
         if (sense.isEmpty()) {
             assertTrue(listFiles.contains(itemName));
-        } else if (sense.equals("not")) {
+        } else if (sense.equals(" not")) {
             assertFalse(listFiles.contains(itemName));
         }
     }

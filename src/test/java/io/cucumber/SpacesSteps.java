@@ -68,7 +68,7 @@ public class SpacesSteps {
         List<List<String>> listItems = table.asLists();
         if (sense.isEmpty()){
             assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
-        } else if (sense.equals("not")) {
+        } else if (sense.equals(" not")) {
             assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
         }
     }

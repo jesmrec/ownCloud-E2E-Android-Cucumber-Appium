@@ -36,7 +36,6 @@ Feature: Set items as available offline (downloaded and synced)
         | folderName | fileName    |
         | ao2folder  | ao2file.txt |
 
-
   @moveavoffline
   Rule: Moving av.offline items
 
@@ -115,7 +114,7 @@ Feature: Set items as available offline (downloaded and synced)
         | fileName    |
         | ao7file.pdf |
 
-  Scenario Outline: Unset a folder as available offline
+    Scenario Outline: Unset a folder as available offline
       Given the following items have been created in Alice account
         | folder | <folderName> |
       And Alice selects to set as av.offline the item <folderName>
@@ -126,7 +125,7 @@ Feature: Set items as available offline (downloaded and synced)
         | folderName |
         | ao8folder  |
 
-  Scenario Outline: Not possible to unset an item as available offline if parent is av. offline
+    Scenario Outline: Not possible to unset an item as available offline if parent is av. offline
       Given the following items have been created in Alice account
         | folder | <folderName>            |
         | file   | <folderName>/<fileName> |
@@ -157,7 +156,7 @@ Feature: Set items as available offline (downloaded and synced)
   Scenario Outline: Remove from available offline shortcut
         Given the following items have been created in Alice account
           | file | <fileName> |
-      And Alice selects to set as av.offline the item <fileName>
+        And Alice selects to set as av.offline the item <fileName>
         When Alice opens the available offline shortcut
         And Alice selects to unset as av.offline the item <fileName>
         Then Alice should not see <fileName> in the offline list
