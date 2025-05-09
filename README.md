@@ -51,17 +51,18 @@ pointing to the Android SDK folder
 
 ### 1. Build app
 
-First, build the [app](https://github.com/owncloud/android) from the expected branch/commit to get the test object. 
+First, build the [app](https://github.com/owncloud/android) from the expected branch/commit to get the test object.
 
-Since the app [does not have a test variant yet](https://github.com/owncloud/android/issues/3791), you'll find the way to build it in the [buildapk](https://github.com/owncloud/android-scenario-testing/tree/master/buildapk) folder of the current repository.
-
-The [buildAPK](https://github.com/owncloud/android-scenario-testing/blob/master/buildapk/buildAPK.sh) script:
+The [buildAPK](https://github.com/owncloud/android-scenario-testing/blob/master/buildapk/buildAPK.sh) script will build the app by using the qa variant available in the app. Such variant:
 
 - will disable welcome wizard
 - will disable the release notes
 - will set basic auth as forced authentication method, required to execute the test suites
-- will build a release-signed apk with the given keystore path and pass (check script variables)
-- will move the final artifact to the correct place (`/src/test/resources` folder in the current structure)
+
+Besides of that, the script also:
+
+- builds a release-signed apk with the given keystore path and pass (check script variables)
+- moves the final artifact to the correct place (`/src/test/resources` folder in the current structure)
 
 As commented, check the script's variables for the proper setup in your own environment or CI system.
 
@@ -97,8 +98,8 @@ More info in [Cucumber reference](https://cucumber.io/docs/cucumber/api/)
 
 **NOTE**: Since there are two kinds of backends available (oC10, oCIS), not all tests are suitable to be executed over both. Those tests have been tagged with:
 
-- `nooc10`: tests to be executed only over oCIS, not suitable for oC10.
-- `noocis`: tests to be executed only over oC10, not suitable for oCIS.
+- `@nooc10`: tests to be executed only over oCIS, not suitable for oC10.
+- `@noocis`: tests to be executed only over oC10, not suitable for oCIS.
 
 It's important to execute the tests with the mentioned tags to avoid wrong positives. Example commands:
 
