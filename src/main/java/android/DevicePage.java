@@ -61,7 +61,6 @@ public class DevicePage extends CommonPage {
         String server = System.getProperty("server")
                 .replaceFirst("^https?://", "")
                 .replace(":", "%3A" );
-        //String server = System.getProperty("server").substring(8); // Remove "https://"
         String target = downloadFolder + "/" + user + "@" + server  + "/" + folderId;
         Log.log(Level.FINE, "Command args to execute: " + target);
         args.put("command", "ls");

@@ -52,11 +52,6 @@ public class FileListSteps {
         return type;
     }
 
-    @Given("there is an item called {word} in the folder Downloads of the device")
-    public void there_is_an_item_in_folder_downloads(String itemName) {
-        StepLogger.logCurrentStep(Level.FINE);
-        world.devicePage.pushFile(itemName);
-    }
 
     @Given("the following items have been created in {word} account")
     public void items_have_been_created_in_account(String userName, DataTable table) throws Throwable {

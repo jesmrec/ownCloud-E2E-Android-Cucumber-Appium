@@ -13,18 +13,8 @@
 # Move to the correct place
 cd $PROJECT_ROOT_PATH
 
-# Disable welcome wizard and release notes
-gsed -i 's/<bool name="wizard_enabled">true<\/bool>/<bool name="wizard_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
-gsed -i 's/<bool name="release_notes_enabled">true<\/bool>/<bool name="release_notes_enabled">false<\/bool>/i' owncloudApp/src/main/res/values/setup.xml
-grep wizard owncloudApp/src/main/res/values/setup.xml
-grep release_notes owncloudApp/src/main/res/values/setup.xml
-
-# Set basic auth as default
-gsed -i '375,376d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
-gsed -i '380,414d' owncloudApp/src/main/java/com/owncloud/android/presentation/authentication/LoginActivity.kt
-
 # Build the app in release mode
-./gradlew assembleOriginalRelease
+./gradlew clean assembleqaRelease
 
 # Allign artifact 
 ls $APK_PATH | grep owncloud | xargs -I{} $BUILD_TOOLS_PATH/zipalign -v -p 4 $APK_PATH/{} $APK_PATH/owncloudunsigned.apk
