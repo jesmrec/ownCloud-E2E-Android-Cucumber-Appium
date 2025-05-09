@@ -63,37 +63,13 @@ public class FileListSteps {
             Log.log(Level.FINE, type + " " + name);
             if (!world.filesAPI.itemExist(name)) {
                 switch (type) {
-                    case ("folder"):
-                    case ("item"): {
-                        world.filesAPI.createFolder(name, userName);
-                        break;
-                    }
-                    case ("file"): {
-                        world.filesAPI.pushFile(name, userName);
-                        break;
-                    }
-                    case ("image"): {
-                        world.filesAPI.pushFileByMime(name, "image/jpg");
-                        break;
-                    }
-                    case ("audio"): {
-                        world.filesAPI.pushFileByMime(name, "audio/mpeg3");
-                        break;
-                    }
-                    case ("video"): {
-                        world.filesAPI.pushFileByMime(name, "video/mp4");
-                        break;
-                    }
-                    case ("shortcut"): {
-                        world.filesAPI.pushFileByMime(name, "text/uri-list");
-                        break;
-                    }
-                    case ("damaged"): { //Our sample damaged file is a .png
-                        world.filesAPI.pushFileByMime(name, "image/png");
-                        break;
-                    }
-                    default:
-                        break;
+                    case "folder", "item" -> world.filesAPI.createFolder(name, userName);
+                    case "file" -> world.filesAPI.pushFile(name, userName);
+                    case "image" -> world.filesAPI.pushFileByMime(name, "image/jpg");
+                    case "audio" -> world.filesAPI.pushFileByMime(name, "audio/mpeg3");
+                    case "video" -> world.filesAPI.pushFileByMime(name, "video/mp4");
+                    case "shortcut" -> world.filesAPI.pushFileByMime(name, "text/uri-list");
+                    case "damaged" -> world.filesAPI.pushFileByMime(name, "image/png");
                 }
             }
         }
@@ -165,25 +141,11 @@ public class FileListSteps {
     @When("Alice selects the option {optionsFab}")
     public void user_selects_option_upload(String operation) {
         StepLogger.logCurrentStep(Level.FINE);
-        switch (operation){
-            case "Upload File": {
-                world.fileListPage.selectUploadFiles();
-                break;
-            }
-            case "Picture from Camera":{
-                world.fileListPage.selectUploadPicture();
-                break;
-            }
-            case "Create Folder":{
-                world.fileListPage.selectCreateFolder();
-                break;
-            }
-            case "Create Shortcut":{
-                world.fileListPage.selectCreateShortcut();
-                break;
-            }
-            default:
-                break;
+        switch (operation) {
+            case "Upload File" -> world.fileListPage.selectUploadFiles();
+            case "Picture from Camera" -> world.fileListPage.selectUploadPicture();
+            case "Create Folder" -> world.fileListPage.selectCreateFolder();
+            case "Create Shortcut" -> world.fileListPage.selectCreateShortcut();
         }
     }
 
@@ -446,27 +408,14 @@ public class FileListSteps {
     public void image_should_be_opened_and_previewed(String type, String itemName) {
         StepLogger.logCurrentStep(Level.FINE);
         switch (type) {
-            case ("file"): {
-                assertTrue(world.detailsPage.isItemPreviewed());
-                break;
-            }
-            case ("audio"): {
-                assertTrue(world.detailsPage.isAudioPreviewed());
-                break;
-            }
-            case ("image"): {
+            case "file" -> assertTrue(world.detailsPage.isItemPreviewed());
+            case "audio" -> assertTrue(world.detailsPage.isAudioPreviewed());
+            case "image" -> {
                 assertTrue(world.detailsPage.isImagePreviewed());
                 world.detailsPage.displayControls();
-                break;
             }
-            case ("video"): {
-                assertTrue(world.detailsPage.isVideoPreviewed());
-                break;
-            }
-            case ("damaged"): {
-                assertTrue(world.detailsPage.isDamagedPreviewed());
-                break;
-            }
+            case "video" -> assertTrue(world.detailsPage.isVideoPreviewed());
+            case "damaged" -> assertTrue(world.detailsPage.isDamagedPreviewed());
         }
     }
 

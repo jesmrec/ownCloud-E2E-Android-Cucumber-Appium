@@ -15,8 +15,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.logging.Level;
 
-import io.appium.java_client.android.nativekey.AndroidKey;
-import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -103,11 +101,6 @@ public class DetailsPage extends CommonPage {
     public void backListFiles() {
         Log.log(Level.FINE, "Start: Back to the list of files");
         back.click();
-    }
-
-    public void closeOpenIn() {
-        Log.log(Level.FINE, "Start: Close Open In");
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
     }
 
     public void displayControls() {

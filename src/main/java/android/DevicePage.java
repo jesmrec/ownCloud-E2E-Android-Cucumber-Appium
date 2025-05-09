@@ -17,6 +17,8 @@ import utils.log.Log;
 public class DevicePage extends CommonPage {
 
     public static DevicePage instance;
+    private String downloadFolder = "sdcard/Download/";
+    private String owncloudFolder = downloadFolder + "owncloud/";
 
     private DevicePage() {
         super();
@@ -35,7 +37,7 @@ public class DevicePage extends CommonPage {
         // Remove owncloud folder from device
         Map<String, Object> args = new HashMap<>();
         args.put("command", "rm");
-        args.put("args", Arrays.asList("-rf", "sdcard/Download/owncloud/"));
+        args.put("args", Arrays.asList("-rf", owncloudFolder));
         driver.executeScript("mobile: shell", args);
     }
 
@@ -45,7 +47,7 @@ public class DevicePage extends CommonPage {
         File appDir = new File(rootPath, "src/test/resources");
         File app = new File(appDir, "io/cucumber/example-files/" + itemName);
         try {
-            driver.pushFile("/sdcard/Download/" + itemName, app);
+            driver.pushFile(downloadFolder + itemName, app);
             Log.log(Level.FINE, "File " + itemName + " pushed");
         } catch (IOException e) {
             Log.log(Level.SEVERE, "IO Exception: " + e.getMessage());
@@ -56,12 +58,11 @@ public class DevicePage extends CommonPage {
         Log.log(Level.FINE, "Starts: pull file from: " + folderId);
         Map<String, Object> args = new HashMap<>();
 
-        String downloadFolder = "sdcard/Download/owncloud";
         String user = LocProperties.getProperties().getProperty("userName1").toLowerCase();
         String server = System.getProperty("server")
                 .replaceFirst("^https?://", "")
                 .replace(":", "%3A" );
-        String target = downloadFolder + "/" + user + "@" + server  + "/" + folderId;
+        String target = owncloudFolder + user + "@" + server  + "/" + folderId;
         Log.log(Level.FINE, "Command args to execute: " + target);
         args.put("command", "ls");
         args.put("args", List.of(target));

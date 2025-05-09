@@ -62,5 +62,4 @@ public class RemoveDialogPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Remove only from local");
         buttonLocalFolders.click();
     }
-
 }

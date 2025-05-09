@@ -82,43 +82,27 @@ public class LinksSteps {
         world.sharePage.openPublicLink(itemName);
         for (List<String> rows : listItems) {
             switch (rows.get(0)) {
-                case "name": {
-                    world.publicLinksPage.addLinkName(rows.get(1));
-                    break;
-                }
-                case "permissions": {
+                case "name" -> world.publicLinksPage.addLinkName(rows.get(1));
+                case "permissions" -> {
                     switch (rows.get(1)) {
-                        case ("1"): { //Download / View
+                        case "1" -> {
                             Log.log(Level.FINE, "Select Download / View");
                             world.publicLinksPage.selectDownloadView();
-                            break;
                         }
-                        case ("15"): { //Download / View / Upload
+                        case "15" -> {
                             Log.log(Level.FINE, "Select Download / View / Upload");
                             world.publicLinksPage.selectDownloadViewUpload();
-                            break;
                         }
-                        case ("4"): { //Upload Only (File Drop)
+                        case "4" -> {
                             Log.log(Level.FINE, "Select Upload Only (File Drop)");
                             world.publicLinksPage.selectUploadOnly();
-                            break;
                         }
-                        default:
-                            break;
                     }
-                    break;
                 }
-                case "password": {
-                    world.publicLinksPage.typePassword(itemName, rows.get(1));
-                    break;
-                }
-                case "expiration days": {
-                    world.publicLinksPage.setExpiration(rows.get(1));
-                    break;
-                }
-                default:
-                    break;
+                case "password" -> world.publicLinksPage.typePassword(itemName, rows.get(1));
+                case "expiration days" -> world.publicLinksPage.setExpiration(rows.get(1));
             }
+
         }
         world.publicLinksPage.submitLink();
     }
@@ -139,39 +123,31 @@ public class LinksSteps {
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             switch (rows.get(0)) {
-                case "name": {
+                case "name" -> {
                     Log.log(Level.FINE, "Checking name: " + rows.get(1));
                     assertTrue(world.sharePage.isItemInListPublicShares(rows.get(1)));
-                    break;
                 }
-                case "password-auto":
-                case "password": {
+                case "password-auto", "password" -> {
                     world.sharePage.openPublicLink(itemName);
                     assertTrue(world.publicLinksPage.isPasswordEnabled());
                     world.publicLinksPage.close();
-                    break;
                 }
-                case "user": {
+                case "user" -> {
                     Log.log(Level.FINE, "checking user: " + itemName);
                     assertTrue(world.sharePage.isItemInListPublicShares(itemName));
-                    break;
                 }
-                case "permission": {
+                case "permission" -> {
                     Log.log(Level.FINE, "checking permissions: " + rows.get(1));
                     world.sharePage.openPublicLink(itemName);
                     assertTrue(world.publicLinksPage.arePermissionsCorrect(rows.get(1)));
                     world.publicLinksPage.close();
-                    break;
                 }
-                case "expiration days": {
-                    Log.log(Level.FINE, "checking expirations day: " + rows.get(1));
+                case "expiration days" -> {
+                    Log.log(Level.FINE, "checking expiration day: " + rows.get(1));
                     world.sharePage.openPublicLink(itemName);
                     assertTrue(world.publicLinksPage.isExpirationCorrect(rows.get(1)));
                     world.publicLinksPage.close();
-                    break;
                 }
-                default:
-                    break;
             }
         }
         //Asserts in server via API

@@ -70,32 +70,31 @@ public class SharesSteps {
         Log.log(Level.FINE, "Permissions converted: " + permissionsToString);
         for (int i = 0; i <= permissionsToString.length() - 1; i++) {
             switch (i) {
-                case (0): { //Share. Permission not used since resharing not enabled anymore
-                    break;
+                case (0)-> { //Share. Permission not used since resharing not enabled anymore
                 }
-                case (1): { //Delete
+                case 1 -> {
                     if (type.equalsIgnoreCase("folder")) {
                         Log.log(Level.FINE, "Check Delete");
                         char status = permissionsToString.charAt(i);
                         boolean enabled = world.privateSharePage.isDeleteSelected();
                         Log.log(Level.FINE, "Status: " + status + ". Enabled: " + enabled);
-                        if (enabled != (status == '1'))
+                        if (enabled != (status == '1')) {
                             world.privateSharePage.switchDelete();
+                        }
                     }
-                    break;
                 }
-                case (2): { //Create
+                case 2 -> {
                     if (type.equalsIgnoreCase("folder")) {
                         Log.log(Level.FINE, "Check Create");
                         char status = permissionsToString.charAt(i);
                         boolean enabled = world.privateSharePage.isCreateSelected();
                         Log.log(Level.FINE, "Status: " + status + ". Enabled: " + enabled);
-                        if (enabled != (status == '1'))
+                        if (enabled != (status == '1')) {
                             world.privateSharePage.switchCreate();
+                        }
                     }
-                    break;
                 }
-                case (3): { //Change/Update
+                case 3 -> {
                     Log.log(Level.FINE, "Check Change");
                     char status = permissionsToString.charAt(i);
                     if (type.equalsIgnoreCase("folder")) {
@@ -111,10 +110,7 @@ public class SharesSteps {
                             world.privateSharePage.switchEditFile();
                         }
                     }
-                    break;
                 }
-                default:
-                    break;
             }
         }
         world.privateSharePage.close();
@@ -141,48 +137,34 @@ public class SharesSteps {
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             switch (rows.get(0)) {
-                case "sharee": {
-                    assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1)));
-                    break;
-                }
-                case "group": {
-                    assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1) + " (group)"));
-                    break;
-                }
-                case "permissions": {
+                case "sharee" -> assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1)));
+                case "group" -> assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1) + " (group)"));
+                case "permissions" -> {
                     world.sharePage.openPrivateShare(itemName);
                     switch (rows.get(1)) {
-                        case ("1"): { //only read
+                        case "1" -> {
                             Log.log(Level.FINE, "Only read");
                             assertTrue(!world.privateSharePage.isEditEnabled());
-                            break;
                         }
-                        case ("3"): { //edit
+                        case "3" -> {
                             Log.log(Level.FINE, "Edit");
                             Log.log(Level.FINE, Boolean.toString(world.privateSharePage.isEditEnabled()));
                             assertTrue(world.privateSharePage.isEditEnabled());
-                            break;
                         }
-                        case ("9"): { //delete
+                        case "9" -> {
                             Log.log(Level.FINE, "Delete");
                             assertTrue(!world.privateSharePage.isCreateSelected() &&
                                     !world.privateSharePage.isChangeSelected() &&
                                     world.privateSharePage.isDeleteSelected());
-                            break;
                         }
-                        case ("13"): { //delete and create
+                        case "13" -> {
                             Log.log(Level.FINE, "Delete and Create");
                             assertTrue(world.privateSharePage.isCreateSelected() &&
                                     !world.privateSharePage.isChangeSelected() &&
                                     world.privateSharePage.isDeleteSelected());
-                            break;
                         }
-                        default:
-                            break;
                     }
                 }
-                default:
-                    break;
             }
         }
         //Asserts in server via API

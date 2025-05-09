@@ -81,18 +81,9 @@ public class PublicLinksPage extends CommonPage {
     public void setPermission(String permission) {
         Log.log(Level.FINE, "Starts: Set link permission: " + permission);
         switch (permission) {
-            case ("1"): {
-                downloadViewOption.click();
-                break;
-            }
-            case ("15"): {
-                downloadViewUploadOption.click();
-                break;
-            }
-            case ("4"): {
-                uploadOnlyOption.click();
-                break;
-            }
+            case ("1") -> downloadViewOption.click();
+            case ("15")-> downloadViewUploadOption.click();
+            case ("4") -> uploadOnlyOption.click();
         }
     }
 
@@ -114,19 +105,19 @@ public class PublicLinksPage extends CommonPage {
     public boolean arePermissionsCorrect(String permissions) {
         Log.log(Level.FINE, "Starts: Check permissions: " + permissions);
         switch (permissions) {
-            case ("1"): {
+            case ("1") -> {
                 if (parseIntBool(downloadViewOption.getAttribute("checked"))) {
                     Log.log(Level.FINE, "Download / View is selected");
                     return true;
                 }
             }
-            case ("15"): {
+            case ("15")-> {
                 if (parseIntBool(downloadViewUploadOption.getAttribute("checked"))) {
                     Log.log(Level.FINE, "Download / View / Upload is selected");
                     return true;
                 }
             }
-            case ("4"): {
+            case ("4") -> {
                 if (parseIntBool(uploadOnlyOption.getAttribute("checked"))) {
                     Log.log(Level.FINE, "Upload only is selected");
                     return true;
@@ -153,10 +144,6 @@ public class PublicLinksPage extends CommonPage {
     public boolean isPasswordEnabled() {
         boolean switchEnabled = true;
         boolean passVisible;
-        //This code has some dependency on the obligatoriness of password policy. To decide
-        /*if (!passwordSwitch.isEmpty()) {
-            switchEnabled = parseIntBool(passwordSwitch.get(0).getAttribute("checked"));
-        }*/
         passVisible = textPassword.isDisplayed();
         return switchEnabled && passVisible;
     }

@@ -63,7 +63,7 @@ Feature: Download a file in the account
       | <type> | <name> |
     When Alice selects to Details the item <name>
     And Alice clicks on the thumbnail
-    Then the <type> <name>t should be opened and previewed
+    Then the <type> <name> should be opened and previewed
     And the <type> <name> should be marked as downloaded
     And <type> <name> should be stored in device
 

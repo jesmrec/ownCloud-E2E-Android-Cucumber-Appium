@@ -9,8 +9,6 @@ package android;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -361,5 +359,4 @@ public class FileListPage extends CommonPage {
         }
         return false;
     }
-
 }

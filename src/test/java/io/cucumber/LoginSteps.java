@@ -26,10 +26,9 @@ public class LoginSteps {
         // Server and app MUST work with basic auth mode.
         if(!world.fileListPage.isFileListVisible()) {
             String server = System.getProperty("server");
-            String username = user;
             String password = LocProperties.getProperties().getProperty("passw1");
             world.loginPage.typeURL(server);
-            world.loginPage.typeCredentials(username, password);
+            world.loginPage.typeCredentials(user, password);
             world.loginPage.submitLogin();
         }
     }
