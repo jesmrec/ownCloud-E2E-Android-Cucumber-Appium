@@ -52,6 +52,11 @@ public class FileListSteps {
         return type;
     }
 
+    @ParameterType("remotely|locally")
+    public String modificationType(String type) {
+        return type;
+    }
+
 
     @Given("the following items have been created in {word} account")
     public void items_have_been_created_in_account(String userName, DataTable table) throws Throwable {
@@ -214,11 +219,20 @@ public class FileListSteps {
         world.detailsPage.downloadFromThumbnail();
     }
 
-    @When("file {word} is modified externally adding {word}")
-    public void file_is_modified_externally_adding_text(String itemName, String text)
+    @When("file {word} is modified {modificationType} adding {word}")
+    public void file_is_modified_externally_adding_text(String itemName, String modificationType, String text)
             throws IOException {
         StepLogger.logCurrentStep(Level.FINE);
-        world.filesAPI.pushFile(itemName, text, "Alice");
+        if (modificationType.equals("remotelly")) {
+            world.filesAPI.pushFile(itemName, text, "Alice");
+        } else if (modificationType.equals("locally")) {
+            String folderId = System.getProperty("backend").equals("oCIS")
+                    ? world.graphAPI.getPersonal().getId()//.replace("$", "\\$")
+                    : "";
+
+            world.devicePage.pushFile(itemName,
+                    "Alice@192.168.1.66%3A9200/" + folderId + "/");
+        }
     }
 
     @When("Alice closes the preview")
@@ -519,5 +533,11 @@ public class FileListSteps {
         } else if (sense.equals(" not")) {
             assertFalse(listFiles.contains(itemName));
         }
+    }
+
+    @Then("Alice should see the conflict dialog")
+    public void conflict_dialog_displayed() {
+        StepLogger.logCurrentStep(Level.FINE);
+        assertTrue(world.conflictPage.isConflictPageDisplayed());
     }
 }

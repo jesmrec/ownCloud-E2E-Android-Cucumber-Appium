@@ -17,8 +17,8 @@ import utils.log.Log;
 public class DevicePage extends CommonPage {
 
     public static DevicePage instance;
-    private String downloadFolder = "sdcard/Download/";
-    private String owncloudFolder = downloadFolder + "owncloud/";
+    private String downloadFolder = "/sdcard/Download";
+    String owncloudFolder = downloadFolder + "/owncloud/";
 
     private DevicePage() {
         super();
@@ -41,13 +41,20 @@ public class DevicePage extends CommonPage {
         driver.executeScript("mobile: shell", args);
     }
 
-    public void pushFile(String itemName) {
+    public void pushFile(String itemName, String path) {
         Log.log(Level.FINE, "Starts: push file: " + itemName);
         File rootPath = new File(System.getProperty("user.dir"));
         File appDir = new File(rootPath, "src/test/resources");
-        File app = new File(appDir, "io/cucumber/example-files/" + itemName);
+        File file2push = new File(appDir, "io/cucumber/example-files/" + itemName);
         try {
-            driver.pushFile(downloadFolder + itemName, app);
+            Log.log(Level.FINE, "File to push: " + owncloudFolder + path + itemName);
+            driver.pushFile("/sdcard/tmp/" + itemName, file2push);
+            Map<String, Object> args = new HashMap<>();
+            args.put("command", "cp");
+            args.put("args", Arrays.asList("/sdcard/tmp/" + itemName, "'"+owncloudFolder + path + itemName+"'"));
+            driver.executeScript("mobile: shell", args);
+
+            //driver.pushFile(downloadFolder + path + itemName, file2push);
             Log.log(Level.FINE, "File " + itemName + " pushed");
         } catch (IOException e) {
             Log.log(Level.SEVERE, "IO Exception: " + e.getMessage());

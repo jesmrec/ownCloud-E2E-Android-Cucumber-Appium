@@ -7,6 +7,7 @@
 package io.cucumber;
 
 import android.CameraPage;
+import android.ConflictPage;
 import android.DetailsPage;
 import android.DevicePage;
 import android.DocumentProviderPage;
@@ -49,6 +50,7 @@ public class World {
     public CameraPage cameraPage = CameraPage.getInstance();
     public ShortcutDialogPage shortcutDialogPage = ShortcutDialogPage.getInstance();
     public DevicePage devicePage = DevicePage.getInstance();
+    public ConflictPage conflictPage = ConflictPage.getInstance();
 
     //APIs to call
     public ShareAPI shareAPI = ShareAPI.getInstance();

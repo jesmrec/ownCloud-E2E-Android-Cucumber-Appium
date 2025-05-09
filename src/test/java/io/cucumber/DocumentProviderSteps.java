@@ -17,7 +17,7 @@ public class DocumentProviderSteps {
     @Given("a file {word} exists in the device")
     public void a_file_exists_in_device(String fileName) {
         StepLogger.logCurrentStep(Level.FINE);
-        world.devicePage.pushFile(fileName);
+        world.devicePage.pushFile(fileName, "/");
     }
 
     @When("Alice selects {word} to upload")
