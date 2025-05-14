@@ -16,7 +16,7 @@ Feature: Shortcuts
     When Alice selects the option Create Shortcut
     And Alice creates a web shortcut with the following fields
       | <name> | <url> |
-    Then Alice should see <name>.url in the filelist
+    Then Alice should see "<name>.url" in the filelist
     And Alice should see <name>.url as uploaded in the uploads view
 
     Examples:

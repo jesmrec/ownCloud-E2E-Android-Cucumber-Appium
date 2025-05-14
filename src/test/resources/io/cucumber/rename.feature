@@ -12,8 +12,8 @@ Feature: Rename an item
       | <type> | <name> |
     When Alice selects to Rename the <type> <name>
     And Alice sets <newName> as new name
-    Then Alice should see <newName> in the filelist
-    But Alice should not see <name> in the filelist anymore
+    Then Alice should see "<newName>" in the filelist
+    But Alice should not see "<name>" in the filelist anymore
 
     Examples:
       | type   | name      | newName     |
@@ -28,8 +28,8 @@ Feature: Rename an item
     And Alice closes the preview
     And Alice selects to Rename the <type> <name>
     And Alice sets <newName> as new name
-    Then Alice should see <newName> in the filelist
-    But Alice should not see <name> in the filelist anymore
+    Then Alice should see "<newName>" in the filelist
+    But Alice should not see "<name>" in the filelist anymore
     And <type> <newName> should be stored in device
     But <type> <name> should not be stored in device
 

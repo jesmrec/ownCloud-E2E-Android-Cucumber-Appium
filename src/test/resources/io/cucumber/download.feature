@@ -77,7 +77,7 @@ Feature: Download a file in the account
       | <type> | <name> |
     And Alice selects to Download the item <name>
     When Alice closes the preview
-    And file <name> is modified externally adding "updated"
+    And file <name> is modified remotely adding "updated"
     And Alice selects to Download the item <name>
     Then Alice should see the file <name> with "updated"
 

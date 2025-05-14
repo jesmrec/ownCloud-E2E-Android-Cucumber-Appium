@@ -17,7 +17,7 @@ Feature: Move item
         | folder | <target> |
       When Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
-      Then Alice should not see <name> in the filelist anymore
+      Then Alice should not see "<name>" in the filelist anymore
       But Alice should see '<name>' inside the folder <target>
 
       Examples:
@@ -34,7 +34,7 @@ Feature: Move item
       And Alice closes the preview
       And Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
-      Then Alice should not see <name> in the filelist anymore
+      Then Alice should not see "<name>" in the filelist anymore
       But Alice should see '<name>' inside the folder <target>
       And file <target>/<name> should be stored in device
       But file <name> should not be stored in device
@@ -49,7 +49,7 @@ Feature: Move item
       When Alice selects to Move the <type> <name>
       And Alice creates new folder <target> in the folder picker
       And Alice selects <target> as target folder
-      Then Alice should not see <name> in the filelist anymore
+      Then Alice should not see "<name>" in the filelist anymore
       But Alice should see '<name>' inside the folder <target>
 
       Examples:
@@ -116,8 +116,8 @@ Feature: Move item
 
     Scenario Outline: Move a folder to descendant
       Given the following items have been created in Alice account
-        | folder | <name>          |
-        | folder | <name>/<target> |
+        | <type> | <name>          |
+        | <type> | <name>/<target> |
       When Alice selects to Move the folder <name>
       And Alice selects <name>/<target> as target folder
       Then Alice should see the following error

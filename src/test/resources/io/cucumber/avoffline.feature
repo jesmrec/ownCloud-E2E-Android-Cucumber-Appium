@@ -91,7 +91,7 @@ Feature: Set items as available offline (downloaded and synced)
       Given the following items have been created in Alice account
         | file | <fileName> |
       When Alice selects to set as av.offline the item <fileName>
-      And file <fileName> is modified externally adding "updated"
+      And file <fileName> is modified remotely adding "updated"
       And Alice selects to Download the item <fileName>
       Then Alice should see the file <fileName> with "updated"
 
@@ -146,7 +146,7 @@ Feature: Set items as available offline (downloaded and synced)
         | folder | <folderName> |
       And Alice selects to set as av.offline the item <fileName>
       When Alice opens the available offline shortcut
-      Then Alice should see <fileName> in the list
+      Then Alice should see "<fileName>" in the list
       But Alice should not see <folderName> in the offline list
 
       Examples:

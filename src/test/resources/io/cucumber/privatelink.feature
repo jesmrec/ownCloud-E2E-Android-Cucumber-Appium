@@ -36,4 +36,3 @@ Feature: Private Links
     When Alice opens a private link pointing to non-existing item
     Then Alice should see the following message
       | The user doesn't have access to file |
-

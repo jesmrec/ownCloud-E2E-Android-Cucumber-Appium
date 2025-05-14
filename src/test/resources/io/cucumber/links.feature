@@ -161,8 +161,8 @@ Feature: Public Links
     And Alice has shared the file Links18.txt by link
     And Alice has shared the folder Links20 by link
     When Alice opens the public link shortcut
-    Then Alice should see Links18.txt in the list
-    And Alice should see Links20 in the list
+    Then Alice should see "Links18.txt" in the list
+    And Alice should see "Links20" in the list
     But Alice should not see Links19.txt in the links list
     And Alice should not see Links21 in the links list
 

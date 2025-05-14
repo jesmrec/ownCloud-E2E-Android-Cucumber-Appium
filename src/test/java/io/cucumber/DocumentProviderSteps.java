@@ -1,5 +1,6 @@
 package io.cucumber;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
 import io.cucumber.java.en.Given;
@@ -15,7 +16,7 @@ public class DocumentProviderSteps {
     }
 
     @Given("a file {word} exists in the device")
-    public void a_file_exists_in_device(String fileName) {
+    public void a_file_exists_in_device(String fileName) throws IOException {
         StepLogger.logCurrentStep(Level.FINE);
         world.devicePage.pushFile(fileName, "/");
     }

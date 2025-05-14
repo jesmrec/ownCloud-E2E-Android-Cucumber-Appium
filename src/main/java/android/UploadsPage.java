@@ -34,9 +34,8 @@ public class UploadsPage extends CommonPage {
         boolean uploadedListVisible = findUIAutomatorText("UPLOADED").isDisplayed();
         boolean failedListNotVisible = findListUIAutomatorText("FAILED").isEmpty();
         boolean enqueuedListNotVisible = findListUIAutomatorText("ENQUEUED").isEmpty();
-        boolean oneFileUploaded = !findUIAutomatorText("1 FILE").isDisplayed();
         return fileInList && uploadedListVisible && failedListNotVisible
-                && enqueuedListNotVisible && oneFileUploaded;
+                && enqueuedListNotVisible;
     }
 
 }

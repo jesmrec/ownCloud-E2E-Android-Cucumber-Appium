@@ -69,5 +69,7 @@ public class Hooks {
         }
         //Remove owncloud folder from device
         world.devicePage.cleanUpDevice();
+        //Remove tmp folder from device
+        world.devicePage.cleanUpTemp();
     }
 }

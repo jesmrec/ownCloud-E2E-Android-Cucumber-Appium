@@ -14,7 +14,7 @@ Feature: Delete item
       | <type> | <name> |
     When Alice selects to Remove the <type> <name>
     And Alice accepts the remote deletion of <type>
-    Then Alice should not see <name> in the filelist anymore
+    Then Alice should not see "<name>" in the filelist anymore
 
     Examples:
       | type   | name           |
@@ -28,7 +28,7 @@ Feature: Delete item
     And Alice closes the preview
     When Alice selects to Remove the <type> <name>
     And Alice accepts the local deletion of <type>
-    Then Alice should see <name> in the filelist
+    Then Alice should see "<name>" in the filelist
     And file <name> should not be stored in device
 
     Examples:
@@ -42,7 +42,7 @@ Feature: Delete item
     And Alice closes the preview
     When Alice selects to Remove the <type> <name>
     And Alice accepts the remote deletion of <type>
-    Then Alice should not see <name> in the filelist anymore
+    Then Alice should not see "<name>" in the filelist anymore
     And file <name> should not be stored in device
 
     Examples:

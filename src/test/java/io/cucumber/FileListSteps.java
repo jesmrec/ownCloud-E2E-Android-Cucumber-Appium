@@ -20,6 +20,7 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import utils.LocProperties;
 import utils.entities.OCFile;
 import utils.log.Log;
 import utils.log.StepLogger;
@@ -32,7 +33,7 @@ public class FileListSteps {
         this.world = world;
     }
 
-    @ParameterType("replace|keep both")
+    @ParameterType("server|keep both|local|replace")
     public String conflictFix(String type) {
         return type;
     }
@@ -223,15 +224,18 @@ public class FileListSteps {
     public void file_is_modified_externally_adding_text(String itemName, String modificationType, String text)
             throws IOException {
         StepLogger.logCurrentStep(Level.FINE);
-        if (modificationType.equals("remotelly")) {
+        if (modificationType.equals("remotely")) {
             world.filesAPI.pushFile(itemName, text, "Alice");
         } else if (modificationType.equals("locally")) {
             String folderId = System.getProperty("backend").equals("oCIS")
-                    ? world.graphAPI.getPersonal().getId()//.replace("$", "\\$")
+                    ? world.graphAPI.getPersonal().getId()
                     : "";
-
-            world.devicePage.pushFile(itemName,
-                    "Alice@192.168.1.66%3A9200/" + folderId + "/");
+            String username = LocProperties.getProperties().getProperty("userName1");
+            String server = System.getProperty("server")
+                    .replaceFirst("^https?://", "")
+                    .replace(":", "%3A" );
+            String itemPath = username + "@" + server + "/" + folderId + "/";
+            world.devicePage.overwriteFile(itemName, itemPath);
         }
     }
 
@@ -242,9 +246,15 @@ public class FileListSteps {
     }
 
     @When("Alice fixes the conflict with {conflictFix}")
-    public void user_fixes_conflict(String conflictFix) {
+    public void user_fixes_name_conflict(String conflictFix) {
         StepLogger.logCurrentStep(Level.FINE);
         world.fileListPage.fixConflict(conflictFix);
+    }
+
+    @When("Alice fixes the conflict with {conflictFix} version")
+    public void user_fixes_content_conflict(String conflictFix) {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.conflictPage.fixConflict(conflictFix);
     }
 
     @When("Alice long presses over {word}")
@@ -330,7 +340,7 @@ public class FileListSteps {
         world.shortcutDialogPage.openShortcut();
     }
 
-    @Then("Alice should see {word} in the (file)list")
+    @Then("Alice should see {string} in the (file)list")
     public void user_should_see_item_in_filelist(String itemName) throws Throwable {
         StepLogger.logCurrentStep(Level.FINE);
         world.fileListPage.refreshList();
@@ -339,7 +349,7 @@ public class FileListSteps {
         assertTrue(world.filesAPI.itemExist(itemName));
     }
 
-    @Then("Alice should not see {word} in the filelist anymore")
+    @Then("Alice should not see {string} in the filelist anymore")
     public void user_should_not_see_item_in_list_anymore(String itemName) throws Throwable {
         StepLogger.logCurrentStep(Level.FINE);
         assertFalse(world.fileListPage.isItemInList(itemName));

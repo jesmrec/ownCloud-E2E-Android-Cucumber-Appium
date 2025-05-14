@@ -12,15 +12,15 @@ Feature: Create a new folder
   Scenario: Create a new folder with a correct name in root
     When Alice selects the option Create Folder
     And Alice sets create1 as new name
-    Then Alice should see create1 in the filelist
+    Then Alice should see "create1" in the filelist
 
   Scenario Outline: Create a new folder with a correct name in non-root
     Given the following items have been created in Alice account
-      | folder | <name> |
+      | <type> | <name> |
     When Alice browses into <name>
     And Alice selects the option Create Folder
     And Alice sets <newName> as new name
-    Then Alice should see <name>/<newName> in the filelist
+    Then Alice should see "<name>/<newName>" in the filelist
 
     Examples:
       | type   | name    | newName |

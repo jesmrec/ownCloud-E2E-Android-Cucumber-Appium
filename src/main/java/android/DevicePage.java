@@ -37,12 +37,30 @@ public class DevicePage extends CommonPage {
         // Remove owncloud folder from device
         Map<String, Object> args = new HashMap<>();
         args.put("command", "rm");
-        args.put("args", Arrays.asList("-rf", owncloudFolder));
+        args.put("args", Arrays.asList("-rf", downloadFolder + "/*"));
         driver.executeScript("mobile: shell", args);
     }
 
-    public void pushFile(String itemName, String path) {
+    public void cleanUpTemp() {
+        Log.log(Level.FINE, "Starts: Clean up device, owncloud folder");
+        // Remove owncloud folder from device
+        Map<String, Object> args = new HashMap<>();
+        args.put("command", "rm");
+        args.put("args", Arrays.asList("-rf", "/sdcard/tmp/*"));
+        driver.executeScript("mobile: shell", args);
+    }
+
+    public void pushFile(String itemName, String path) throws IOException {
         Log.log(Level.FINE, "Starts: push file: " + itemName);
+        File rootPath = new File(System.getProperty("user.dir"));
+        File appDir = new File(rootPath, "src/test/resources");
+        File file2push = new File(appDir, "io/cucumber/example-files/" + itemName);
+        Log.log(Level.FINE, "File to push: " + downloadFolder + path + itemName);
+        driver.pushFile(downloadFolder + path + itemName, file2push);
+    }
+
+    public void overwriteFile(String itemName, String path) {
+        Log.log(Level.FINE, "Starts: overwriteFile file: " + itemName);
         File rootPath = new File(System.getProperty("user.dir"));
         File appDir = new File(rootPath, "src/test/resources");
         File file2push = new File(appDir, "io/cucumber/example-files/" + itemName);
@@ -54,7 +72,6 @@ public class DevicePage extends CommonPage {
             args.put("args", Arrays.asList("/sdcard/tmp/" + itemName, "'"+owncloudFolder + path + itemName+"'"));
             driver.executeScript("mobile: shell", args);
 
-            //driver.pushFile(downloadFolder + path + itemName, file2push);
             Log.log(Level.FINE, "File " + itemName + " pushed");
         } catch (IOException e) {
             Log.log(Level.SEVERE, "IO Exception: " + e.getMessage());
