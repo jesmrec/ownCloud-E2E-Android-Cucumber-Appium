@@ -33,3 +33,11 @@ Feature: Create a new folder
     And Alice sets create4 as new name
     Then Alice should see the following error
       | The resource you tried to create already exists |
+
+  @offline
+  Scenario: Create a folder with no connection
+    When the device has no connection
+    And Alice selects the option Create Folder
+    And Alice sets create2 as new name
+    Then Alice should see the following error
+      | Device is not connected to a network |

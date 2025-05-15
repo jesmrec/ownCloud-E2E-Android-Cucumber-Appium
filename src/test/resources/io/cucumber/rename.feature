@@ -49,3 +49,17 @@ Feature: Rename an item
     Examples:
       | type   | name    | newName |
       | folder | folder4 | folder5 |
+
+  @offline
+  Scenario Outline: Rename an item with no connection
+    Given the following items have been created in Alice account
+      | <type> | <name> |
+    When Alice selects to Rename the <type> <name>
+    And the device has no connection
+    And Alice sets <newName> as new name
+    Then Alice should see the following error
+      | Device is not connected to a network |
+
+    Examples:
+      | type | name      | newName |
+      | file | file6.txt | file7.txt |

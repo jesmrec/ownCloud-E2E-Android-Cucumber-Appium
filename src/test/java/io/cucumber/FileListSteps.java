@@ -17,6 +17,7 @@ import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -90,6 +91,12 @@ public class FileListSteps {
         for (int i = 0; i < files; i++) {
             world.filesAPI.pushFile(folderName + "/file_" + i + ".txt", "Alice");
         }
+    }
+
+    @Given("the device has no connection")
+    public void theDeviceHasNoConnection() {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.fileListPage.setConnectionDown();
     }
 
     @When("Alice selects to set as av.offline the item {word}")

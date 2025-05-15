@@ -47,7 +47,7 @@ Feature: Delete item
 
     Examples:
       | type | name           |
-      | file | filetemote.txt |
+      | file | fileremote.txt |
 
   Scenario: Delete several shows correct message
     Given the following items have been created in Alice account
@@ -63,3 +63,17 @@ Feature: Delete item
     And Alice selects to Delete
     Then Alice should see the following message
       | Do you really want to remove these 3 items? |
+
+  @offline
+  Scenario Outline: Delete a file with no connection
+    Given the following items have been created in Alice account
+      | <type> | <name> |
+    When Alice selects to Remove the <type> <name>
+    And the device has no connection
+    And Alice accepts the remote deletion of <type>
+    Then Alice should see the following error
+      | Device is not connected to a network |
+
+    Examples:
+      | type | name        |
+      | file | delete6.txt |

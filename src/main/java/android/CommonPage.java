@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
+import io.appium.java_client.android.connection.ConnectionStateBuilder;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import utils.LocProperties;
 import utils.log.Log;
@@ -251,6 +252,22 @@ public class CommonPage {
 
     protected boolean parseIntBool(String s) {
         return Boolean.parseBoolean(s);
+    }
+
+    public void setConnectionDown(){
+        Log.log(Level.FINE, "Starts: Set connection down");
+        driver.setConnection(new ConnectionStateBuilder()
+                .withWiFiDisabled()
+                .withDataDisabled()
+                .build());
+    }
+
+    public void setConnectionUp(){
+        Log.log(Level.FINE, "Starts: Set connection up");
+        driver.setConnection(new ConnectionStateBuilder()
+                .withWiFiEnabled()
+                .withDataEnabled()
+                .build());
     }
 
     /* Methods to help debugging */

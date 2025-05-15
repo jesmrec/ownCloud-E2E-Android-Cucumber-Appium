@@ -133,3 +133,18 @@ Feature: Copy item
       And Alice selects copy15/copy16 as target folder
       Then Alice should see the following error
         | It is not possible to copy a folder into a descendant |
+
+    @offline
+    Scenario Outline: Copy a file with no connection
+      Given the following items have been created in Alice account
+        | <type> | <name> |
+      When Alice selects to Copy the <type> <name>
+      And the device has no connection
+      And Alice selects <space> as space
+      And Alice selects <target> as target folder
+      Then Alice should see the following error
+        | Device is not connected to a network |
+
+      Examples:
+        | type | name      | target | space |
+        | file | copy5.txt | /      | Personal     |

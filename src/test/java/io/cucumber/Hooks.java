@@ -37,6 +37,7 @@ public class Hooks {
         Log.log(Level.FINE, "START SCENARIO EXECUTION: " + scenario.getName());
         AndroidManager.getDriver().activateApp(
                 LocProperties.getProperties().getProperty("appPackage"));
+        world.fileListPage.setConnectionUp();
     }
 
     @After
