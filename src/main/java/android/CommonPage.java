@@ -13,9 +13,11 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -27,19 +29,20 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
+import io.appium.java_client.android.connection.ConnectionState;
 import io.appium.java_client.android.connection.ConnectionStateBuilder;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import utils.LocProperties;
 import utils.log.Log;
+
 
 public class CommonPage {
 
@@ -268,6 +271,16 @@ public class CommonPage {
                 .withWiFiEnabled()
                 .withDataEnabled()
                 .build());
+        // Wait till connection is up
+        WebDriverWait wait = new WebDriverWait(driver, Duration.of(WAIT_TIME, ChronoUnit.SECONDS));
+        wait.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver input) {
+                AndroidDriver d = (AndroidDriver) input;
+                ConnectionState state = d.getConnection();
+                return state.isWiFiEnabled() || state.isDataEnabled();
+            }
+        });
     }
 
     /* Methods to help debugging */
@@ -279,7 +292,7 @@ public class CommonPage {
             FileUtils.copyFile(screenShotFile, new File("screenshots/" + name + "_" + sd + ".png"));
             Log.log(Level.FINE, "Take screenshot " + name + " at: " + sd);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.log(Level.FINE, "Screenshot not taken");
         }
     }
 
