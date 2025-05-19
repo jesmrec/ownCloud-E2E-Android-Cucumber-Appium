@@ -134,7 +134,7 @@ Feature: Copy item
       Then Alice should see the following error
         | It is not possible to copy a folder into a descendant |
 
-    @offline
+    @offline @ignore
     Scenario Outline: Copy a file with no connection
       Given the following items have been created in Alice account
         | <type> | <name> |

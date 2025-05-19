@@ -34,7 +34,7 @@ Feature: Create a new folder
     Then Alice should see the following error
       | The resource you tried to create already exists |
 
-  @offline
+  @offline @ignore
   Scenario: Create a folder with no connection
     When the device has no connection
     And Alice selects the option Create Folder

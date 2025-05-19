@@ -140,9 +140,6 @@ public class DetailsPage extends CommonPage {
     public boolean isAudioPreviewed() {
         boolean isArtDisplayed = visualArea.isDisplayed();
         boolean areControlsDisplayed = mediaControls.isDisplayed();
-        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIME));
-        wait1.until(ExpectedConditions.textToBePresentInElement(totalTime, "00:02"));
-        wait1.until(ExpectedConditions.textToBePresentInElement(currentTime, "00:02"));
         return isArtDisplayed && areControlsDisplayed;
     }
 

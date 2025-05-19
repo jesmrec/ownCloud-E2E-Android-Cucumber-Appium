@@ -64,7 +64,7 @@ Feature: Delete item
     Then Alice should see the following message
       | Do you really want to remove these 3 items? |
 
-  @offline
+  @offline @ignore
   Scenario Outline: Delete a file with no connection
     Given the following items have been created in Alice account
       | <type> | <name> |

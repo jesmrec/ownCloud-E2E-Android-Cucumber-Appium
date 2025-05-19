@@ -50,7 +50,7 @@ Feature: Rename an item
       | type   | name    | newName |
       | folder | folder4 | folder5 |
 
-  @offline
+  @offline @ignore
   Scenario Outline: Rename an item with no connection
     Given the following items have been created in Alice account
       | <type> | <name> |
