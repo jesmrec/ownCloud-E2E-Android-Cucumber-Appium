@@ -1,0 +1,54 @@
+name: E2E tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "test/actions" ]
+
+jobs:
+  build_apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout current repo
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+
+      # 2. Clone the app repo
+      - name: Clone external repo
+        run: |
+          git clone https://github.com/owncloud/android.git android-app
+
+      # 3. Setup Java (required)
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 4. Cache gradle (it's optional, but speeds up)
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # 5. Compilar la app
+      - name: Build APK
+        working-directory: android-app
+        run: |
+          ./gradlew clean assembleqaDebug
+
+      # 6. Move apk to the proper place
+      - name: Copy APK
+        run: |
+          cp ./android-app/owncloudApp/build/outputs/apk/qa/debug/owncloud_*-qa-debug.apk ./src/test/resources/owncloud.apk
+
+      # 7. Check apk is there
+      - name: Check APK is there
+        run: |
+           ls -al ./src/test/resources
