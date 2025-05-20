@@ -5,6 +5,9 @@ on:
   push:
     branches: [ "test/actions" ]
 
+env:
+  OC_SERVER_URL: ${{ secrets.OC_SERVER_URL }}
+
 jobs:
   build_apk:
     runs-on: ubuntu-latest
@@ -47,8 +50,21 @@ jobs:
       - name: Copy APK
         run: |
           cp ./android-app/owncloudApp/build/outputs/apk/qa/debug/owncloud_*-qa-debug.apk ./src/test/resources/owncloud.apk
+          echo "Length: ${#OC_SERVER_URL}"
+          echo "Starts with: ${OC_SERVER_URL:0:10}***"
 
-      # 7. Check apk is there
-      - name: Check APK is there
+      # 7. Run Appium
+      - name: Run Appium
         run: |
-           ls -al ./src/test/resources
+          chmod +x ./runAppium.sh 
+          ./runAppium.sh
+
+      # 8. Run Emulator
+      - name: Run Android Emulator and test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          profile: pixel
+          disable-animations: true
+          script: ./executeTests -t @createfolder
