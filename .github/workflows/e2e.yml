@@ -5,9 +5,6 @@ on:
   push:
     branches: [ "test/actions" ]
 
-env:
-  OC_SERVER_URL: ${{ secrets.OC_SERVER_URL }}
-
 jobs:
   build_apk:
     runs-on: ubuntu-latest
@@ -40,31 +37,45 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 5. Compilar la app
+      # 5. Enable KVM (Kernel-based Virtual Machine) allowing emulators to run with hardware acceleration
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # 6. Compilar la app
       - name: Build APK
         working-directory: android-app
         run: |
-          ./gradlew clean assembleqaDebug
+          ./gradlew clean assembleqaRelease
 
-      # 6. Move apk to the proper place
+      # 7. Move apk to the proper place
       - name: Copy APK
         run: |
-          cp ./android-app/owncloudApp/build/outputs/apk/qa/debug/owncloud_*-qa-debug.apk ./src/test/resources/owncloud.apk
-          echo "Length: ${#OC_SERVER_URL}"
-          echo "Starts with: ${OC_SERVER_URL:0:10}***"
+          cp ./android-app/owncloudApp/build/outputs/apk/qa/release/owncloud_*-qa-release*.apk ./src/test/resources/owncloud.apk
+          ls -al ./src/test/resources
 
-      # 7. Run Appium
+      # 8. Run Appium
       - name: Run Appium
         run: |
           chmod +x ./runAppium.sh 
           ./runAppium.sh
 
-      # 8. Run Emulator
-      - name: Run Android Emulator and test
+      # 8. Run Emulator and launch tests
+      - name: Run Android Emulator
+        env:
+          OC_SERVER_URL: ${{ secrets.OC_SERVER_URL }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 31
+          target: google_apis
+          components: platform-tools
           arch: x86_64
           profile: pixel
+          avd-name: test-avd
+          force-avd-creation: true
           disable-animations: true
-          script: ./executeTests -t @createfolder
+          emulator-options: -no-window -no-audio -no-boot-anim -accel auto -memory 2048
+          script: 
+            ./executeTests -t "@smoke and not @ignore and not @noocis"
