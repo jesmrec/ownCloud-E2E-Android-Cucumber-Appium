@@ -57,15 +57,17 @@ jobs:
           ls -al ./src/test/resources
 
       # 8. Run Appium
-      - name: Run Appium
+      - name: Run and start Appium server
         run: |
+          mkdir -p logs video
           chmod +x ./runAppium.sh 
           ./runAppium.sh
 
-      # 8. Run Emulator and launch tests
+      # 9. Run Emulator and launch tests
       - name: Run Android Emulator
         env:
           OC_SERVER_URL: ${{ secrets.OC_SERVER_URL }}
+          BACKEND: oCIS
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 31
@@ -78,4 +80,42 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-audio -no-boot-anim -accel auto -memory 2048
           script: 
-            ./executeTests -t "@smoke and not @ignore and not @noocis"
+            ./executeTests -t "not @ignore and not @noocis"
+
+      # 10. Export apk
+      - name: Upload APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-apk
+          path: ./src/test/resources/owncloud.apk
+
+      # 11. Rename log file to be exported
+      - name: Rename log file
+        if: always()
+        run: |
+          cp logs/*.log logs/log.log
+
+      # 12. Export execution log
+      - name: Upload Execution Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-execution-log
+          path: ./logs/log.log
+
+      # 13. Zip video files to export
+      - name: Zip video files to export
+        if: always()
+        run: |
+          zip -r -9 test-recordings.zip video
+
+      # 14. Export execution video
+      - name: Upload Execution Video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-recordings
+          path: ./test-recordings.zip
+
+
