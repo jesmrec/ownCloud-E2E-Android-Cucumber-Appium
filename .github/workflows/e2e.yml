@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '30 2 * * 1-5'  # Monday to Friday at 2:30AM
-  push:
-    branches: [ "test/actions" ]
 
 jobs:
 
