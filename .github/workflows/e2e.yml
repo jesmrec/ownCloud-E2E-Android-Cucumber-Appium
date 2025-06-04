@@ -88,8 +88,16 @@ jobs:
           chmod +x ./runAppium.sh
           ./runAppium.sh
 
+      - name: Enable Cucumber reports
+        run: |
+          sed -i 's/^cucumber\.publish\.enabled=false$/cucumber.publish.enabled=true/' ./src/test/resources/cucumber.properties
+          cat ./src/test/resources/cucumber.properties
+
       - name: Run Emulator & Tests
         uses: reactivecircus/android-emulator-runner@v2
+        id: execution
+        env:
+          CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
         with:
           api-level: 31
           target: google_apis
@@ -100,7 +108,33 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-audio -no-boot-anim -accel auto -memory 2048
           # Ignored tests, no oCIS tests and no CI tests will not run
-          script: ./executeTests -t "not @ignore and not @noocis and not @noci"
+          script: ./executeTests -t "not @ignore and @createfolder" | tee cucumber_output.txt
+
+      - name: Clean output and create artifact with report
+        if: steps.execution.outcome == 'success'
+        run: |
+          URL=$(grep -E -o 'https://reports\.cucumber\.io/reports/[a-f0-9\-]+' cucumber_output.txt)
+          echo "URL extracted: $URL"
+          cat <<-EOF > report.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+          <meta charset="UTF-8" />
+          <meta http-equiv="refresh" content="0; URL='$URL'" />
+          <title>Redirecting to Cucumber Reports</title>
+          </head>
+          <body>
+          <p>If you are not redirected, <a href="$URL">click here</a>.</p>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        if: steps.execution.outcome == 'success'
+        with:
+          name: report-cucumber
+          path: report.html
 
       - name: Rename log file
         if: always()
