@@ -108,7 +108,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-audio -no-boot-anim -accel auto -memory 2048
           # Ignored tests, no oCIS tests and no CI tests will not run
-          script: ./executeTests -t "not @ignore and @createfolder" | tee cucumber_output.txt
+          script: ./executeTests -t "not @ignore and not @noocis and not @noci" | tee cucumber_output.txt
 
       - name: Clean output and create artifact with report
         if: steps.execution.outcome == 'success'
