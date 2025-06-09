@@ -110,8 +110,7 @@ jobs:
           # Ignored tests, no oCIS tests and no CI tests will not run
           script: |
             # The result of the step will be the one on the left of the pipe
-            set -o pipefail
-            ./executeTests -t "not @ignore and not @noocis and not @noci" | tee cucumber_output.txt
+            bash -c 'set -o pipefail; ./executeTests -t "not @ignore and not @noocis and not @noci" | tee cucumber_output.txt'
 
       - name: Clean output and create artifact with report
         if: steps.execution.outcome == 'success'
