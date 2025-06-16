@@ -96,8 +96,6 @@ jobs:
       - name: Run Emulator & Tests
         uses: reactivecircus/android-emulator-runner@v2
         id: execution
-        env:
-          CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
         with:
           api-level: 31
           target: google_apis
