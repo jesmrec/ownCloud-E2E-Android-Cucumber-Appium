@@ -6,15 +6,13 @@
 
 package android;
 
-import com.google.common.collect.ImmutableList;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -174,17 +172,20 @@ public class CommonPage {
     }
 
     public void longPress(WebElement element) {
-        Point location = element.getLocation();
-        PointerInput pointerInput = new PointerInput(PointerInput.Kind.TOUCH, "longp");
-        Sequence longPress = new Sequence(pointerInput, 0);
-        longPress.addAction(pointerInput.createPointerMove(Duration.ZERO,
-                PointerInput.Origin.viewport(), location.x, location.y));
-        longPress.addAction(pointerInput.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-        longPress.addAction(pointerInput.createPointerMove(Duration.ofSeconds(1),
-                PointerInput.Origin.viewport(), location.x, location.y));
-        longPress.addAction(pointerInput.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-        driver.perform(ImmutableList.of(longPress));
-
+        Log.log(Level.FINE, "Starts: long press on element: " + element.getText());
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence longPress = new Sequence(finger, 1);
+        // Moves the finger to the element's center
+        longPress.addAction(finger.createPointerMove(Duration.ZERO,
+                PointerInput.Origin.fromElement(element), 0, 0));
+        // Press (touch down)
+        longPress.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        // Keep pressing for 2 seconds
+        longPress.addAction(new Pause(finger, Duration.ofSeconds(2)));
+        // Release (touch up)
+        longPress.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        // Action execution
+        driver.perform(Arrays.asList(longPress));
     }
 
     public void tap(int X, int Y) {
@@ -304,16 +305,24 @@ public class CommonPage {
         driver.startRecordingScreen(androidStartScreenRecordingOptions);
     }
 
-    public static void stopRecording(String filename) {
+    public static void stopRecording(String filename, String featureName) {
         String base64String = driver.stopRecordingScreen();
         byte[] data = Base64.decodeBase64(base64String);
-        String destinationPath = "video/" + filename + "_" +
+        createFeatureFolder(featureName);
+        String destinationPath = "video/" + featureName + "/" + filename + "_" +
                 sdf.format(new Timestamp(System.currentTimeMillis()).getTime()) + ".mp4";
         Path path = Paths.get(destinationPath);
         try {
             Files.write(path, data);
         } catch (IOException e) {
             Log.log(Level.FINE, e.getMessage());
+        }
+    }
+
+    private static void createFeatureFolder(String featureName) {
+        File folder = new File("video/" + featureName);
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
     }
 }

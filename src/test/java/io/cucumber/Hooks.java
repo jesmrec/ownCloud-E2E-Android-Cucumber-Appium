@@ -12,6 +12,7 @@ import android.CommonPage;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -48,7 +49,10 @@ public class Hooks {
         AndroidManager.getDriver().terminateApp(
                 LocProperties.getProperties().getProperty("appPackage"));
         cleanUp();
-        CommonPage.stopRecording(scenario.getName());
+        String featurePath = scenario.getUri().toString();
+        String featureName = Paths.get(featurePath).getFileName().toString()
+                .replace(".feature", "");
+        CommonPage.stopRecording(scenario.getName(), featureName);
         Log.log(Level.FINE, "END SCENARIO EXECUTION: " + scenario.getName() + "\n\n");
     }
 

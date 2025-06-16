@@ -174,8 +174,7 @@ public class FileListPage extends CommonPage {
     public void selectItemList(String path) {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName = path.contains("/") ? browseToFile(path) : path;
-        WebElement element = getElementFromFileList(fileName);
-        longPress(element);
+        longPress(findUIAutomatorText(fileName));
     }
 
     public void selectOperation(String operationName) {
