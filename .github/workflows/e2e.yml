@@ -129,12 +129,19 @@ jobs:
           </html>
           EOF
 
-      - name: Upload report
+      - name: Upload cucumber report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: report-cucumber
           path: report.html
+
+      - name: Upload html report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-html
+          path: target/my-report.html
 
       - name: Rename log file
         if: always()
