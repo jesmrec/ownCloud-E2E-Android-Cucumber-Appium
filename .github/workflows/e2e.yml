@@ -111,7 +111,7 @@ jobs:
             bash -c 'set -o pipefail; ./executeTests -t "not @ignore and not @noocis and not @noci" | tee cucumber_output.txt'
 
       - name: Clean output and create artifact with report
-        if: steps.execution.outcome == 'success'
+        if: always()
         run: |
           URL=$(grep -E -o 'https://reports\.cucumber\.io/reports/[a-f0-9\-]+' cucumber_output.txt)
           echo "URL extracted: $URL"
