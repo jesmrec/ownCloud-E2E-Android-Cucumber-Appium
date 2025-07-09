@@ -305,17 +305,19 @@ public class CommonPage {
         driver.startRecordingScreen(androidStartScreenRecordingOptions);
     }
 
-    public static void stopRecording(String filename, String featureName) {
+    public static void stopRecording(String filename, String featureName, boolean failed) {
         String base64String = driver.stopRecordingScreen();
         byte[] data = Base64.decodeBase64(base64String);
-        createFeatureFolder(featureName);
-        String destinationPath = "video/" + featureName + "/" + filename + "_" +
-                sdf.format(new Timestamp(System.currentTimeMillis()).getTime()) + ".mp4";
-        Path path = Paths.get(destinationPath);
-        try {
-            Files.write(path, data);
-        } catch (IOException e) {
-            Log.log(Level.FINE, e.getMessage());
+        if (failed) { // If the test failed, save the video
+            createFeatureFolder(featureName);
+            String destinationPath = "video/" + featureName + "/" + filename + "_" +
+                    sdf.format(new Timestamp(System.currentTimeMillis()).getTime()) + ".mp4";
+            Path path = Paths.get(destinationPath);
+            try {
+                Files.write(path, data);
+            } catch (IOException e) {
+                Log.log(Level.FINE, e.getMessage());
+            }
         }
     }
 

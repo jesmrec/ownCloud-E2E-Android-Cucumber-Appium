@@ -99,5 +99,24 @@ public class AndroidManager {
         if (device != null) {
             capabilities.setCapability("appium:udid", device);
         }
+        // Maximum time (in ms) to wait for the UiAutomator2 server to start on the device
+        capabilities.setCapability("appium:uiautomator2ServerLaunchTimeout", 60000);
+
+        // Maximum time (in ms) Appium will wait for an ADB command to complete
+        // Useful in CI where emulator responsiveness might lag temporarily
+        capabilities.setCapability("appium:adbExecTimeout", 60000);
+
+        // Time (in ms) Appium waits after each UI operation before proceeding
+        // Set to 0 to reduce test time and avoid unexpected delays in element detection
+        capabilities.setCapability("appium:waitForIdleTimeout", 0);
+
+        // Max time (in ms) allowed for installing the APK on the emulator
+        // Increase for slow CI runners or large APKs
+        capabilities.setCapability("appium:androidInstallTimeout", 90000);
+
+        // Time (in ms) Appium will wait for the app to become idle after launching
+        // Helps stabilize flaky launches in CI
+        capabilities.setCapability("appium:appWaitDuration", 30000);
+
     }
 }

@@ -52,7 +52,8 @@ public class Hooks {
         String featurePath = scenario.getUri().toString();
         String featureName = Paths.get(featurePath).getFileName().toString()
                 .replace(".feature", "");
-        CommonPage.stopRecording(scenario.getName(), featureName);
+        boolean saveVideo = scenario.isFailed();
+        CommonPage.stopRecording(scenario.getName(), featureName, saveVideo);
         Log.log(Level.FINE, "END SCENARIO EXECUTION: " + scenario.getName() + "\n\n");
     }
 
