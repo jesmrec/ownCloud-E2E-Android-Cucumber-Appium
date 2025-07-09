@@ -100,7 +100,7 @@ jobs:
           api-level: 31
           target: google_apis
           arch: x86_64
-          profile: pixel
+          profile: pixel_5
           avd-name: test-avd
           force-avd-creation: true
           disable-animations: true
