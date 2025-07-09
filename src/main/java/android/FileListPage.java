@@ -174,7 +174,8 @@ public class FileListPage extends CommonPage {
     public void selectItemList(String path) {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName = path.contains("/") ? browseToFile(path) : path;
-        longPress(findUIAutomatorText(fileName));
+        Log.log(Level.FINE, "Item name to select: " + fileName);
+        longPress(fileName);
     }
 
     public void selectOperation(String operationName) {
@@ -189,10 +190,6 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Operation: " + operationName + " placed in menu");
         selectOperationMenu(operationName);
 
-    }
-
-    public void longPress(String itemName) {
-        longPress(findUIAutomatorText(itemName));
     }
 
     //Select once multiselection mode is on

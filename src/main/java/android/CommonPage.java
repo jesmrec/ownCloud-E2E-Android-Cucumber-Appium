@@ -171,9 +171,14 @@ public class CommonPage {
         driver.perform(Arrays.asList(swipe));
     }
 
-    public void longPress(WebElement element) {
-        Log.log(Level.FINE, "Starts: long press on element: " + element.getText());
+    public void longPress(String text) {
+        Log.log(Level.FINE, "Starts: long press on element: " + text);
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        // Find the element to long press and wait until it is clickable
+        WebElement element = findUIAutomatorText(text);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIME));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        // Create a sequence for the long press action
         Sequence longPress = new Sequence(finger, 1);
         // Moves the finger to the element's center
         longPress.addAction(finger.createPointerMove(Duration.ZERO,
