@@ -3,7 +3,7 @@
  *
  * @author Jesús Recio Rincón (@jesmrec)
  * <p>
- * Last Appium review: v2.0.1
+ * Last Appium review: v2.18.0
  * If posible, execute tests with such version
  */
 
@@ -79,44 +79,63 @@ public class AndroidManager {
     //Check https://appium.io/docs/en/2.5/guides/caps/
     private static void setCapabilities(DesiredCapabilities capabilities) {
 
+        // Name of the device or emulator (arbitrary for emulator)
         capabilities.setCapability("appium:deviceName", "test");
+
+        // Absolute path to the APK to be installed on the emulator
         capabilities.setCapability("appium:app", app.getAbsolutePath());
+
+        // Target platform (Android in this case)
         capabilities.setCapability("appium:platformName", "Android");
+
+        // Automation engine to use (recommended for Android)
         capabilities.setCapability("appium:automationName", "UIAutomator2");
+
+        // Application package to launch
         capabilities.setCapability("appium:appPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
+
+        // Entry activity to start the app
         capabilities.setCapability("appium:appActivity",
                 "com.owncloud.android.ui.activity.SplashActivity");
+
+        // Package to wait for after launching the app
         capabilities.setCapability("appium:appWaitPackage",
                 LocProperties.getProperties().getProperty("appPackage"));
-        capabilities.setCapability("appium:appWaitForLaunch","true");
+
+        // Wait until the app is fully launched before proceeding
+        capabilities.setCapability("appium:appWaitForLaunch", "true");
+
+        // Automatically grant all runtime permissions at install time
         capabilities.setCapability("appium:autoGrantPermissions", true);
+
+        // Enable Unicode input for special characters (e.g., emojis, different scripts)
         capabilities.setCapability("appium:unicodeKeyboard", true);
+
+        // Restore the original keyboard after the test session
         capabilities.setCapability("appium:resetKeyboard", true);
+
+        // Disable window animations to reduce flakiness and improve speed
         capabilities.setCapability("appium:disableWindowAnimation", true);
+
+        // Avoid resetting app data between sessions; preserves login and preferences
         capabilities.setCapability("appium:noReset", true);
+
+        // Timeout in seconds for a new command to be sent before session is terminated
         capabilities.setCapability("appium:newCommandTimeout", 60);
+
+        // Optional: specify the unique device ID (only if targeting a specific emulator/device)
         if (device != null) {
             capabilities.setCapability("appium:udid", device);
         }
+
         // Maximum time (in ms) to wait for the UiAutomator2 server to start on the device
         capabilities.setCapability("appium:uiautomator2ServerLaunchTimeout", 60000);
 
         // Maximum time (in ms) Appium will wait for an ADB command to complete
-        // Useful in CI where emulator responsiveness might lag temporarily
         capabilities.setCapability("appium:adbExecTimeout", 60000);
 
-        // Time (in ms) Appium waits after each UI operation before proceeding
-        // Set to 0 to reduce test time and avoid unexpected delays in element detection
-        capabilities.setCapability("appium:waitForIdleTimeout", 0);
-
         // Max time (in ms) allowed for installing the APK on the emulator
-        // Increase for slow CI runners or large APKs
         capabilities.setCapability("appium:androidInstallTimeout", 90000);
-
-        // Time (in ms) Appium will wait for the app to become idle after launching
-        // Helps stabilize flaky launches in CI
-        capabilities.setCapability("appium:appWaitDuration", 30000);
-
     }
 }
