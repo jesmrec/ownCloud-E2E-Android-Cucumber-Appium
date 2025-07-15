@@ -104,6 +104,7 @@ jobs:
           avd-name: test-avd
           force-avd-creation: true
           disable-animations: true
+          wipe-data: true
           emulator-options: -no-window -no-audio -no-boot-anim -accel auto -memory 2048
           # Ignored tests, no oCIS tests and no CI tests will not run
           script: |
