@@ -10,6 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Pause;
@@ -172,25 +173,36 @@ public class CommonPage {
     }
 
     public void longPress(String text) {
-        Log.log(Level.FINE, "Starts: long press on element: " + text);
-        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-        // Find the element to long press and wait until it is clickable
-        WebElement element = findUIAutomatorText(text);
+        Log.log(Level.FINE, "Starting long press on element with text: " + text);
+        // Scroll to the element with the given text to ensure it is visible
+        driver.findElement(AppiumBy.androidUIAutomator(
+                "new UiScrollable(new UiSelector().scrollable(true))" +
+                        ".scrollIntoView(new UiSelector().text(\"" + text + "\"))"));
+        // Find the element using exact text match
+        WebElement element = driver.findElement(AppiumBy.androidUIAutomator(
+                "new UiSelector().text(\"" + text + "\")"));
+        // Wait until the element is actually visible and enabled
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIME));
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-        // Create a sequence for the long press action
+        wait.until(driver1 -> element.isDisplayed() && element.isEnabled());
+        // Get the element's location and size to calculate its center
+        Point location = element.getLocation();
+        Dimension size = element.getSize();
+        int centerX = location.getX() + size.getWidth() / 2;
+        int centerY = location.getY() + size.getHeight() / 2;
+        // Set up the long press gesture using W3C actions
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence longPress = new Sequence(finger, 1);
-        // Moves the finger to the element's center
+        // Move the finger to the center of the element
         longPress.addAction(finger.createPointerMove(Duration.ZERO,
-                PointerInput.Origin.fromElement(element), 0, 0));
-        // Press (touch down)
+                PointerInput.Origin.viewport(), centerX, centerY));
+        // Touch down (press)
         longPress.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-        // Keep pressing for 2 seconds
+        // Hold for 2 seconds
         longPress.addAction(new Pause(finger, Duration.ofSeconds(2)));
-        // Release (touch up)
+        // Release (lift up)
         longPress.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-        // Action execution
-        driver.perform(Arrays.asList(longPress));
+        // Execute the long press gesture
+        driver.perform(List.of(longPress));
     }
 
     public void tap(int X, int Y) {
