@@ -174,13 +174,11 @@ public class CommonPage {
 
     public void longPress(String text) {
         Log.log(Level.FINE, "Starting long press on element with text: " + text);
-        // Scroll to the element with the given text to ensure it is visible
-        driver.findElement(AppiumBy.androidUIAutomator(
-                "new UiScrollable(new UiSelector().scrollable(true))" +
-                        ".scrollIntoView(new UiSelector().text(\"" + text + "\"))"));
         // Find the element using exact text match
         WebElement element = driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiSelector().text(\"" + text + "\")"));
+        Log.log(Level.FINE, "Target element text: " + element.getText());
+        Log.log(Level.FINE, "Location: " + element.getLocation());
         // Wait until the element is actually visible and enabled
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIME));
         wait.until(driver1 -> element.isDisplayed() && element.isEnabled());
@@ -189,6 +187,7 @@ public class CommonPage {
         Dimension size = element.getSize();
         int centerX = location.getX() + size.getWidth() / 2;
         int centerY = location.getY() + size.getHeight() / 2;
+        Log.log(Level.FINE, "Pressing at: (" + centerX + ", " + centerY + ")");
         // Set up the long press gesture using W3C actions
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence longPress = new Sequence(finger, 1);
