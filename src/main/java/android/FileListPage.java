@@ -175,7 +175,7 @@ public class FileListPage extends CommonPage {
         Log.log(Level.FINE, "Starts: select item from list: " + path);
         String fileName = path.contains("/") ? browseToFile(path) : path;
         Log.log(Level.FINE, "Item name to select: " + fileName);
-        waitById(WAIT_TIME, fileName);
+        waitByTextVisible(WAIT_TIME, fileName);
         longPress(fileName);
     }
 
