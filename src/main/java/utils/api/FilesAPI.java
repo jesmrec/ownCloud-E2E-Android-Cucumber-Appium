@@ -56,6 +56,18 @@ public class FilesAPI extends CommonAPI {
         response.close();
     }
 
+    public byte[] getFile(String fileName, String userName)
+            throws IOException {
+        String url = urlServer + getEndpoint(userName) + "/" + fileName + "/";
+        Log.log(Level.FINE, "Starts: Request get file");
+        Log.log(Level.FINE, "URL: " + url);
+        Request request = davRequest(url, "GET", null, userName);
+        Response response = httpClient.newCall(request).execute();
+        byte[] body = response.body().bytes();
+        response.close();
+        return body;
+    }
+
     public void pushFile(String fileName, String userName)
             throws IOException {
         String url = urlServer + getEndpoint(userName) + "/" + fileName + "/";

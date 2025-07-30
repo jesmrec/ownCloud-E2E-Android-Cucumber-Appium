@@ -11,13 +11,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -555,5 +557,17 @@ public class FileListSteps {
     public void conflict_dialog_displayed() {
         StepLogger.logCurrentStep(Level.FINE);
         assertTrue(world.conflictPage.isConflictPageDisplayed());
+    }
+
+    @Then("the file {word} should be stored in the account")
+    public void file_stored_in_ccount(String fileName) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        Log.log(Level.FINE, "Checking if file is stored in the account: " + fileName);
+        assertTrue(world.filesAPI.itemExist(fileName));
+        byte[] localFile = Files.readAllBytes(Paths.get("src/test/resources/io/cucumber/example-files/" + fileName));
+        byte[] serverFile = world.filesAPI.getFile(fileName, "Alice");
+        Log.log(Level.FINE, "Comparing local and server files: " + localFile.length +
+                " vs " + serverFile.length);
+        assertTrue(Arrays.equals(localFile, serverFile));
     }
 }

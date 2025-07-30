@@ -17,10 +17,11 @@ Feature: Upload new content
       And Alice selects <name> to upload
       Then Alice should see '<name>' in the filelist
       And Alice should see <name> as <status> in the uploads view
+      And the file <name> should be stored in the account
 
       Examples:
-        | name     | status   |
-        | AAAA.txt | uploaded |
+        | name        | status   |
+        | damaged.png | uploaded |
 
     Scenario Outline: Upload a single file to non-root folder
       Given the following items have been created in Alice account
