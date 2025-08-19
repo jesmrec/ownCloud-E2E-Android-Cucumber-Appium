@@ -170,7 +170,6 @@ public class CommonAPI {
     }
 
     private String getHost() {
-        String urlServer = System.getProperty("server");
         String host = System.getProperty("host");
         if (host.isEmpty() || host == null) {
             host = urlServer.split("//")[1];

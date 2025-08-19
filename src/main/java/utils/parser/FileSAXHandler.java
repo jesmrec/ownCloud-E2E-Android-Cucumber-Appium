@@ -19,8 +19,7 @@ public class FileSAXHandler extends DefaultHandler {
     private static String text = null;
 
     @Override
-    public void startElement(String uri, String localName, String node, Attributes attributes)
-            throws SAXException {
+    public void startElement(String uri, String localName, String node, Attributes attributes) {
         if (node.equals("d:response")) {
             file = new OCFile();
         }
