@@ -42,7 +42,7 @@ public class DevicePage extends CommonPage {
     }
 
     public void cleanUpTemp() {
-        Log.log(Level.FINE, "Starts: Clean up device, owncloud folder");
+        Log.log(Level.FINE, "Starts: Clean up device, tmp folder");
         // Remove owncloud folder from device
         Map<String, Object> args = new HashMap<>();
         args.put("command", "rm");
