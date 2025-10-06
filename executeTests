@@ -94,14 +94,14 @@ echo "backend: $backend"
 
 if [ -z "$tags" ]
 then
- ./gradlew clean test \
+ ./gradlew --no-daemon clean test \
   --info \
   -Dappium=$appium \
   -Dudid=$udid \
   -Dserver=$oc \
   -Dbackend=$backend
 else
-  ./gradlew clean test \
+  ./gradlew --no-daemon clean test \
   --info \
   -Dcucumber.filter.tags="$tags" \
   -Dappium=$appium \
