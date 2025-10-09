@@ -37,8 +37,8 @@ public class SpacesSteps {
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             String name = rows.get(0);
-            String description = rows.get(1);
-            world.graphAPI.createSpace(name, description, userName);
+            String subtitle = rows.get(1);
+            world.graphAPI.createSpace(name, subtitle, userName);
         }
     }
 
@@ -55,8 +55,8 @@ public class SpacesSteps {
         List<List<String>> listItems = table.asLists();
         for (List<String> rows : listItems) {
             String name = rows.get(0);
-            String description = rows.get(1);
-            world.graphAPI.disableSpace(name, description);
+            String subtitle = rows.get(1);
+            world.graphAPI.disableSpace(name, subtitle);
         }
     }
 

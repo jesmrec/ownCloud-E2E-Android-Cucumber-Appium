@@ -88,11 +88,6 @@ public class SpacesPage extends CommonPage {
         createButton.click();
     }
 
-    /*
-     * Compares the list of spaces from feature file with the displayed spaces
-     * @param list of spaces from feature file
-     * @return true if both lists match
-     */
     public boolean areAllSpacesVisible(List<List<String>> spaces) {
         Log.log(Level.FINE, "Starts: check all spaces are visible");
         HashMap<String, String> spacesInDevice = new HashMap<>();
@@ -114,32 +109,10 @@ public class SpacesPage extends CommonPage {
         return true;
     }
 
-    /*
-     * Check if the given space is displayed in device
-     * @param name of the space to check if it is displayed
-     * @return true if it is displayed
-     */
-    public boolean isSpaceVisible(String name) {
-        Log.log(Level.FINE, "Starts: check space " + name + " is visible");
-        List<WebElement> spaces = findListId(spaceNameId);
-        for (WebElement space : spaces) {
-            String spaceName = space.getAttribute("text");
-            Log.log(Level.FINE, "Space Name: " + spaceName);
-            Log.log(Level.FINE, "Name: " + name);
-            if (spaceName.equals(name))
-                return true;
-        }
-        return false;
-    }
-
     public void typeSearch(String pattern) {
         Log.log(Level.FINE, "Starts: type search " + pattern);
         searchBar.click();
         searchInput.sendKeys(pattern);
-    }
-
-    public WebElement getSpace(String spaceName) {
-        return deviceSpacesList.get(1);
     }
 
     public void openSpace(String spaceName) {
