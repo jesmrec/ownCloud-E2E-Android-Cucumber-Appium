@@ -12,56 +12,74 @@ Feature: Spaces
   Rule: List correct spaces
 
     @smoke
-    Scenario: List space created in server
+    Scenario Outline: List space created in server
       Given the following spaces have been created in Alice account
-        | Space1 | First space  |
-        | Space2 | Second space |
+        | <name1> | <subtitle1> |
+        | <name2> | <subtitle2> |
       When Alice selects the spaces view
       Then Alice should see the following spaces
-        | Space1 | First space  |
-        | Space2 | Second space |
+        | <name1> | <subtitle1> |
+        | <name2> | <subtitle2> |
 
-    Scenario: Update space created in server
+      Examples:
+        | name1  | subtitle1   | name2  | subtitle2    |
+        | Space1 | First space | Space2 | Second space |
+
+  Scenario Outline: Update space created in server
       Given the following spaces have been created in Alice account
-        | Space3 | Third space |
-      And Alice selects the spaces view
+        | <name1> | <subtitle1> |
+    And Alice selects the spaces view
       When the following spaces have been created in Alice account
-        | Space4 | Fourth space |
+        | <name2> | <subtitle2> |
       And Alice refreshes the list
       Then Alice should see the following spaces
-        | Space3 | Third space  |
-        | Space4 | Fourth space |
+        | <name1> | <subtitle1>  |
+        | <name2> | <subtitle2> |
 
-    Scenario: Disable a space in the server
+    Examples:
+      | name1  | subtitle1   | name2  | subtitle2    |
+      | Space3 | Third space | Space4 | Fourth space |
+
+  Scenario Outline: Disable a space in the server
       Given the following spaces have been created in Alice account
-        | Space5 | Fifth space |
-        | Space6 | Sixth space |
+        | <name1> | <subtitle1> |
+        | <name2> | <subtitle2> |
       And Alice selects the spaces view
       When following space is disabled in server
-        | Space5 | Fifth space |
+        | <name1> | <subtitle1> |
       And Alice refreshes the list
       Then Alice should see the following spaces
-        | Space6 | Sixth space |
+        | <name2> | <subtitle2> |
       But Alice should not see the following spaces
-        | Space5 | Fifth space |
+        | <name1> | <subtitle1> |
 
-    Scenario: Filter a space
+    Examples:
+      | name1  | subtitle1   | name2  | subtitle2   |
+      | Space5 | Fifth space | Space5 | Sixth space |
+
+
+  Scenario Outline: Filter a space
       Given the following spaces have been created in Alice account
-        | Space7 | Seventh space |
-        | Space8 | Eighth space  |
-        | Space9 | Ninth space   |
-      And Alice selects the spaces view
+        | <name1> | <subtitle1> |
+        | <name2> | <subtitle2> |
+        | <name3> | <subtitle3> |
+    And Alice selects the spaces view
       When Alice filters the list using Space8
       And Alice refreshes the list
       Then Alice should see the following spaces
-        | Space8 | Eighth space |
+        | <name2> | <subtitle2> |
       But Alice should not see the following spaces
-        | Space7 | Seventh space |
-        | Space9 | Ninth space   |
+        | <name1> | <subtitle1> |
+        | <name3> | <subtitle3> |
+
+    Examples:
+      | name1  | subtitle1     | name2  | subtitle2    | name3  | subtitle3   |
+      | Space7 | Seventh space | Space8 | Eighth space | Space9 | Ninth space |
 
   @createspace
-  Rule: Create space
+  Rule: Create space (admins, space admins)
 
+    @smoke
     Scenario Outline: Create a new space with correct name, subtitle and quota
       When Alice selects the spaces view
       And Alice creates a new space with the following fields
@@ -81,7 +99,7 @@ Feature: Spaces
         | Space11 | Eleventh space | No restriction |
 
   @editspace
-  Rule: Edit existing space
+  Rule: Edit existing space (admins, space admins)
 
   Scenario Outline: Edit an existing space with correct name, subtitle and quota
     Given the following spaces have been created in Alice account
