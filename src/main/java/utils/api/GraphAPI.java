@@ -75,7 +75,7 @@ public class GraphAPI extends CommonAPI {
         return body;
     }
 
-    private List<OCSpace> getMySpaces() throws IOException {
+    public List<OCSpace> getMySpaces() throws IOException {
         Log.log(Level.FINE, "GET my SPACES");
         String url = urlServer + graphPath + myDrives;
         Request request = getRequest(url);
@@ -153,6 +153,8 @@ public class GraphAPI extends CommonAPI {
                 JSONObject owner = jsonObject.getJSONObject("owner");
                 JSONObject user = owner.getJSONObject("user");
                 space.setOwner(user.getString("id"));
+                JSONObject quota = jsonObject.getJSONObject("quota");
+                space.setQuota(quota.getLong("total"));
                 spaces.add(space);
                 Log.log(Level.FINE, "Space id returned: " + space.getId() + " " + space.getName());
             }

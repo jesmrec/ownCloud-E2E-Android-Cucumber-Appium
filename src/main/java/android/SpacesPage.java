@@ -23,6 +23,21 @@ public class SpacesPage extends CommonPage {
     @AndroidFindBy(id = "spaces_list_item_card")
     private List<WebElement> deviceSpacesList;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/fab_create_space")
+    private WebElement createSpace;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_name_value")
+    private WebElement nameEditText;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_subtitle_value")
+    private WebElement subtitleEditText;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_unit")
+    private WebElement quotaUnit;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_button")
+    private WebElement createButton;
+
     @AndroidFindBy(id = "com.owncloud.android:id/root_toolbar_title")
     private WebElement searchBar;
 
@@ -44,6 +59,16 @@ public class SpacesPage extends CommonPage {
             instance = new SpacesPage();
         }
         return instance;
+    }
+
+    public void createSpace (String name, String subtitle, String quota){
+        Log.log(Level.FINE, "Starts: Create space " + name);
+        createSpace.click();
+        nameEditText.sendKeys(name);
+        subtitleEditText.sendKeys(subtitle);
+        quotaUnit.click();
+        findListUIAutomatorText(quota).get(0).click();
+        createButton.click();
     }
 
     /*

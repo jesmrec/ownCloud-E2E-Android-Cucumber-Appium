@@ -7,6 +7,7 @@ public class OCSpace {
     private String name;
     private String description;
     private String owner;
+    private long quota;
 
     public OCSpace(){
     };
@@ -49,6 +50,23 @@ public class OCSpace {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getQuota() {
+        return transformQuota(quota);
+    }
+
+    public void setQuota(long quota) {
+        this.quota = quota;
+    }
+
+    private String transformQuota(long quota) {
+        if (quota == 0) {
+            return "No restriction";
+        } else {
+            long gb = quota / (1000 * 1000 * 1000);
+            return gb + " GB";
+        }
     }
 
 }

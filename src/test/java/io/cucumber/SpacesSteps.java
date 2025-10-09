@@ -11,12 +11,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import utils.entities.OCSpace;
+import utils.log.Log;
 import utils.log.StepLogger;
 
 public class SpacesSteps {
@@ -62,6 +65,16 @@ public class SpacesSteps {
         world.spacesPage.typeSearch(pattern);
     }
 
+    @When("Alice creates a new space with the following fields")
+    public void creates_new_space(DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        Map<String, String> data = table.asMap(String.class, String.class);
+        String name = data.get("name");
+        String subtitle = data.get("subtitle");
+        String quota = data.get("quota");
+        world.spacesPage.createSpace(name, subtitle, quota);
+    }
+
     @Then("Alice should{typePosNeg} see the following spaces")
     public void user_should_see_following_spaces(String sense, DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
@@ -71,5 +84,38 @@ public class SpacesSteps {
         } else if (sense.equals(" not")) {
             assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
         }
+    }
+
+    @Then("Alice should see the following space in the list")
+    public void user_should_see_space_in_list(DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        List<List<String>> listItems = table.asLists();
+        assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
+    }
+
+    @Then("space should be created/updated in server with the following fields")
+    public void spaces_created_in_server(DataTable table) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        // Spaces in scenario definition
+        List<List<String>> listItems = table.asLists();
+        // Spaces in server
+        List<OCSpace> spaces = world.graphAPI.getMySpaces();
+        boolean matches = true;
+        String name = listItems.get(0).get(1);
+        String description = listItems.get(1).get(1);
+        String quota = listItems.get(2).get(1);
+        for (OCSpace space : spaces) {
+            Log.log(Level.FINE, "Space in server: " + space.getName() + " "
+                    + space.getDescription() + " " + space.getQuota());
+            Log.log(Level.FINE, "Space in scenario: " + name + " " + description + " " + quota);
+            if (!(space.getName().equals(name)
+                    && space.getDescription().equals(description)
+                    && space.getQuota().equals(quota))) {
+                matches = false;
+                break;
+            }
+        }
+        // Check if all spaces in scenario definition match with spaces in server
+        assertTrue(matches);
     }
 }
