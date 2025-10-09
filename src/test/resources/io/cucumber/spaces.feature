@@ -72,10 +72,35 @@ Feature: Spaces
         | name     | <name>     |
         | subtitle | <subtitle> |
         | quota    | <quota>    |
-      Then Alice should see the following space in the list
+      Then Alice should see the following spaces
         | <name> | <subtitle> |
 
       Examples:
         | name    | subtitle       | quota          |
         | Space10 | Tenth space    | 1 GB           |
         | Space11 | Eleventh space | No restriction |
+
+  @editspace
+  Rule: Edit existing space
+
+  Scenario Outline: Edit an existing space with correct name, subtitle and quota
+    Given the following spaces have been created in Alice account
+      | <name> | <subtitle> |
+    When Alice selects the spaces view
+    And Alice edits the space <name>
+    And Alice updates the space with the following fields
+      | name     | <newName>     |
+      | subtitle | <newSubtitle> |
+      | quota    | <quota>       |
+    Then space should be updated in server with the following fields
+      | name     | <newName>     |
+      | subtitle | <newSubtitle> |
+      | quota    | <quota>       |
+    Then Alice should see the following spaces
+      | <newName> | <newSubtitle> |
+    But Alice should not see the following spaces
+      | <name> | <subtitle> |
+
+    Examples:
+      | name    | subtitle      | newName     | newSubtitle       | quota |
+      | Space12 | Twelfth space | Space12 new | Twelfth space new | 50 GB |

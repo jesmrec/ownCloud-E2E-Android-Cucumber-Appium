@@ -64,7 +64,24 @@ public class SpacesPage extends CommonPage {
     public void createSpace (String name, String subtitle, String quota){
         Log.log(Level.FINE, "Starts: Create space " + name);
         createSpace.click();
-        nameEditText.sendKeys(name);
+        fillSpaceInfo(name, subtitle, quota);
+    }
+
+    public void openSpaceMenu(String spaceName){
+        Log.log(Level.FINE, "Starts: Open space " + spaceName);
+        findUIAutomatorDescription(spaceName + " space menu").click();
+        findListUIAutomatorText("Edit space").get(0).click();
+    }
+
+    public void editSpace (String name, String subtitle, String quota){
+        Log.log(Level.FINE, "Starts: Update space " + name);
+        fillSpaceInfo(name, subtitle, quota);
+    }
+
+    private void fillSpaceInfo(String spaceName, String subtitle, String quota) {
+        nameEditText.clear();
+        nameEditText.sendKeys(spaceName);
+        subtitleEditText.clear();
         subtitleEditText.sendKeys(subtitle);
         quotaUnit.click();
         findListUIAutomatorText(quota).get(0).click();

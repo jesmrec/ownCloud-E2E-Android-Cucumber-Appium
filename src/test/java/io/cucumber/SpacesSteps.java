@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -68,11 +69,31 @@ public class SpacesSteps {
     @When("Alice creates a new space with the following fields")
     public void creates_new_space(DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
+        handleSpace(table, "create");
+    }
+
+    @And("Alice edits the space {word}")
+    public void user_edit_space(String spaceName){
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openSpaceMenu(spaceName);
+    }
+
+    @When("Alice updates the space with the following fields")
+    public void updates_new_space(DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        handleSpace(table, "update");
+    }
+
+    private void handleSpace(DataTable table, String operation){
         Map<String, String> data = table.asMap(String.class, String.class);
         String name = data.get("name");
         String subtitle = data.get("subtitle");
         String quota = data.get("quota");
-        world.spacesPage.createSpace(name, subtitle, quota);
+        if (operation.equals("update")) {
+            world.spacesPage.editSpace(name, subtitle, quota);
+        } else if (operation.equals("create")) {
+            world.spacesPage.createSpace(name, subtitle, quota);
+        }
     }
 
     @Then("Alice should{typePosNeg} see the following spaces")
@@ -84,13 +105,6 @@ public class SpacesSteps {
         } else if (sense.equals(" not")) {
             assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
         }
-    }
-
-    @Then("Alice should see the following space in the list")
-    public void user_should_see_space_in_list(DataTable table) {
-        StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
     }
 
     @Then("space should be created/updated in server with the following fields")
