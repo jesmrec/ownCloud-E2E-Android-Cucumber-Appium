@@ -121,4 +121,4 @@ Feature: Spaces
 
     Examples:
       | name    | subtitle      | newName     | newSubtitle       | quota |
-      | Space12 | Twelfth space | Space12 new | Twelfth space new | 50 GB |
+      | Space12 | Twelfth space | Space12 new | Twelfth space new | 10 GB |

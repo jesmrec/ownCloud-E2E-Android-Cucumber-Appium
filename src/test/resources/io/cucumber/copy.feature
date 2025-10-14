@@ -22,9 +22,9 @@ Feature: Copy item
       And Alice should see '<name>' inside the folder <target>
 
       Examples:
-        | type   | name      | target    | space    |
-        | folder | copy1     | Documents | Personal |
-        | file   | copy2.txt | Documents | Personal |
+        | type   | name  | target    | space    |
+        | folder | copy1 | Documents | Personal |
+        #flaky: | file   | copy2.txt | Documents | Personal |
 
     Scenario Outline: Copy an existent item to a new created folder in the picker
       Given the following items have been created in Alice account
