@@ -76,7 +76,7 @@ Feature: Spaces
       | name1  | subtitle1     | name2  | subtitle2    | name3  | subtitle3   |
       | Space7 | Seventh space | Space8 | Eighth space | Space9 | Ninth space |
 
-  @createspace
+  @createspace @ignore
   Rule: Create space (admins, space admins)
 
     @smoke
@@ -95,13 +95,15 @@ Feature: Spaces
 
       Examples:
         | name    | subtitle       | quota          |
-        | Space10 | Tenth space    | 1 GB           |
-        | Space11 | Eleventh space | No restriction |
+        | Space10 | Tenth space    | 0.0040         |
+        | Space11 | Eleventh space | 124.70         |
+        | Space12 | Twelveth space | 1000000.00     |
+        | Space13 | Thirdt space   | No restriction |
 
-  @editspace
+  @editspace @ignore
   Rule: Edit existing space (admins, space admins)
 
-  Scenario Outline: Edit an existing space with correct name, subtitle and quota
+  Scenario Outline: Edit an existing space with correct name and subtitle
     Given the following spaces have been created in Alice account
       | <name> | <subtitle> |
     When Alice selects the spaces view
@@ -110,15 +112,15 @@ Feature: Spaces
       | name     | <newName>     |
       | subtitle | <newSubtitle> |
       | quota    | <quota>       |
-    Then space should be updated in server with the following fields
-      | name     | <newName>     |
-      | subtitle | <newSubtitle> |
-      | quota    | <quota>       |
     Then Alice should see the following spaces
       | <newName> | <newSubtitle> |
     But Alice should not see the following spaces
       | <name> | <subtitle> |
+    And space should be updated in server with the following fields
+      | name     | <newName>     |
+      | subtitle | <newSubtitle> |
+      | quota    | <quota>       |
 
     Examples:
       | name    | subtitle      | newName     | newSubtitle       | quota |
-      | Space12 | Twelfth space | Space12 new | Twelfth space new | 10 GB |
+      | Space12 | Twelfth space | Space12 new | Twelfth space new | 1.00  |

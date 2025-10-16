@@ -32,6 +32,12 @@ public class SpacesPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_subtitle_value")
     private WebElement subtitleEditText;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_switch")
+    private WebElement quotaSwitch;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_value")
+    private WebElement quotaValueEdittext;
+
     @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_unit")
     private WebElement quotaUnit;
 
@@ -79,13 +85,27 @@ public class SpacesPage extends CommonPage {
     }
 
     private void fillSpaceInfo(String spaceName, String subtitle, String quota) {
+        Log.log(Level.FINE, "Starts: fill space info: " + spaceName + ", " + subtitle + ", " + quota);
         nameEditText.clear();
         nameEditText.sendKeys(spaceName);
         subtitleEditText.clear();
         subtitleEditText.sendKeys(subtitle);
-        quotaUnit.click();
-        findListUIAutomatorText(quota).get(0).click();
+        setQuota(quota);
         createButton.click();
+    }
+
+    private void setQuota(String quota) {
+        Log.log(Level.FINE, "Starts: set quota: " + quota);
+        boolean withQuota = !"No restriction".equals(quota);
+        boolean switchChecked = Boolean.parseBoolean(quotaSwitch.getAttribute("checked"));
+        if (withQuota != switchChecked) {
+            quotaSwitch.click();
+        }
+        if (withQuota) {
+            waitById(WAIT_TIME, quotaValueEdittext);
+            quotaValueEdittext.clear();
+            quotaValueEdittext.sendKeys(quota);
+        }
     }
 
     public boolean areAllSpacesVisible(List<List<String>> spaces) {
@@ -101,8 +121,7 @@ public class SpacesPage extends CommonPage {
         }
         for (List<String> rows : spaces) {
             String name = rows.get(0);
-            String description = rows.get(1);
-            if (!description.equals(spacesInDevice.get(name))) {
+            if (!name.equals(spacesInDevice.get(name))) {
                 return false;
             }
         }

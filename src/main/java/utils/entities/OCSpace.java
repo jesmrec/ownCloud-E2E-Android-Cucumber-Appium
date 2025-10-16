@@ -1,5 +1,10 @@
 package utils.entities;
 
+import java.text.DecimalFormat;
+import java.util.logging.Level;
+
+import utils.log.Log;
+
 public class OCSpace {
 
     private String type;
@@ -64,8 +69,12 @@ public class OCSpace {
         if (quota == 0) {
             return "No restriction";
         } else {
-            long gb = quota / (1000 * 1000 * 1000);
-            return gb + " GB";
+            Log.log(Level.FINE, "TRANSFORM QUOTA");
+            Log.log(Level.FINE, "Quota in bytes: " + quota);
+            double gb = quota / 1_000_000_000.0;
+            DecimalFormat df = new DecimalFormat("0.00");
+            Log.log(Level.FINE, "Quota in GB: " + df.format(gb));
+            return df.format(gb);
         }
     }
 

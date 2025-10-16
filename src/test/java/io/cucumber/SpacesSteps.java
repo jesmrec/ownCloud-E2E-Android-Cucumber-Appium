@@ -87,7 +87,7 @@ public class SpacesSteps {
     private void handleSpace(DataTable table, String operation){
         Map<String, String> data = table.asMap(String.class, String.class);
         String name = data.get("name");
-        String subtitle = data.get("subtitle");
+        String subtitle = data.get("subtitle")!=null ? data.get("subtitle") : "";
         String quota = data.get("quota");
         if (operation.equals("update")) {
             world.spacesPage.editSpace(name, subtitle, quota);
@@ -118,10 +118,11 @@ public class SpacesSteps {
         String name = listItems.get(0).get(1);
         String description = listItems.get(1).get(1);
         String quota = listItems.get(2).get(1);
+        Log.log(Level.FINE, "Space from scenario: " + name + " " + description + " " + quota);
+        Log.log(Level.FINE, "Spaces in server: " + spaces.size());
         for (OCSpace space : spaces) {
             Log.log(Level.FINE, "Space in server: " + space.getName() + " "
                     + space.getDescription() + " " + space.getQuota());
-            Log.log(Level.FINE, "Space in scenario: " + name + " " + description + " " + quota);
             if (!(space.getName().equals(name)
                     && space.getDescription().equals(description)
                     && space.getQuota().equals(quota))) {
