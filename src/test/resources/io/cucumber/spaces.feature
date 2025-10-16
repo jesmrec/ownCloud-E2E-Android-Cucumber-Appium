@@ -1,4 +1,4 @@
-@spaces @nooc10
+@spaces @nooc10 @ignore
 Feature: Spaces
 
   As a user
@@ -76,7 +76,7 @@ Feature: Spaces
       | name1  | subtitle1     | name2  | subtitle2    | name3  | subtitle3   |
       | Space7 | Seventh space | Space8 | Eighth space | Space9 | Ninth space |
 
-  @createspace @ignore
+  @createspace
   Rule: Create space (admins, space admins)
 
     @smoke
@@ -100,7 +100,7 @@ Feature: Spaces
         | Space12 | Twelveth space | 1000000.00     |
         | Space13 | Thirdt space   | No restriction |
 
-  @editspace @ignore
+  @editspace
   Rule: Edit existing space (admins, space admins)
 
   Scenario Outline: Edit an existing space with correct name and subtitle
