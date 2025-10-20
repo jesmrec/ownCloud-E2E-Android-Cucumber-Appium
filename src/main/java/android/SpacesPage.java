@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -112,16 +113,25 @@ public class SpacesPage extends CommonPage {
         Log.log(Level.FINE, "Starts: check all spaces are visible");
         HashMap<String, String> spacesInDevice = new HashMap<>();
         waitById(WAIT_TIME, spaceNameId);
+        // Fill up the HashMap with spaces in the device
         for (WebElement individualSpace : deviceSpacesList) {
             String spaceName = individualSpace.findElement(By.id(spaceNameId))
                     .getAttribute("text").trim();
-            String spaceDescription = individualSpace.findElement(By.id(spaceSubtitleId))
-                    .getAttribute("text").trim();
+            List<WebElement> spaceDescriptions = individualSpace.findElements(By.id(spaceSubtitleId));
+            String spaceDescription = null;
+            if (!spaceDescriptions.isEmpty()) {
+                spaceDescription = spaceDescriptions.get(0).getAttribute("text").trim();
+                Log.log(Level.FINE, "spaceDescription: " + spaceDescription);
+            }
+            Log.log(Level.FINE, "Add: name: " + spaceName + " desc: " + spaceDescription);
             spacesInDevice.put(spaceName, spaceDescription);
         }
+        // Check all spaces from the list are in the device
         for (List<String> rows : spaces) {
             String name = rows.get(0);
-            if (!name.equals(spacesInDevice.get(name))) {
+            String description = rows.get(1);
+            if (!spacesInDevice.containsKey(name) ||
+                    !Objects.equals(spacesInDevice.get(name), description)) {
                 return false;
             }
         }

@@ -1,4 +1,4 @@
-@spaces @nooc10 @ignore
+@spaces @nooc10
 Feature: Spaces
 
   As a user
@@ -25,16 +25,16 @@ Feature: Spaces
         | name1  | subtitle1   | name2  | subtitle2    |
         | Space1 | First space | Space2 | Second space |
 
-  Scenario Outline: Update space created in server
-      Given the following spaces have been created in Alice account
-        | <name1> | <subtitle1> |
-    And Alice selects the spaces view
-      When the following spaces have been created in Alice account
-        | <name2> | <subtitle2> |
-      And Alice refreshes the list
-      Then Alice should see the following spaces
-        | <name1> | <subtitle1>  |
-        | <name2> | <subtitle2> |
+    Scenario Outline: Update space created in server
+        Given the following spaces have been created in Alice account
+          | <name1> | <subtitle1> |
+      And Alice selects the spaces view
+        When the following spaces have been created in Alice account
+          | <name2> | <subtitle2> |
+        And Alice refreshes the list
+        Then Alice should see the following spaces
+          | <name1> | <subtitle1>  |
+          | <name2> | <subtitle2> |
 
     Examples:
       | name1  | subtitle1   | name2  | subtitle2    |
@@ -95,9 +95,9 @@ Feature: Spaces
 
       Examples:
         | name    | subtitle       | quota          |
-        | Space10 | Tenth space    | 0.0040         |
-        | Space11 | Eleventh space | 124.70         |
-        | Space12 | Twelveth space | 1000000.00     |
+        | Space10 | Tenth space    | 0.0004         |
+        | Space11 | Eleventh space | 124.75         |
+        | Space12 | Twelfth space  | 1000000        |
         | Space13 | Thirdt space   | No restriction |
 
   @editspace
@@ -122,5 +122,6 @@ Feature: Spaces
       | quota    | <quota>       |
 
     Examples:
-      | name    | subtitle      | newName     | newSubtitle       | quota |
-      | Space12 | Twelfth space | Space12 new | Twelfth space new | 1.00  |
+      | name    | subtitle         | newName     | newSubtitle      | quota  |
+      | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    |
+      | Space15 | Fiftenth space   | Space15 new |                  | 125.75 |

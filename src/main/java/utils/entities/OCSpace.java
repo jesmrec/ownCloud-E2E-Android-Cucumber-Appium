@@ -72,7 +72,7 @@ public class OCSpace {
             Log.log(Level.FINE, "TRANSFORM QUOTA");
             Log.log(Level.FINE, "Quota in bytes: " + quota);
             double gb = quota / 1_000_000_000.0;
-            DecimalFormat df = new DecimalFormat("0.00");
+            DecimalFormat df = new DecimalFormat("0.######");
             Log.log(Level.FINE, "Quota in GB: " + df.format(gb));
             return df.format(gb);
         }

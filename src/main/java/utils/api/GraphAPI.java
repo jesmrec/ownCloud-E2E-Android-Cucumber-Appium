@@ -149,7 +149,8 @@ public class GraphAPI extends CommonAPI {
                 space.setType(jsonObject.getString("driveType"));
                 space.setId(jsonObject.getString("id"));
                 space.setName(jsonObject.getString("name"));
-                space.setDescription(jsonObject.getString("description"));
+                // Description can be null
+                space.setDescription(jsonObject.optString("description", ""));
                 JSONObject owner = jsonObject.getJSONObject("owner");
                 JSONObject user = owner.getJSONObject("user");
                 space.setOwner(user.getString("id"));

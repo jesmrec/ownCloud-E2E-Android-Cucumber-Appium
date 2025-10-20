@@ -116,11 +116,13 @@ public class SpacesSteps {
         List<OCSpace> spaces = world.graphAPI.getMySpaces();
         boolean matches = true;
         String name = listItems.get(0).get(1);
-        String description = listItems.get(1).get(1);
+        // Description can be null
+        String description = listItems.get(1).get(1) != null ? listItems.get(1).get(1) : "";
         String quota = listItems.get(2).get(1);
         Log.log(Level.FINE, "Space from scenario: " + name + " " + description + " " + quota);
         Log.log(Level.FINE, "Spaces in server: " + spaces.size());
         for (OCSpace space : spaces) {
+            // Check if space in server matches with space in scenario definition
             Log.log(Level.FINE, "Space in server: " + space.getName() + " "
                     + space.getDescription() + " " + space.getQuota());
             if (!(space.getName().equals(name)
