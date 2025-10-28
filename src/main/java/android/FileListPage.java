@@ -190,7 +190,6 @@ public class FileListPage extends CommonPage {
         }
         Log.log(Level.FINE, "Operation: " + operationName + " placed in menu");
         selectOperationMenu(operationName);
-
     }
 
     //Select once multiselection mode is on
