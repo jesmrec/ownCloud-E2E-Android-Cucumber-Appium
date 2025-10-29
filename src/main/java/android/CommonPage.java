@@ -49,7 +49,7 @@ public class CommonPage {
     private WebElement toRoot;
 
     protected static AndroidDriver driver = AndroidManager.getDriver();
-    protected static final int WAIT_TIME = 60;
+    protected static final int WAIT_TIME = 10;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
     public CommonPage() {
