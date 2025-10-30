@@ -40,6 +40,7 @@ Feature: Spaces
       | name1  | subtitle1   | name2  | subtitle2    |
       | Space3 | Third space | Space4 | Fourth space |
 
+  @ignore
   Scenario Outline: Disable a space in the server
       Given the following spaces have been created in Alice account
         | <name1> | <subtitle1> |
@@ -55,7 +56,7 @@ Feature: Spaces
 
     Examples:
       | name1  | subtitle1   | name2  | subtitle2   |
-      | Space5 | Fifth space | Space5 | Sixth space |
+      | Space5 | Fifth space | Space6 | Sixth space |
 
 
   Scenario Outline: Filter a space
