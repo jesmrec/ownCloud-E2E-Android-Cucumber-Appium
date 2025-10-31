@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.en.And;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,6 +29,11 @@ public class SpacesSteps {
 
     public SpacesSteps(World world) {
         this.world = world;
+    }
+
+    @ParameterType("(?: (enabled|disabled))?")
+    public String spaceStatus(String s) {
+        return s == null ? "" : s;
     }
 
     @Given("the following spaces have been created in {word} account")
@@ -72,10 +77,28 @@ public class SpacesSteps {
         handleSpace(table, "create");
     }
 
-    @And("Alice edits the space {word}")
+    @When("Alice edits the space {word}")
     public void user_edit_space(String spaceName){
         StepLogger.logCurrentStep(Level.FINE);
-        world.spacesPage.openSpaceMenu(spaceName);
+        world.spacesPage.openEditSpace(spaceName);
+    }
+
+    @When("Alice disables the space {word}")
+    public void user_disables_space(String spaceName){
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openDisableSpace(spaceName);
+    }
+
+    @When("Alice enables the space {word}")
+    public void user_enables_space(String spaceName){
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openEnableSpace(spaceName);
+    }
+
+    @When("Alice deletes the space {word}")
+    public void user_deletes_space(String spaceName){
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openDeleteSpace(spaceName);
     }
 
     @When("Alice updates the space with the following fields")
@@ -96,14 +119,14 @@ public class SpacesSteps {
         }
     }
 
-    @Then("Alice should{typePosNeg} see the following spaces")
-    public void user_should_see_following_spaces(String sense, DataTable table) {
+    @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
+    public void user_should_see_following_spaces(String sense, String spaceState, DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
         List<List<String>> listItems = table.asLists();
         if (sense.isEmpty()){
-            assertTrue(world.spacesPage.areAllSpacesVisible(listItems));
+            assertTrue(world.spacesPage.areAllSpacesVisible(listItems, spaceState));
         } else if (sense.equals(" not")) {
-            assertFalse(world.spacesPage.areAllSpacesVisible(listItems));
+            assertFalse(world.spacesPage.areAllSpacesVisible(listItems, spaceState));
         }
     }
 

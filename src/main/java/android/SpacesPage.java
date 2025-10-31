@@ -52,7 +52,9 @@ public class SpacesPage extends CommonPage {
     private WebElement searchInput;
 
     private final String spaceNameId = "com.owncloud.android:id/spaces_list_item_name";
+    private final String cardId = "com.owncloud.android:id/spaces_list_item_card";
     private final String spaceSubtitleId = "com.owncloud.android:id/spaces_list_item_subtitle";
+    private final String disabledIconId = "com.owncloud.android:id/spaces_list_item_disabled_label";
 
     public static SpacesPage instance;
 
@@ -74,10 +76,32 @@ public class SpacesPage extends CommonPage {
         fillSpaceInfo(name, subtitle, quota);
     }
 
-    public void openSpaceMenu(String spaceName){
-        Log.log(Level.FINE, "Starts: Open space " + spaceName);
+    public void openEditSpace(String spaceName){
+        Log.log(Level.FINE, "Starts: Open edit space " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
         findListUIAutomatorText("Edit space").get(0).click();
+    }
+
+    public void openDisableSpace(String spaceName){
+        Log.log(Level.FINE, "Starts: Open disable space " + spaceName);
+        findUIAutomatorDescription(spaceName + " space menu").click();
+        findListUIAutomatorText("Disable space").get(0).click();
+        findListUIAutomatorText("YES").get(0).click();
+    }
+
+    public void openEnableSpace(String spaceName){
+        Log.log(Level.FINE, "Starts: Open enable space " + spaceName);
+        findUIAutomatorDescription(spaceName + " space menu").click();
+        findListUIAutomatorText("Enable space").get(0).click();
+        findListUIAutomatorText("YES").get(0).click();
+    }
+
+    public void openDeleteSpace(String spaceName){
+        Log.log(Level.FINE, "Starts: Open delete space " + spaceName);
+        findUIAutomatorDescription(spaceName + " space menu").click();
+        findListUIAutomatorText("Delete space").get(0).click();
+        findListUIAutomatorText("YES").get(0).click();
+        waitByIdInvisible(WAIT_TIME, cardId);
     }
 
     public void editSpace (String name, String subtitle, String quota){
@@ -109,22 +133,29 @@ public class SpacesPage extends CommonPage {
         }
     }
 
-    public boolean areAllSpacesVisible(List<List<String>> spaces) {
+    public boolean areAllSpacesVisible(List<List<String>> spaces, String spaceStatus) {
         Log.log(Level.FINE, "Starts: check all spaces are visible");
+        // Get all spaces in the device with the expected status
         HashMap<String, String> spacesInDevice = new HashMap<>();
-        waitById(WAIT_TIME, spaceNameId);
-        // Fill up the HashMap with spaces in the device
-        for (WebElement individualSpace : deviceSpacesList) {
-            String spaceName = individualSpace.findElement(By.id(spaceNameId))
-                    .getAttribute("text").trim();
-            List<WebElement> spaceDescriptions = individualSpace.findElements(By.id(spaceSubtitleId));
-            String spaceDescription = null;
-            if (!spaceDescriptions.isEmpty()) {
-                spaceDescription = spaceDescriptions.get(0).getAttribute("text").trim();
-                Log.log(Level.FINE, "spaceDescription: " + spaceDescription);
+        for (int i = 0; i < driver.findElements(By.id(cardId)).size(); i++) {
+            // We have to double the check because the UI changes making the DOM different
+            WebElement individualSpace = driver.findElements(By.id(cardId)).get(i);
+            boolean status = individualSpace.findElements(By.id(disabledIconId)).isEmpty();
+            Log.log(Level.FINE, "Space status in device: " + status);
+            Log.log(Level.FINE, "Space status expected: " + spaceStatus);
+            if((spaceStatus.equals("disabled") && !status) ||
+                    (spaceStatus.equals("enabled") && status)) {
+                String spaceName = individualSpace.findElement(By.id(spaceNameId))
+                        .getAttribute("text").trim();
+                List<WebElement> spaceDescriptions = individualSpace.findElements(By.id(spaceSubtitleId));
+                String spaceDescription = null;
+                if (!spaceDescriptions.isEmpty()) {
+                    spaceDescription = spaceDescriptions.get(0).getAttribute("text").trim();
+                    Log.log(Level.FINE, "spaceDescription: " + spaceDescription);
+                }
+                Log.log(Level.FINE, "Add: name: " + spaceName + " desc: " + spaceDescription);
+                spacesInDevice.put(spaceName, spaceDescription);
             }
-            Log.log(Level.FINE, "Add: name: " + spaceName + " desc: " + spaceDescription);
-            spacesInDevice.put(spaceName, spaceDescription);
         }
         // Check all spaces from the list are in the device
         for (List<String> rows : spaces) {
