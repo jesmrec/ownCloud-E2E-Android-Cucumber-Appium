@@ -21,9 +21,9 @@ Feature: Move item
       But Alice should see '<name>' inside the folder <target>
 
       Examples:
-        | type   | name  | target    |
-        | folder | move1 | Documents |
-        # flaky: | file   | move2.txt | Documents |
+        | type   | name      | target     |
+        | folder | move1     | SDocuments |
+        | file   | move2.txt | SDocuments |
 
     @smoke
     Scenario Outline: Move an existent downloaded file to another location
@@ -40,8 +40,8 @@ Feature: Move item
       But file <name> should not be stored in device
 
       Examples:
-        | type | name      | target    |
-        | file | move3.txt | Documents |
+        | type | name      | target     |
+        | file | move3.txt | SDocuments |
 
     Scenario Outline: Move an existent item to a new created folder in the picker
       Given the following items have been created in Alice account
@@ -61,39 +61,38 @@ Feature: Move item
 
     Scenario Outline: Move a folder to another place with same item name, keeping both
       Given the following items have been created in Alice account
-        | folder | <name>          |
-        | folder | <target>        |
-        | folder | <target>/<name> |
-      When Alice selects to Move the folder <name>
+        | <type> | <name>          |
+        | <type> | <target>        |
+        | <type> | <target>/<name> |
+      When Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
       And Alice fixes the conflict with keep both
       Then Alice should see '<name> (1)' inside the folder <target>
 
       Examples:
-        | type | name  | target |
-        | file | move6 | move7  |
-
+        | type   | name  | target |
+        | folder | move6 | move7  |
 
     Scenario Outline: Move a folder to another place with same item name, replacing
       Given the following items have been created in Alice account
-        | folder | <name>          |
-        | folder | <target>        |
-        | folder | <target>/<name> |
-      When Alice selects to Move the folder <name>
+        | <type> | <name>          |
+        | <type> | <target>        |
+        | <type> | <target>/<name> |
+      When Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
       And Alice fixes the conflict with replace
       Then Alice should see '<name>' inside the folder <target>
 
       Examples:
-        | type | name  | target |
-        | file | move8 | move9  |
+        | type   | name  | target |
+        | folder | move8 | move9  |
 
   Rule: Move negative cases
 
     Scenario Outline: Move a folder to itself
       Given the following items have been created in Alice account
-        | folder | <name> |
-      When Alice selects to Move the folder <name>
+        | <type> | <name> |
+      When Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
       Then Alice should see the following error
         | It is not possible to move a folder into a descendant |

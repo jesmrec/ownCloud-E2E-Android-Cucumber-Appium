@@ -13,8 +13,8 @@ Feature: Copy item
     @smoke
     Scenario Outline: Copy an existent item to another location
       Given the following items have been created in Alice account
-        | <type> | <name>    |
-        | folder | Documents |
+        | <type> | <name>   |
+        | folder | <target> |
       When Alice selects to Copy the <type> <name>
       And Alice selects <space> as space
       And Alice selects <target> as target folder
@@ -22,9 +22,9 @@ Feature: Copy item
       And Alice should see '<name>' inside the folder <target>
 
       Examples:
-        | type   | name  | target    | space    |
-        | folder | copy1 | Documents | Personal |
-        #flaky: | file   | copy2.txt | Documents | Personal |
+        | type   | name      | target     | space    |
+        | folder | copy1     | SDocuments | Personal |
+        | file   | copy2.txt | SDocuments | Personal |
 
     Scenario Outline: Copy an existent item to a new created folder in the picker
       Given the following items have been created in Alice account
