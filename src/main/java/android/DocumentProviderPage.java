@@ -30,14 +30,16 @@ public class DocumentProviderPage extends CommonPage {
 
     public void openDownloadsInHamburger() {
         Log.log(Level.FINE, "Starts: Open hamburguer button in documents provider");
-        //For any unknown reason, first time fails. Needs to do a second one.
         hamburger.click();
-        findUIAutomatorText("Downloads").click();
+        findGenericUIAutomator("new UiSelector().text(\"Downloads\").instance(2)")
+                .get(0).click();
     }
 
     public void selectFileToUpload(String fileName) {
         Log.log(Level.FINE, "Starts: Select File to Upload: " + fileName);
         openDownloadsInHamburger();
         findUIAutomatorText(fileName).click();
+        // Give some time to the app to finish the upload
+        waitById(WAIT_TIME, "com.owncloud.android:id/bottom_nav_view");
     }
 }

@@ -103,28 +103,41 @@ Feature: Spaces
   @editspace
   Rule: Edit existing space (admins, space admins)
 
-  Scenario Outline: Edit an existing space with correct name and subtitle
-    Given the following spaces have been created in Alice account
-      | <name> | <subtitle> |
-    When Alice selects the spaces view
-    And Alice edits the space <name>
-    And Alice updates the space with the following fields
-      | name     | <newName>     |
-      | subtitle | <newSubtitle> |
-      | quota    | <quota>       |
-    Then Alice should see the following enabled spaces
-      | <newName> | <newSubtitle> |
-    But Alice should not see the following spaces
-      | <name> | <subtitle> |
-    And space should be updated in server with the following fields
-      | name     | <newName>     |
-      | subtitle | <newSubtitle> |
-      | quota    | <quota>       |
+    Scenario Outline: Edit an existing space with correct name and subtitle
+      Given the following spaces have been created in Alice account
+        | <name> | <subtitle> |
+      When Alice selects the spaces view
+      And Alice edits the space <name>
+      And Alice updates the space with the following fields
+        | name     | <newName>     |
+        | subtitle | <newSubtitle> |
+        | quota    | <quota>       |
+      Then Alice should see the following enabled spaces
+        | <newName> | <newSubtitle> |
+      But Alice should not see the following spaces
+        | <name> | <subtitle> |
+      And space should be updated in server with the following fields
+        | name     | <newName>     |
+        | subtitle | <newSubtitle> |
+        | quota    | <quota>       |
 
-    Examples:
-      | name    | subtitle         | newName     | newSubtitle      | quota  |
-      | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    |
-      | Space15 | Fiftenth space   | Space15 new |                  | 125.75 |
+      Examples:
+        | name    | subtitle         | newName     | newSubtitle      | quota  |
+        | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    |
+        | Space15 | Fifteenth space  | Space15 new |                  | 125.75 |
+
+    Scenario Outline: Edit an existing space with new image
+      Given the following spaces have been created in Alice account
+        | <name> | <subtitle> |
+      And a file <fileName> exists in the device
+      When Alice selects the spaces view
+      And Alice edits the image of the space <name> with the file <fileName>
+      Then space image should be updated in server with file <fileName>
+        | <name> | <subtitle> |
+
+      Examples:
+        | name    | subtitle      | fileName |
+        | Space16 | Sixteenth space | icon.png |
 
   @disablespace
   Rule: Disable/Delete existing space (admins, space admins)
@@ -138,10 +151,10 @@ Feature: Spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle        |
-        | Space16 | Sixteenth space |
+        | name    | subtitle          |
+        | Space17 | Seventeenth space |
 
-    Scenario Outline: Enable a disabled space
+  Scenario Outline: Enable a disabled space
       Given the following spaces have been created in Alice account
         | <name> | <subtitle> |
       And following space is disabled in server
@@ -152,10 +165,10 @@ Feature: Spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle          |
-        | Space17 | Seventeenth space |
+        | name    | subtitle         |
+        | Space18 | Eighteenth space |
 
-    Scenario Outline: Delete a disabled space
+  Scenario Outline: Delete a disabled space
       Given the following spaces have been created in Alice account
         | <name> | <subtitle> |
       And following space is disabled in server
@@ -167,4 +180,4 @@ Feature: Spaces
 
       Examples:
         | name    | subtitle         |
-        | Space18 | Eighteenth space |
+        | Space19 | Nineteenth space |

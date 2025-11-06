@@ -119,6 +119,13 @@ public class SpacesSteps {
         }
     }
 
+    @When("Alice edits the image of the space {word} with the file {word}")
+    public void edits_image(String spaceName, String fileName) {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openEditSpaceImage(spaceName);
+        world.documentProviderPage.selectFileToUpload(fileName);
+    }
+
     @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
     public void user_should_see_following_spaces(String sense, String spaceState, DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
@@ -157,5 +164,15 @@ public class SpacesSteps {
         }
         // Check if all spaces in scenario definition match with spaces in server
         assertTrue(matches);
+    }
+
+    @Then("space image should be updated in server with file {word}")
+    public void space_image_updated(String fileName, DataTable table) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        List<List<String>> listItems = table.asLists();
+        String spaceName = listItems.get(0).get(0);
+        String spaceSubtitle = listItems.get(0).get(1);
+        String id = world.graphAPI.getSpaceIdFromName(spaceName, spaceSubtitle);
+        assertTrue(world.filesAPI.itemExist(id ,"/.space/"+fileName));
     }
 }

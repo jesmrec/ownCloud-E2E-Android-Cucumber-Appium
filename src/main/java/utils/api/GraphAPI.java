@@ -124,12 +124,13 @@ public class GraphAPI extends CommonAPI {
         return request;
     }
 
-    private String getSpaceIdFromName(String name, String description) throws IOException {
+    public String getSpaceIdFromName(String name, String description) throws IOException {
+        Log.log(Level.FINE, "Look for space ID or null: " + name + " " + description);
         List<OCSpace> mySpaces = getMySpaces();
         for (OCSpace space : mySpaces) {
             if (space.getName().trim().equals(name) &&
                     space.getDescription().trim().equals(description)) {
-                Log.log(Level.FINE, "ID of space: " + space.getId() + " " + space.getName());
+                Log.log(Level.FINE, "FOUND: ID of space: " + space.getId() + " " + space.getName());
                 return space.getId();
             }
         }

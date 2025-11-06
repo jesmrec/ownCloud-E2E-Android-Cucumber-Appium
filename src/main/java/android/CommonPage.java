@@ -101,6 +101,10 @@ public class CommonPage {
         return driver.findElements(new AppiumBy.ByAccessibilityId(id));
     }
 
+    public List<WebElement> findGenericUIAutomator(String automatorString) {
+        return driver.findElements(AppiumBy.androidUIAutomator(automatorString));
+    }
+
     /* Waiters by different parameters */
 
     public static void waitByXpath(int timeToWait, String resourceXpath) {

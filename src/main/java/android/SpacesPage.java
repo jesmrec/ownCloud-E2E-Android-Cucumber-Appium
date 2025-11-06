@@ -133,6 +133,12 @@ public class SpacesPage extends CommonPage {
         }
     }
 
+    public void openEditSpaceImage(String spaceName){
+        Log.log(Level.FINE, "Starts: Open edit space image " + spaceName);
+        findUIAutomatorDescription(spaceName + " space menu").click();
+        findListUIAutomatorText("Edit image").get(0).click();
+    }
+
     public boolean areAllSpacesVisible(List<List<String>> spaces, String spaceStatus) {
         Log.log(Level.FINE, "Starts: check all spaces are visible");
         // Get all spaces in the device with the expected status

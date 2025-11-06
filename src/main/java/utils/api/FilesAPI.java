@@ -133,6 +133,34 @@ public class FilesAPI extends CommonAPI {
         }
     }
 
+    // Overload for a specific space
+    public boolean itemExist(String spaceId, String itemName)
+            throws IOException {
+        String url = urlServer + spacesEndpoint + spaceId + itemName;
+        Log.log(Level.FINE, "Starts: Request check if item exists in server");
+        Log.log(Level.FINE, "URL: " + url);
+        Response response;
+        Request request = davRequest(url, "PROPFIND", null, user);
+        response = httpClient.newCall(request).execute();
+        response.close();
+        switch (response.code() / 100) {
+            case (2): {
+                Log.log(Level.FINE, "Response " + response.code() + ". Item exists");
+                return true;
+            }
+            case (4): {
+                Log.log(Level.FINE, "Response " + response.code() + " "
+                        + response.message() + ". Item does not exist");
+                return false;
+            }
+            default: {
+                Log.log(Level.WARNING, "Response neither 4xx nor 2xx. " +
+                        "Something went wrong");
+                return false;
+            }
+        }
+    }
+
     public ArrayList<OCFile> listShared()
             throws IOException, SAXException, ParserConfigurationException {
         Log.log(Level.FINE, "Starts: Request to fetch list of shared items from oCIS");
