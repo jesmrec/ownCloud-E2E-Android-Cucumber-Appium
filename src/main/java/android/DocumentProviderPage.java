@@ -29,10 +29,9 @@ public class DocumentProviderPage extends CommonPage {
     }
 
     public void openDownloadsInHamburger() {
-        Log.log(Level.FINE, "Starts: Open hamburguer button in documents provider");
+        Log.log(Level.FINE, "Starts: Open hamburger button in documents provider");
         hamburger.click();
-        findGenericUIAutomator("new UiSelector().text(\"Downloads\").instance(2)")
-                .get(0).click();
+        findListUIAutomatorText("Downloads").get(0).click();
     }
 
     public void selectFileToUpload(String fileName) {

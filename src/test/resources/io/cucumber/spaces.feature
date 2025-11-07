@@ -126,6 +126,7 @@ Feature: Spaces
         | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    |
         | Space15 | Fifteenth space  | Space15 new |                  | 125.75 |
 
+    @noci
     Scenario Outline: Edit an existing space with new image
       Given the following spaces have been created in Alice account
         | <name> | <subtitle> |

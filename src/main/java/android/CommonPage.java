@@ -101,10 +101,6 @@ public class CommonPage {
         return driver.findElements(new AppiumBy.ByAccessibilityId(id));
     }
 
-    public List<WebElement> findGenericUIAutomator(String automatorString) {
-        return driver.findElements(AppiumBy.androidUIAutomator(automatorString));
-    }
-
     /* Waiters by different parameters */
 
     public static void waitByXpath(int timeToWait, String resourceXpath) {
@@ -147,6 +143,20 @@ public class CommonPage {
                         ("new UiSelector().text(\"" + text + "\");"));
         wait.until(ExpectedConditions.invisibilityOfElementWithText(AppiumBy.androidUIAutomator(
                 "new UiSelector().textContains(\"Download enqueued\");"), "Download enqueued"));
+    }
+
+    public void waitUntilTextIsNotEmpty(int timeToWait, String resourceId) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
+
+        ExpectedCondition<Boolean> textNotEmpty = new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                WebElement element = driver.findElement(AppiumBy.id(resourceId));
+                String text = element.getText();
+                return text != null && !text.trim().isEmpty();
+            }
+        };
+        wait.until(textNotEmpty);
     }
 
     protected HashMap turnListToHashmap(List<List<String>> dataList) {
