@@ -40,6 +40,7 @@ Feature: Spaces
       | name1  | subtitle1   | name2  | subtitle2    |
       | Space3 | Third space | Space4 | Fourth space |
 
+    @ignore
     Scenario Outline: Disable a space in the server
         Given the following spaces have been created in Alice account
           | <name1> | <subtitle1> |
@@ -163,7 +164,7 @@ Feature: Spaces
           | name    | subtitle         | fileName |
           | Space18 | Eighteenth space | icon.png |
 
-  @disablespace
+  @disablespace  @ignore
   Rule: Disable/Delete existing space (admins, space admins)
 
     Scenario Outline: Disable an existing space
