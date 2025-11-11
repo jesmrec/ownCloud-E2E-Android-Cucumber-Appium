@@ -40,30 +40,29 @@ Feature: Spaces
       | name1  | subtitle1   | name2  | subtitle2    |
       | Space3 | Third space | Space4 | Fourth space |
 
-  Scenario Outline: Disable a space in the server
-      Given the following spaces have been created in Alice account
-        | <name1> | <subtitle1> |
-        | <name2> | <subtitle2> |
-      And Alice selects the spaces view
-      When following space is disabled in server
-        | <name1> | <subtitle1> |
-      And Alice refreshes the list
-      Then Alice should see the following enabled spaces
-        | <name2> | <subtitle2> |
-      But Alice should see the following disabled spaces
-        | <name1> | <subtitle1> |
+    Scenario Outline: Disable a space in the server
+        Given the following spaces have been created in Alice account
+          | <name1> | <subtitle1> |
+          | <name2> | <subtitle2> |
+        And Alice selects the spaces view
+        When following space is disabled in server
+          | <name1> | <subtitle1> |
+        And Alice refreshes the list
+        Then Alice should see the following enabled spaces
+          | <name2> | <subtitle2> |
+        But Alice should see the following disabled spaces
+          | <name1> | <subtitle1> |
 
-    Examples:
-      | name1  | subtitle1   | name2  | subtitle2   |
-      | Space5 | Fifth space | Space6 | Sixth space |
+      Examples:
+        | name1  | subtitle1   | name2  | subtitle2   |
+        | Space5 | Fifth space | Space6 | Sixth space |
 
-
-  Scenario Outline: Filter a space
+    Scenario Outline: Filter a space
       Given the following spaces have been created in Alice account
         | <name1> | <subtitle1> |
         | <name2> | <subtitle2> |
         | <name3> | <subtitle3> |
-    And Alice selects the spaces view
+      And Alice selects the spaces view
       When Alice filters the list using Space8
       And Alice refreshes the list
       Then Alice should see the following enabled spaces
@@ -72,9 +71,9 @@ Feature: Spaces
         | <name1> | <subtitle1> |
         | <name3> | <subtitle3> |
 
-    Examples:
-      | name1  | subtitle1     | name2  | subtitle2    | name3  | subtitle3   |
-      | Space7 | Seventh space | Space8 | Eighth space | Space9 | Ninth space |
+      Examples:
+        | name1  | subtitle1     | name2  | subtitle2    | name3  | subtitle3   |
+        | Space7 | Seventh space | Space8 | Eighth space | Space9 | Ninth space |
 
   @createspace
   Rule: Create space (admins, space admins)
@@ -150,19 +149,19 @@ Feature: Spaces
         | Space16 | Sixteenth space   | 2300  | 2.3      | TB   |
         | Space17 | Seventeenth space | 0.01  | 10       | MB   |
 
-  @ignore
-  Scenario Outline: Edit an existing space with new image
-      Given the following spaces have been created in Alice account
-        | <name> | <subtitle> |
-      And a file <fileName> exists in the device
-      When Alice selects the spaces view
-      And Alice edits the image of the space <name> with the file <fileName>
-      Then space image should be updated in server with file <fileName>
-        | <name> | <subtitle> |
+    @ignore
+    Scenario Outline: Edit an existing space with new image
+        Given the following spaces have been created in Alice account
+          | <name> | <subtitle> |
+        And a file <fileName> exists in the device
+        When Alice selects the spaces view
+        And Alice edits the image of the space <name> with the file <fileName>
+        Then space image should be updated in server with file <fileName>
+          | <name> | <subtitle> |
 
-      Examples:
-        | name    | subtitle         | fileName |
-        | Space18 | Eighteenth space | icon.png |
+        Examples:
+          | name    | subtitle         | fileName |
+          | Space18 | Eighteenth space | icon.png |
 
   @disablespace
   Rule: Disable/Delete existing space (admins, space admins)
@@ -179,30 +178,30 @@ Feature: Spaces
         | name    | subtitle         |
         | Space19 | Nineteenth space |
 
-  Scenario Outline: Enable a disabled space
-      Given the following spaces have been created in Alice account
-        | <name> | <subtitle> |
-      And following space is disabled in server
-        | <name> | <subtitle> |
-      When Alice selects the spaces view
-      And Alice enables the space <name>
-      Then Alice should see the following enabled spaces
-        | <name> | <subtitle> |
+    Scenario Outline: Enable a disabled space
+        Given the following spaces have been created in Alice account
+          | <name> | <subtitle> |
+        And following space is disabled in server
+          | <name> | <subtitle> |
+        When Alice selects the spaces view
+        And Alice enables the space <name>
+        Then Alice should see the following enabled spaces
+          | <name> | <subtitle> |
 
-      Examples:
-        | name    | subtitle        |
-        | Space20 | Twentieth space |
+        Examples:
+          | name    | subtitle        |
+          | Space20 | Twentieth space |
 
-  Scenario Outline: Delete a disabled space
-      Given the following spaces have been created in Alice account
-        | <name> | <subtitle> |
-      And following space is disabled in server
-        | <name> | <subtitle> |
-      When Alice selects the spaces view
-      And Alice deletes the space <name>
-      Then Alice should not see the following spaces
-        | <name> | <subtitle> |
+    Scenario Outline: Delete a disabled space
+        Given the following spaces have been created in Alice account
+          | <name> | <subtitle> |
+        And following space is disabled in server
+          | <name> | <subtitle> |
+        When Alice selects the spaces view
+        And Alice deletes the space <name>
+        Then Alice should not see the following spaces
+          | <name> | <subtitle> |
 
-      Examples:
-        | name    | subtitle          |
-        | Space21 | Twentifirst space |
+        Examples:
+          | name    | subtitle          |
+          | Space21 | Twentifirst space |
