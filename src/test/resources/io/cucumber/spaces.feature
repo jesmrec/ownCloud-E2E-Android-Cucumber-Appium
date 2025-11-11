@@ -90,15 +90,16 @@ Feature: Spaces
         | name     | <name>     |
         | subtitle | <subtitle> |
         | quota    | <quota>    |
+        | unit     | <unit>     |
       Then Alice should see the following enabled spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle       | quota          |
-        | Space10 | Tenth space    | 0.0004         |
-        | Space11 | Eleventh space | 124.75         |
-        | Space12 | Twelfth space  | 1000000        |
-        | Space13 | Thirdt space   | No restriction |
+        | name    | subtitle       | quota          | unit |
+        | Space10 | Tenth space    | 0.0004         | GB   |
+        | Space11 | Eleventh space | 124.75         | GB   |
+        | Space12 | Twelfth space  | 1000000        | GB   |
+        | Space13 | Thirdt space   | No restriction | GB   |
 
   @editspace
   Rule: Edit existing space (admins, space admins)
@@ -120,14 +121,37 @@ Feature: Spaces
         | name     | <newName>     |
         | subtitle | <newSubtitle> |
         | quota    | <quota>       |
+        | unit     | <unit>        |
 
       Examples:
-        | name    | subtitle         | newName     | newSubtitle      | quota  |
-        | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    |
-        | Space15 | Fifteenth space  | Space15 new |                  | 125.75 |
+        | name    | subtitle         | newName     | newSubtitle      | quota  | unit |
+        | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    | GB   |
+        | Space15 | Fifteenth space  | Space15 new |                  | 125.75 | GB   |
 
-    @noci
-    Scenario Outline: Edit an existing space with new image
+    Scenario Outline: Edit an existing space with quota only
+      Given the following spaces have been created in Alice account
+        | <name> | <subtitle> |
+      When Alice selects the spaces view
+      And Alice edits the space <name>
+      And Alice updates the space with the following fields
+        | name     | <name>     |
+        | subtitle | <subtitle> |
+        | quota    | <quota>    |
+      Then space should be updated in server with the following fields
+        | name     | <name>     |
+        | subtitle | <subtitle> |
+        | quota    | <newQuota> |
+        | unit     | <unit>     |
+        And quota is correctly displayed
+        | <newQuota> | <unit> | <name> |
+
+      Examples:
+        | name    | subtitle          | quota | newQuota | unit |
+        | Space16 | Sixteenth space   | 2300  | 2.3      | TB   |
+        | Space17 | Seventeenth space | 0.01  | 10       | MB   |
+
+  @ignore
+  Scenario Outline: Edit an existing space with new image
       Given the following spaces have been created in Alice account
         | <name> | <subtitle> |
       And a file <fileName> exists in the device
@@ -137,8 +161,8 @@ Feature: Spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle      | fileName |
-        | Space16 | Sixteenth space | icon.png |
+        | name    | subtitle         | fileName |
+        | Space18 | Eighteenth space | icon.png |
 
   @disablespace
   Rule: Disable/Delete existing space (admins, space admins)
@@ -152,8 +176,8 @@ Feature: Spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle          |
-        | Space17 | Seventeenth space |
+        | name    | subtitle         |
+        | Space19 | Nineteenth space |
 
   Scenario Outline: Enable a disabled space
       Given the following spaces have been created in Alice account
@@ -166,8 +190,8 @@ Feature: Spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle         |
-        | Space18 | Eighteenth space |
+        | name    | subtitle        |
+        | Space20 | Twentieth space |
 
   Scenario Outline: Delete a disabled space
       Given the following spaces have been created in Alice account
@@ -180,5 +204,5 @@ Feature: Spaces
         | <name> | <subtitle> |
 
       Examples:
-        | name    | subtitle         |
-        | Space19 | Nineteenth space |
+        | name    | subtitle          |
+        | Space21 | Twentifirst space |

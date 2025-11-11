@@ -142,22 +142,22 @@ public class SpacesSteps {
         StepLogger.logCurrentStep(Level.FINE);
         // Spaces in scenario definition
         List<List<String>> listItems = table.asLists();
-        // Spaces in server
-        List<OCSpace> spaces = world.graphAPI.getMySpaces();
         boolean matches = true;
         String name = listItems.get(0).get(1);
         // Description can be null
         String description = listItems.get(1).get(1) != null ? listItems.get(1).get(1) : "";
         String quota = listItems.get(2).get(1);
+        String unit = listItems.get(3).get(1);
         Log.log(Level.FINE, "Space from scenario: " + name + " " + description + " " + quota);
-        Log.log(Level.FINE, "Spaces in server: " + spaces.size());
+        // Spaces in server
+        List<OCSpace> spaces = world.graphAPI.getMySpaces();
         for (OCSpace space : spaces) {
             // Check if space in server matches with space in scenario definition
             Log.log(Level.FINE, "Space in server: " + space.getName() + " "
-                    + space.getDescription() + " " + space.getQuota());
+                    + space.getDescription() + " " + space.getQuota(unit));
             if (!(space.getName().equals(name)
                     && space.getDescription().equals(description)
-                    && space.getQuota().equals(quota))) {
+                    && space.getQuota(unit).equals(quota))) {
                 matches = false;
                 break;
             }
@@ -174,5 +174,16 @@ public class SpacesSteps {
         String spaceSubtitle = listItems.get(0).get(1);
         String id = world.graphAPI.getSpaceIdFromName(spaceName, spaceSubtitle);
         assertTrue(world.filesAPI.itemExist(id ,"/.space/"+fileName));
+    }
+
+    @Then("quota is correctly displayed")
+    public void quota_displayed(DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        List<List<String>> listItems = table.asLists();
+        String value = listItems.get(0).get(0);
+        String unit = listItems.get(0).get(1);
+        String spaceName = listItems.get(0).get(2);
+        user_edit_space(spaceName);
+        assertTrue(world.spacesPage.isQuotaDisplayed(value, unit));
     }
 }

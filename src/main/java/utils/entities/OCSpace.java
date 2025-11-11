@@ -57,24 +57,41 @@ public class OCSpace {
         this.description = description;
     }
 
-    public String getQuota() {
-        return transformQuota(quota);
+    public String getQuota(String unit) {
+        return transformQuota(quota, unit);
     }
 
     public void setQuota(long quota) {
         this.quota = quota;
     }
 
-    private String transformQuota(long quota) {
+    private String transformQuota(long quota, String unit) {
         if (quota == 0) {
             return "No restriction";
         } else {
             Log.log(Level.FINE, "TRANSFORM QUOTA");
             Log.log(Level.FINE, "Quota in bytes: " + quota);
-            double gb = quota / 1_000_000_000.0;
-            DecimalFormat df = new DecimalFormat("0.######");
-            Log.log(Level.FINE, "Quota in GB: " + df.format(gb));
-            return df.format(gb);
+            switch (unit) {
+                case "MB" -> {
+                    double mb = quota / 1_000_000.0;
+                    DecimalFormat dfMB = new DecimalFormat("0.######");
+                    Log.log(Level.FINE, "Quota in MB: " + dfMB.format(mb));
+                    return dfMB.format(mb);
+                }
+                case "GB" -> {
+                    double gb = quota / 1_000_000_000.0;
+                    DecimalFormat dfGB = new DecimalFormat("0.######");
+                    Log.log(Level.FINE, "Quota in TB: " + dfGB.format(gb));
+                    return dfGB.format(gb);
+                }
+                case "TB" -> {
+                    double tb = quota / 1_000_000_000_000.0;
+                    DecimalFormat dfTB = new DecimalFormat("0.######");
+                    Log.log(Level.FINE, "Quota in TB: " + dfTB.format(tb));
+                    return dfTB.format(tb);
+                }
+            }
+            return "No restriction";
         }
     }
 

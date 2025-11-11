@@ -39,7 +39,7 @@ public class SpacesPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_value")
     private WebElement quotaValueEdittext;
 
-    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_unit")
+    @AndroidFindBy(id = "com.owncloud.android:id/create_space_dialog_quota_unit_label")
     private WebElement quotaUnit;
 
     @AndroidFindBy(id = "com.owncloud.android:id/create_space_button")
@@ -117,6 +117,8 @@ public class SpacesPage extends CommonPage {
         subtitleEditText.sendKeys(subtitle);
         setQuota(quota);
         createButton.click();
+        // Wait until the dialog disappears
+        waitByIdInvisible(WAIT_TIME, "com.owncloud.android:id/create_space_dialog_quota_switch");
     }
 
     private void setQuota(String quota) {
@@ -137,6 +139,16 @@ public class SpacesPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Open edit space image " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
         findListUIAutomatorText("Edit image").get(0).click();
+    }
+
+    public void typeSearch(String pattern) {
+        Log.log(Level.FINE, "Starts: type search " + pattern);
+        searchBar.click();
+        searchInput.sendKeys(pattern);
+    }
+
+    public void openSpace(String spaceName) {
+        deviceSpacesList.get(0).click();
     }
 
     public boolean areAllSpacesVisible(List<List<String>> spaces, String spaceStatus) {
@@ -175,13 +187,11 @@ public class SpacesPage extends CommonPage {
         return true;
     }
 
-    public void typeSearch(String pattern) {
-        Log.log(Level.FINE, "Starts: type search " + pattern);
-        searchBar.click();
-        searchInput.sendKeys(pattern);
-    }
-
-    public void openSpace(String spaceName) {
-        deviceSpacesList.get(0).click();
+    public boolean isQuotaDisplayed(String value, String unit) {
+        Log.log(Level.FINE, "Starts: check quota: " + value + " " + unit);
+        String displayedQuota = quotaValueEdittext.getAttribute("text");
+        String displayedUnit = quotaUnit.getAttribute("text");
+        Log.log(Level.FINE, "Displayed: " + displayedQuota + " " + displayedUnit);
+        return (value.equals(displayedQuota) && unit.equals(displayedUnit));
     }
 }

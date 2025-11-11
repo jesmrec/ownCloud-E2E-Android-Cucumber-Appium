@@ -21,9 +21,9 @@ Feature: Move item
       But Alice should see '<name>' inside the folder <target>
 
       Examples:
-        | type   | name      | target     |
-        | folder | move1     | SDocuments |
-        | file   | move2.txt | SDocuments |
+        | type   | name      | target    |
+        | folder | move1     | Documents |
+        | file   | move2.txt | Documents |
 
     @smoke
     Scenario Outline: Move an existent downloaded file to another location
@@ -40,8 +40,8 @@ Feature: Move item
       But file <name> should not be stored in device
 
       Examples:
-        | type | name      | target     |
-        | file | move3.txt | SDocuments |
+        | type | name      | target    |
+        | file | move3.txt | Documents |
 
     Scenario Outline: Move an existent item to a new created folder in the picker
       Given the following items have been created in Alice account
