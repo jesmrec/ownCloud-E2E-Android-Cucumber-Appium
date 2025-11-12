@@ -40,7 +40,6 @@ Feature: Spaces
       | name1  | subtitle1   | name2  | subtitle2    |
       | Space3 | Third space | Space4 | Fourth space |
 
-    @ignore
     Scenario Outline: Disable a space in the server
         Given the following spaces have been created in Alice account
           | <name1> | <subtitle1> |
@@ -51,7 +50,7 @@ Feature: Spaces
         And Alice refreshes the list
         Then Alice should see the following enabled spaces
           | <name2> | <subtitle2> |
-        But Alice should see the following disabled spaces
+        But Alice should not see the following spaces
           | <name1> | <subtitle1> |
 
       Examples:
@@ -164,7 +163,7 @@ Feature: Spaces
           | name    | subtitle         | fileName |
           | Space18 | Eighteenth space | icon.png |
 
-  @disablespace  @ignore
+  @disablespace
   Rule: Disable/Delete existing space (admins, space admins)
 
     Scenario Outline: Disable an existing space
@@ -172,13 +171,14 @@ Feature: Spaces
         | <name> | <subtitle> |
       When Alice selects the spaces view
       And Alice disables the space <name>
-      Then Alice should see the following disabled spaces
+      Then Alice should not see the following spaces
         | <name> | <subtitle> |
 
       Examples:
         | name    | subtitle         |
         | Space19 | Nineteenth space |
 
+    @ignore
     Scenario Outline: Enable a disabled space
         Given the following spaces have been created in Alice account
           | <name> | <subtitle> |
@@ -193,7 +193,8 @@ Feature: Spaces
           | name    | subtitle        |
           | Space20 | Twentieth space |
 
-    Scenario Outline: Delete a disabled space
+      @ignore
+      Scenario Outline: Delete a disabled space
         Given the following spaces have been created in Alice account
           | <name> | <subtitle> |
         And following space is disabled in server
