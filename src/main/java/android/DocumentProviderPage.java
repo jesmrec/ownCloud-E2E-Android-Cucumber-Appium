@@ -3,8 +3,10 @@ package android;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
 import java.util.logging.Level;
 
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import utils.log.Log;
@@ -13,6 +15,10 @@ public class DocumentProviderPage extends CommonPage {
 
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Show roots\"]")
     private WebElement hamburger;
+
+    private final String sideMenuDocsProviderId =
+            "new UiSelector().resourceId(\"com.google.android.documentsui:id/roots_list\")";
+    private final String downloadOptionId = "new UiSelector().textContains(\"Downloads\");";
 
     public static DocumentProviderPage instance;
 
@@ -31,7 +37,10 @@ public class DocumentProviderPage extends CommonPage {
     public void openDownloadsInHamburger() {
         Log.log(Level.FINE, "Starts: Open hamburger button in documents provider");
         hamburger.click();
-        findListUIAutomatorText("Downloads").get(0).click();
+        // first find side menu to look for options inside it
+        WebElement sideMenu = driver.findElement(AppiumBy.androidUIAutomator (sideMenuDocsProviderId));
+        List<WebElement> download = sideMenu.findElements(AppiumBy.androidUIAutomator(downloadOptionId));
+        download.get(0).click();
     }
 
     public void selectFileToUpload(String fileName) {
