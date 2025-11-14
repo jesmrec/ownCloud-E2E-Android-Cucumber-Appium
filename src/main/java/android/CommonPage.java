@@ -148,13 +148,10 @@ public class CommonPage {
     public void waitUntilTextIsNotEmpty(int timeToWait, String resourceId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
 
-        ExpectedCondition<Boolean> textNotEmpty = new ExpectedCondition<Boolean>() {
-            @Override
-            public Boolean apply(WebDriver driver) {
-                WebElement element = driver.findElement(AppiumBy.id(resourceId));
-                String text = element.getText();
-                return text != null && !text.trim().isEmpty();
-            }
+        ExpectedCondition<Boolean> textNotEmpty = driver -> {
+            WebElement element = driver.findElement(AppiumBy.id(resourceId));
+            String text = element.getText();
+            return text != null && !text.trim().isEmpty();
         };
         wait.until(textNotEmpty);
     }

@@ -118,7 +118,7 @@ public class DetailsPage extends CommonPage {
     }
 
     public boolean isTextInFile(String text) {
-        waitById(WAIT_TIME, "com.owncloud.android:id/text_preview");
+        //waitById(WAIT_TIME, "com.owncloud.android:id/text_preview");
         waitUntilTextIsNotEmpty(WAIT_TIME, "com.owncloud.android:id/text_preview");
         return findUIAutomatorText(text).isDisplayed();
     }

@@ -26,32 +26,32 @@ Feature: Spaces
         | Space1 | First space | Space2 | Second space |
 
     Scenario Outline: Update space created in server
-        Given the following spaces have been created in Alice account
-          | <name1> | <subtitle1> |
+      Given the following spaces have been created in Alice account
+        | <name1> | <subtitle1> |
       And Alice selects the spaces view
-        When the following spaces have been created in Alice account
-          | <name2> | <subtitle2> |
-        And Alice refreshes the list
-        Then Alice should see the following enabled spaces
-          | <name1> | <subtitle1>  |
-          | <name2> | <subtitle2> |
+      When the following spaces have been created in Alice account
+        | <name2> | <subtitle2> |
+      And Alice refreshes the list
+      Then Alice should see the following enabled spaces
+        | <name1> | <subtitle1>  |
+        | <name2> | <subtitle2>  |
 
-    Examples:
-      | name1  | subtitle1   | name2  | subtitle2    |
-      | Space3 | Third space | Space4 | Fourth space |
+      Examples:
+        | name1  | subtitle1   | name2  | subtitle2    |
+        | Space3 | Third space | Space4 | Fourth space |
 
     Scenario Outline: Disable a space in the server
-        Given the following spaces have been created in Alice account
-          | <name1> | <subtitle1> |
-          | <name2> | <subtitle2> |
-        And Alice selects the spaces view
-        When following space is disabled in server
-          | <name1> | <subtitle1> |
-        And Alice refreshes the list
-        Then Alice should see the following enabled spaces
-          | <name2> | <subtitle2> |
-        But Alice should not see the following spaces
-          | <name1> | <subtitle1> |
+      Given the following spaces have been created in Alice account
+        | <name1> | <subtitle1> |
+        | <name2> | <subtitle2> |
+      And Alice selects the spaces view
+      When following space is disabled in server
+        | <name1> | <subtitle1> |
+      And Alice refreshes the list
+      Then Alice should see the following enabled spaces
+        | <name2> | <subtitle2> |
+      But Alice should not see the following spaces
+        | <name1> | <subtitle1> |
 
       Examples:
         | name1  | subtitle1   | name2  | subtitle2   |
@@ -163,7 +163,7 @@ Feature: Spaces
           | name    | subtitle         | fileName |
           | Space18 | Eighteenth space | icon.png |
 
-  @disablespace
+  @disablespace @ignore
   Rule: Disable/Delete existing space (admins, space admins)
 
     Scenario Outline: Disable an existing space
@@ -178,7 +178,6 @@ Feature: Spaces
         | name    | subtitle         |
         | Space19 | Nineteenth space |
 
-    @ignore
     Scenario Outline: Enable a disabled space
         Given the following spaces have been created in Alice account
           | <name> | <subtitle> |
@@ -193,7 +192,6 @@ Feature: Spaces
           | name    | subtitle        |
           | Space20 | Twentieth space |
 
-      @ignore
       Scenario Outline: Delete a disabled space
         Given the following spaces have been created in Alice account
           | <name> | <subtitle> |
