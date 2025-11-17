@@ -54,7 +54,6 @@ public class SpacesPage extends CommonPage {
     private final String spaceNameId = "com.owncloud.android:id/spaces_list_item_name";
     private final String cardId = "com.owncloud.android:id/spaces_list_item_card";
     private final String spaceSubtitleId = "com.owncloud.android:id/spaces_list_item_subtitle";
-    private final String disabledIconId = "com.owncloud.android:id/spaces_list_item_disabled_label";
 
     public static SpacesPage instance;
 
@@ -151,40 +150,28 @@ public class SpacesPage extends CommonPage {
         deviceSpacesList.get(0).click();
     }
 
-    public boolean areAllSpacesVisible(List<List<String>> spaces, String spaceStatus) {
-        Log.log(Level.FINE, "Starts: check all spaces are visible");
-        // Get all spaces in the device with the expected status
+    public boolean isSpaceDisplayed(String spaceName, String spaceSubtitle) {
+        Log.log(Level.FINE, "Starts: check if space " + spaceName + " is visible");
+        // Loop to check every space in the device
+        List<WebElement> cardsDisplayed = driver.findElements(By.id(cardId));
         HashMap<String, String> spacesInDevice = new HashMap<>();
-        for (int i = 0; i < driver.findElements(By.id(cardId)).size(); i++) {
+        for (int i = 0; i < cardsDisplayed.size(); i++) {
             // We have to double the check because the UI changes making the DOM different
             WebElement individualSpace = driver.findElements(By.id(cardId)).get(i);
-            boolean status = individualSpace.findElements(By.id(disabledIconId)).isEmpty();
-            Log.log(Level.FINE, "Space status in device: " + status);
-            Log.log(Level.FINE, "Space status expected: " + spaceStatus);
-            if((spaceStatus.equals("disabled") && !status) ||
-                    (spaceStatus.equals("enabled") && status)) {
-                String spaceName = individualSpace.findElement(By.id(spaceNameId))
-                        .getAttribute("text").trim();
-                List<WebElement> spaceDescriptions = individualSpace.findElements(By.id(spaceSubtitleId));
-                String spaceDescription = null;
-                if (!spaceDescriptions.isEmpty()) {
-                    spaceDescription = spaceDescriptions.get(0).getAttribute("text").trim();
-                    Log.log(Level.FINE, "spaceDescription: " + spaceDescription);
-                }
-                Log.log(Level.FINE, "Add: name: " + spaceName + " desc: " + spaceDescription);
-                spacesInDevice.put(spaceName, spaceDescription);
+            // Get space name in the card
+            String spaceNameCard = individualSpace.findElement(By.id(spaceNameId))
+                    .getAttribute("text").trim();
+            // Get description in the card
+            String spaceSubtitleCard = null;
+            List<WebElement> spaceSubtitles = individualSpace.findElements(By.id(spaceSubtitleId));
+            if (!spaceSubtitles.isEmpty()) {
+                spaceSubtitleCard = spaceSubtitles.get(0).getAttribute("text").trim();
             }
+            spacesInDevice.put(spaceNameCard, spaceSubtitleCard);
         }
         // Check all spaces from the list are in the device
-        for (List<String> rows : spaces) {
-            String name = rows.get(0);
-            String description = rows.get(1);
-            if (!spacesInDevice.containsKey(name) ||
-                    !Objects.equals(spacesInDevice.get(name), description)) {
-                return false;
-            }
-        }
-        return true;
+        return spacesInDevice.containsKey(spaceName) &&
+                Objects.equals(spacesInDevice.get(spaceName), spaceSubtitle);
     }
 
     public boolean isQuotaDisplayed(String value, String unit) {

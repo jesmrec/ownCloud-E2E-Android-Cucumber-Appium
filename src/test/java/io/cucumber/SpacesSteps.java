@@ -39,10 +39,10 @@ public class SpacesSteps {
     @Given("the following spaces have been created in {word} account")
     public void spaces_have_been_created(String userName, DataTable table) throws IOException {
         StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        for (List<String> rows : listItems) {
-            String name = rows.get(0);
-            String subtitle = rows.get(1);
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            String name = row.get("name");
+            String subtitle = row.get("subtitle");
             world.graphAPI.createSpace(name, subtitle, userName);
         }
     }
@@ -53,14 +53,13 @@ public class SpacesSteps {
         world.fileListPage.openSpaces();
     }
 
-    @When("following space is disabled in server")
-    public void space_disabled_server(DataTable table)
-            throws IOException {
+    @When("the following spaces are disabled in server")
+    public void space_disabled_server(DataTable table) throws IOException {
         StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        for (List<String> rows : listItems) {
-            String name = rows.get(0);
-            String subtitle = rows.get(1);
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            String name = row.get("name");
+            String subtitle = row.get("subtitle");
             world.graphAPI.disableSpace(name, subtitle);
         }
     }
@@ -107,6 +106,81 @@ public class SpacesSteps {
         handleSpace(table, "update");
     }
 
+    @When("Alice edits the image of the space {word} with the file {word}")
+    public void edits_image(String spaceName, String fileName) {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openEditSpaceImage(spaceName);
+        world.documentProviderPage.selectFileToUpload(fileName);
+    }
+
+    @Then("Alice should{typePosNeg} see the following spaces")
+    public void user_should_see_following_spaces(String sense, DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            String name = row.get("name");
+            String subtitle = row.get("subtitle");
+            Log.log(Level.FINE, "Checking sense: " + sense + " for space: " + name + " " + subtitle);
+            if (sense.isEmpty()) { // positive case
+                assertTrue(world.spacesPage.isSpaceDisplayed(name, subtitle));
+            } else if (sense.equals(" not")) { // negative case
+                assertFalse(world.spacesPage.isSpaceDisplayed(name, subtitle));
+            }
+        }
+    }
+
+    @Then("the space should be created/updated in server with the following fields")
+    public void spaces_created_in_server(DataTable table) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        // Spaces in scenario definition
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        boolean matches = true;
+        String name = fields.get("name");
+        // Description can be null
+        String subtitle = fields.get("subtitle") != null ? fields.get("subtitle") : "";
+        String quota = fields.get("quota");
+        String unit = fields.get("unit");
+        Log.log(Level.FINE, "Space from scenario: " + name + " " + subtitle + " " + quota);
+        // Spaces in server
+        List<OCSpace> spaces = world.graphAPI.getMySpaces();
+        for (OCSpace space : spaces) {
+            // Check if space in server matches with space in scenario definition
+            Log.log(Level.FINE, "Space in server: " + space.getName() + " "
+                    + space.getDescription() + " " + space.getQuota(unit));
+            if (!(space.getName().equals(name)
+                    && space.getDescription().equals(subtitle)
+                    && space.getQuota(unit).equals(quota))) {
+                matches = false;
+                break;
+            }
+        }
+        // Check if all spaces in scenario definition match with spaces in server
+        assertTrue(matches);
+    }
+
+    @Then("the space image should be updated in server with file {word}")
+    public void space_image_updated(String fileName, DataTable table) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            String name = row.get("name");
+            String subtitle = row.get("subtitle");
+            String id = world.graphAPI.getSpaceIdFromName(name, subtitle);
+            assertTrue(world.filesAPI.itemExist(id, "/.space/" + fileName));
+        }
+    }
+
+    @Then("the quota is correctly displayed")
+    public void quota_displayed(DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        Map<String, String> values = table.asMap(String.class, String.class);
+        String spaceName = values.get("name");
+        String quota = values.get("quota");
+        String unit = values.get("unit");
+        user_edit_space(spaceName);
+        assertTrue(world.spacesPage.isQuotaDisplayed(quota, unit));
+    }
+
     private void handleSpace(DataTable table, String operation){
         Map<String, String> data = table.asMap(String.class, String.class);
         String name = data.get("name");
@@ -117,73 +191,5 @@ public class SpacesSteps {
         } else if (operation.equals("create")) {
             world.spacesPage.createSpace(name, subtitle, quota);
         }
-    }
-
-    @When("Alice edits the image of the space {word} with the file {word}")
-    public void edits_image(String spaceName, String fileName) {
-        StepLogger.logCurrentStep(Level.FINE);
-        world.spacesPage.openEditSpaceImage(spaceName);
-        world.documentProviderPage.selectFileToUpload(fileName);
-    }
-
-    @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
-    public void user_should_see_following_spaces(String sense, String spaceState, DataTable table) {
-        StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        if (sense.isEmpty()){
-            assertTrue(world.spacesPage.areAllSpacesVisible(listItems, spaceState));
-        } else if (sense.equals(" not")) {
-            assertFalse(world.spacesPage.areAllSpacesVisible(listItems, spaceState));
-        }
-    }
-
-    @Then("space should be created/updated in server with the following fields")
-    public void spaces_created_in_server(DataTable table) throws IOException {
-        StepLogger.logCurrentStep(Level.FINE);
-        // Spaces in scenario definition
-        List<List<String>> listItems = table.asLists();
-        boolean matches = true;
-        String name = listItems.get(0).get(1);
-        // Description can be null
-        String description = listItems.get(1).get(1) != null ? listItems.get(1).get(1) : "";
-        String quota = listItems.get(2).get(1);
-        String unit = listItems.get(3).get(1);
-        Log.log(Level.FINE, "Space from scenario: " + name + " " + description + " " + quota);
-        // Spaces in server
-        List<OCSpace> spaces = world.graphAPI.getMySpaces();
-        for (OCSpace space : spaces) {
-            // Check if space in server matches with space in scenario definition
-            Log.log(Level.FINE, "Space in server: " + space.getName() + " "
-                    + space.getDescription() + " " + space.getQuota(unit));
-            if (!(space.getName().equals(name)
-                    && space.getDescription().equals(description)
-                    && space.getQuota(unit).equals(quota))) {
-                matches = false;
-                break;
-            }
-        }
-        // Check if all spaces in scenario definition match with spaces in server
-        assertTrue(matches);
-    }
-
-    @Then("space image should be updated in server with file {word}")
-    public void space_image_updated(String fileName, DataTable table) throws IOException {
-        StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        String spaceName = listItems.get(0).get(0);
-        String spaceSubtitle = listItems.get(0).get(1);
-        String id = world.graphAPI.getSpaceIdFromName(spaceName, spaceSubtitle);
-        assertTrue(world.filesAPI.itemExist(id ,"/.space/"+fileName));
-    }
-
-    @Then("quota is correctly displayed")
-    public void quota_displayed(DataTable table) {
-        StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        String value = listItems.get(0).get(0);
-        String unit = listItems.get(0).get(1);
-        String spaceName = listItems.get(0).get(2);
-        user_edit_space(spaceName);
-        assertTrue(world.spacesPage.isQuotaDisplayed(value, unit));
     }
 }
