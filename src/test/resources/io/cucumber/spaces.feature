@@ -168,7 +168,7 @@ Feature: Spaces
         | Space16 | Sixteenth space   | 2300  | 2.3      | TB   |
         | Space17 | Seventeenth space | 0.01  | 10       | MB   |
 
-    @ignore
+    @ignore @image
     Scenario Outline: Edit an existing space with new image
       Given the following spaces have been created in Alice account
         | name   | subtitle   |

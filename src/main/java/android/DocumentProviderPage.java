@@ -1,5 +1,6 @@
 package android;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -47,6 +48,18 @@ public class DocumentProviderPage extends CommonPage {
         Log.log(Level.FINE, "Starts: Select File to Upload: " + fileName);
         openDownloadsInHamburger();
         findUIAutomatorText(fileName).click();
+        // Give some time to the app to finish the upload
+        waitById(WAIT_TIME, "com.owncloud.android:id/bottom_nav_view");
+    }
+
+    public void selectImageToUpload(String fileName) {
+        Log.log(Level.FINE, "Starts: Select Image to Upload: " + fileName);
+        openDownloadsInHamburger();
+        try {
+            findUIAutomatorText(fileName).click();
+        } catch (NoSuchElementException e) {
+            findId("com.google.android.documentsui:id/sub_menu").click();
+        }
         // Give some time to the app to finish the upload
         waitById(WAIT_TIME, "com.owncloud.android:id/bottom_nav_view");
     }

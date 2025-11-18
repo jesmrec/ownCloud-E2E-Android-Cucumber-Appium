@@ -112,7 +112,7 @@ public class SpacesSteps {
     public void edits_image(String spaceName, String fileName) {
         StepLogger.logCurrentStep(Level.FINE);
         world.spacesPage.openEditSpaceImage(spaceName);
-        world.documentProviderPage.selectFileToUpload(fileName);
+        world.documentProviderPage.selectImageToUpload(fileName);
     }
 
     @Then("Alice should{typePosNeg} see the following spaces")
