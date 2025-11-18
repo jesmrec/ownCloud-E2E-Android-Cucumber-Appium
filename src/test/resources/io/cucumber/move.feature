@@ -117,8 +117,8 @@ Feature: Move item
         | The file exists already in the destination folder |
 
       Examples:
-        | type   | name       | target     |
-        | folder | move11.txt | move11.txt |
+        | type   | name       | target |
+        | folder | move11.txt | move11 |
 
     Scenario Outline: Move a folder to descendant
       Given the following items have been created in Alice account

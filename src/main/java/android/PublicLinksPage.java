@@ -130,14 +130,18 @@ public class PublicLinksPage extends CommonPage {
     public void typePassword(String itemName, String password) {
         Log.log(Level.FINE, "Starts: Add link password: " + password);
         //To avoid password keyboard to appear
-        driver.hideKeyboard();
+        if (driver.isKeyboardShown()) {
+            driver.hideKeyboard();
+        }
         textPassword.sendKeys(password);
     }
 
     public void generatePassword() {
         Log.log(Level.FINE, "Starts: Generate password");
         //To avoid password keyboard to appear
-        driver.hideKeyboard();
+        if (driver.isKeyboardShown()) {
+            driver.hideKeyboard();
+        }
         generatePassword.click();
     }
 
