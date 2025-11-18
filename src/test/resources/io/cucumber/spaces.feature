@@ -168,23 +168,23 @@ Feature: Spaces
         | Space16 | Sixteenth space   | 2300  | 2.3      | TB   |
         | Space17 | Seventeenth space | 0.01  | 10       | MB   |
 
-  @ignore
+    @ignore
     Scenario Outline: Edit an existing space with new image
-        Given the following spaces have been created in Alice account
-          | name   | subtitle   |
-          | <name> | <subtitle> |
-        And a file <fileName> exists in the device
-        When Alice selects the spaces view
-        And Alice edits the image of the space <name> with the file <fileName>
-        Then the space image should be updated in server with file <fileName>
-          | name   | subtitle   |
-          | <name> | <subtitle> |
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And a file <fileName> exists in the device
+      When Alice selects the spaces view
+      And Alice edits the image of the space <name> with the file <fileName>
+      Then the space image should be updated in server with file <fileName>
+        | name   | subtitle   |
+        | <name> | <subtitle> |
 
-        Examples:
-          | name    | subtitle         | fileName |
-          | Space18 | Eighteenth space | icon.png |
+      Examples:
+        | name    | subtitle         | fileName |
+        | Space18 | Eighteenth space | icon.png |
 
-  @disablespace @ignore
+  @disablespace
   Rule: Disable/Delete existing space (admins, space admins)
 
     Scenario Outline: Disable an existing space
@@ -201,36 +201,38 @@ Feature: Spaces
         | name    | subtitle         |
         | Space19 | Nineteenth space |
 
+    @ignore
     Scenario Outline: Enable a disabled space
-        Given the following spaces have been created in Alice account
-          | name   | subtitle   |
-          | <name> | <subtitle> |
-        And the following spaces are disabled in server
-          | name   | subtitle   |
-          | <name> | <subtitle> |
-        When Alice selects the spaces view
-        And Alice enables the space <name>
-        Then Alice should see the following spaces
-          | name   | subtitle   |
-          | <name> | <subtitle> |
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And the following spaces are disabled in server
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      When Alice selects the spaces view
+      And Alice enables the space <name>
+      Then Alice should see the following spaces
+        | name   | subtitle   |
+        | <name> | <subtitle> |
 
-        Examples:
-          | name    | subtitle        |
-          | Space20 | Twentieth space |
+      Examples:
+        | name    | subtitle        |
+        | Space20 | Twentieth space |
 
-      Scenario Outline: Delete a disabled space
-        Given the following spaces have been created in Alice account
-          | name   | subtitle   |
-          | <name> | <subtitle> |
-        And the following spaces are disabled in server
-          | name   | subtitle   |
-          | <name> | <subtitle> |
-        When Alice selects the spaces view
-        And Alice deletes the space <name>
-        Then Alice should not see the following spaces
-          | name   | subtitle   |
-          | <name> | <subtitle> |
+    @ignore
+    Scenario Outline: Delete a disabled space
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And the following spaces are disabled in server
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      When Alice selects the spaces view
+      And Alice deletes the space <name>
+      Then Alice should not see the following spaces
+        | name   | subtitle   |
+        | <name> | <subtitle> |
 
-        Examples:
-          | name    | subtitle          |
-          | Space21 | Twentyfirst space |
+      Examples:
+        | name    | subtitle          |
+        | Space21 | Twentyfirst space |

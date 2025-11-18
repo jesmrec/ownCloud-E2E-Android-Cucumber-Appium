@@ -130,19 +130,14 @@ public class CommonPage {
 
     public static void waitByTextVisible(int timeToWait, String text) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
-        WebElement mobileElement = (WebElement)
-                driver.findElement(AppiumBy.androidUIAutomator
-                        ("new UiSelector().text(\"" + text + "\");"));
-        wait.until(ExpectedConditions.textToBePresentInElement(mobileElement, text));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.androidUIAutomator(
+                "new UiSelector().textContains(\"" + text + "\");")));
     }
 
     public void waitByTextInvisible(int timeToWait, String text) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeToWait));
-        WebElement mobileElement = (WebElement)
-                driver.findElement(AppiumBy.androidUIAutomator
-                        ("new UiSelector().text(\"" + text + "\");"));
-        wait.until(ExpectedConditions.invisibilityOfElementWithText(AppiumBy.androidUIAutomator(
-                "new UiSelector().textContains(\"Download enqueued\");"), "Download enqueued"));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(AppiumBy.androidUIAutomator(
+                "new UiSelector().textContains(\"" + text + "\");")));
     }
 
     public void waitUntilTextIsNotEmpty(int timeToWait, String resourceId) {

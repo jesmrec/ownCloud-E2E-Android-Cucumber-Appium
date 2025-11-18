@@ -86,6 +86,7 @@ public class SpacesPage extends CommonPage {
         findUIAutomatorDescription(spaceName + " space menu").click();
         findListUIAutomatorText("Disable space").get(0).click();
         findListUIAutomatorText("YES").get(0).click();
+        waitByTextInvisible(WAIT_TIME, spaceName);
     }
 
     public void openEnableSpace(String spaceName){
