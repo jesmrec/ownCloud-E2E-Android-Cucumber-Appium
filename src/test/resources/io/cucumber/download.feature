@@ -11,6 +11,7 @@ Feature: Download a file in the account
   @smoke
   Scenario Outline: Download a file that is previewable
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Download the item <name>
     Then the <type> <name> should be opened and previewed
@@ -25,6 +26,7 @@ Feature: Download a file in the account
 
   Scenario Outline: Download a video that is previewable
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Download the item <name>
     Then the <type> <name> should be opened and previewed
@@ -35,6 +37,7 @@ Feature: Download a file in the account
 
   Scenario Outline: Download a file that is damaged and can not be previewed
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Download the item <name>
     Then Alice should see the error previewing <name>
@@ -46,6 +49,7 @@ Feature: Download a file in the account
 
   Scenario Outline: Markdown file rendered
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Download the item <name>
     Then Alice should see the following items
@@ -60,6 +64,7 @@ Feature: Download a file in the account
 
   Scenario Outline: Download a file from Details view
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Details the item <name>
     And Alice clicks on the thumbnail
@@ -74,6 +79,7 @@ Feature: Download a file in the account
   @smoke
   Scenario Outline: Download an updated file
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     And Alice selects to Download the item <name>
     When Alice closes the preview

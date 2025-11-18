@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
@@ -65,10 +66,10 @@ public class FileListSteps {
     @Given("the following items have been created in {word} account")
     public void items_have_been_created_in_account(String userName, DataTable table) throws Throwable {
         StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        for (List<String> rows : listItems) {
-            String type = rows.get(0);
-            String name = rows.get(1);
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            String type = row.get("type");
+            String name = row.get("name");
             Log.log(Level.FINE, type + " " + name);
             if (!world.filesAPI.itemExist(name)) {
                 switch (type) {
@@ -327,13 +328,11 @@ public class FileListSteps {
     @When("Alice creates a web shortcut with the following fields")
     public void creates_shortcut(DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
-        List<List<String>> listItems = table.asLists();
-        for (List<String> rows : listItems) {
-            String name = rows.get(0);
-            String url = rows.get(1);
-            world.shortcutDialogPage.typeURLName(name, url);
-            world.shortcutDialogPage.submitShortcut();
-        }
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        String name = fields.get("name");
+        String url = fields.get("url");
+        world.shortcutDialogPage.typeURLName(name, url);
+        world.shortcutDialogPage.submitShortcut();
     }
 
     @When ("Alice opens the shortcut {word}.url")

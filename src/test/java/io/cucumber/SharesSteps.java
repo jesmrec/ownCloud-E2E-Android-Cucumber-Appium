@@ -9,7 +9,7 @@ package io.cucumber;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
@@ -134,14 +134,16 @@ public class SharesSteps {
             throws Throwable {
         StepLogger.logCurrentStep(Level.FINE);
         //Asserts in UI
-        List<List<String>> listItems = table.asLists();
-        for (List<String> rows : listItems) {
-            switch (rows.get(0)) {
-                case "sharee" -> assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1)));
-                case "group" -> assertTrue(world.sharePage.isItemInListPrivateShares(rows.get(1) + " (group)"));
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (key) {
+                case "sharee" -> assertTrue(world.sharePage.isItemInListPrivateShares(value));
+                case "group" -> assertTrue(world.sharePage.isItemInListPrivateShares(value + " (group)"));
                 case "permissions" -> {
                     world.sharePage.openPrivateShare(itemName);
-                    switch (rows.get(1)) {
+                    switch (value) {
                         case "1" -> {
                             Log.log(Level.FINE, "Only read");
                             assertTrue(!world.privateSharePage.isEditEnabled());
@@ -169,7 +171,7 @@ public class SharesSteps {
         }
         //Asserts in server via API
         OCShare share = world.shareAPI.getShare(itemName);
-        assertTrue(world.sharePage.isShareCorrect(share, listItems));
+        assertTrue(world.sharePage.isShareCorrect(share, fields));
     }
 
     @Then("{word} should not have access to {word}")

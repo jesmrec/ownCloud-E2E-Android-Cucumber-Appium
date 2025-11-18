@@ -13,6 +13,7 @@ Feature: Move item
     @smoke
     Scenario Outline: Move an existent non-downloaded item to another location
       Given the following items have been created in Alice account
+        | type   | name     |
         | <type> | <name>   |
         | folder | <target> |
       When Alice selects to Move the <type> <name>
@@ -28,6 +29,7 @@ Feature: Move item
     @smoke
     Scenario Outline: Move an existent downloaded file to another location
       Given the following items have been created in Alice account
+        | type   | name     |
         | <type> | <name>   |
         | folder | <target> |
       When Alice selects to Download the <type> <name>
@@ -45,6 +47,7 @@ Feature: Move item
 
     Scenario Outline: Move an existent item to a new created folder in the picker
       Given the following items have been created in Alice account
+        | type   | name   |
         | <type> | <name> |
       When Alice selects to Move the <type> <name>
       And Alice creates new folder <target> in the folder picker
@@ -61,6 +64,7 @@ Feature: Move item
 
     Scenario Outline: Move a folder to another place with same item name, keeping both
       Given the following items have been created in Alice account
+        | type   | name            |
         | <type> | <name>          |
         | <type> | <target>        |
         | <type> | <target>/<name> |
@@ -75,6 +79,7 @@ Feature: Move item
 
     Scenario Outline: Move a folder to another place with same item name, replacing
       Given the following items have been created in Alice account
+        | type   | name            |
         | <type> | <name>          |
         | <type> | <target>        |
         | <type> | <target>/<name> |
@@ -91,6 +96,7 @@ Feature: Move item
 
     Scenario Outline: Move a folder to itself
       Given the following items have been created in Alice account
+        | type   | name   |
         | <type> | <name> |
       When Alice selects to Move the <type> <name>
       And Alice selects <target> as target folder
@@ -103,6 +109,7 @@ Feature: Move item
 
     Scenario Outline: Move a folder to same location
       Given the following items have been created in Alice account
+        | type   | name   |
         | <type> | <name> |
       When Alice selects to Move the file <target>
       And Alice selects / as target folder
@@ -115,6 +122,7 @@ Feature: Move item
 
     Scenario Outline: Move a folder to descendant
       Given the following items have been created in Alice account
+        | type   | name            |
         | <type> | <name>          |
         | <type> | <name>/<target> |
       When Alice selects to Move the folder <name>

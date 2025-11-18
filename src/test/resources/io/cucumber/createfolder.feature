@@ -16,6 +16,7 @@ Feature: Create a new folder
 
   Scenario Outline: Create a new folder with a correct name in non-root
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice browses into <name>
     And Alice selects the option Create Folder
@@ -28,6 +29,7 @@ Feature: Create a new folder
 
   Scenario: Create a new folder with an existing name
     Given the following items have been created in Alice account
+      | type   | name    |
       | folder | create4 |
     When Alice selects the option Create Folder
     And Alice sets create4 as new name

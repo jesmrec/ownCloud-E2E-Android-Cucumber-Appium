@@ -11,6 +11,7 @@ Feature: Delete item
   @smoke
   Scenario Outline: Delete an existent item remote
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Remove the <type> <name>
     And Alice accepts the remote deletion of <type>
@@ -23,6 +24,7 @@ Feature: Delete item
 
   Scenario Outline: Delete an downloaded item locally
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     And Alice selects to Download the <type> <name>
     And Alice closes the preview
@@ -37,6 +39,7 @@ Feature: Delete item
 
   Scenario Outline: Delete an downloaded item remotely
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     And Alice selects to Download the <type> <name>
     And Alice closes the preview
@@ -51,6 +54,7 @@ Feature: Delete item
 
   Scenario: Delete several shows correct message
     Given the following items have been created in Alice account
+      | type | name        |
       | file | delete1.txt |
       | file | delete2.txt |
       | file | delete3.txt |
@@ -67,6 +71,7 @@ Feature: Delete item
   @offline @ignore
   Scenario Outline: Delete a file with no connection
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Remove the <type> <name>
     And the device has no connection

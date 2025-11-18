@@ -14,6 +14,7 @@ Feature: Public Links
   @smoke @nooc10
   Scenario Outline: Create a public link with name
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice creates link on <type> <item> with the following fields
@@ -30,6 +31,7 @@ Feature: Public Links
   @nooc10
   Scenario Outline: Create a public link with custom password
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice creates link on <type> <item> with the following fields
@@ -47,6 +49,7 @@ Feature: Public Links
   @nooc10
   Scenario Outline: Create a public link with generated password
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice creates link on <type> <item> with the following fields
@@ -64,6 +67,7 @@ Feature: Public Links
   @nooc10 @expiration
   Scenario Outline: Create a public link with expiration date
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <item> |
     When Alice selects to share the <type> <item>
     And Alice creates link on <type> <item> with the following fields
@@ -82,6 +86,7 @@ Feature: Public Links
   @nooc10
   Scenario Outline: Create a public link with permissions on a folder
     Given the following items have been created in Alice account
+      | type   | name   |
       | folder | <item> |
     When Alice selects to share the folder <item>
     And Alice creates link on folder <item> with the following fields
@@ -104,6 +109,7 @@ Feature: Public Links
 
   Scenario Outline: Edit existing share on a folder, changing permissions
     Given the following items have been created in Alice account
+      | type   | name   |
       | folder | <item> |
     And Alice has shared the folder <item> by link
     When Alice selects to share the folder <item>
@@ -123,6 +129,7 @@ Feature: Public Links
   @nooc10
   Scenario: Edit existing share on a folder, adding expiration date
     Given the following items have been created in Alice account
+      | type   | name    |
       | folder | Links15 |
     And Alice has shared the folder Links15 by link
     When Alice selects to share the folder Links15
@@ -137,6 +144,7 @@ Feature: Public Links
 
   Scenario Outline: Delete existing link
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <item> |
     And Alice has shared the <type> <item> by link
     When Alice selects to share the <type> <item>
@@ -154,6 +162,7 @@ Feature: Public Links
 
   Scenario: Public link shortcut shows correct links
     Given the following items have been created in Alice account
+      | type   | name        |
       | file   | Links18.txt |
       | file   | Links19.txt |
       | folder | Links20     |
@@ -168,6 +177,7 @@ Feature: Public Links
 
   Scenario Outline: Remove from link shortcut
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <item> |
     And Alice has shared the <type> <item> by link
     When Alice opens the public link shortcut

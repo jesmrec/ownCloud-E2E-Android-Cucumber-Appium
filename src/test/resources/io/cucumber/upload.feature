@@ -25,6 +25,7 @@ Feature: Upload new content
 
     Scenario Outline: Upload a single file to non-root folder
       Given the following items have been created in Alice account
+        | type   | name     |
         | folder | <target> |
       And a file <name> exists in the device
       And Alice browses into <target>

@@ -12,6 +12,7 @@ Feature: Conflicts in content
   Scenario Outline: Solve Conflict with local or remote version
 
     Given the following items have been created in Alice account
+      | type | name       |
       | file | <fileName> |
     When Alice selects to Download the file <fileName>
     And Alice closes the preview
@@ -31,7 +32,8 @@ Feature: Conflicts in content
   Scenario: Solve Conflict with keep both version
 
     Given the following items have been created in Alice account
-     | file | conflict3.txt |
+      | type | name          |
+      | file | conflict3.txt |
     When Alice selects to Download the file conflict3.txt
     And Alice closes the preview
     And file conflict3.txt is modified locally adding "updatedLocal"

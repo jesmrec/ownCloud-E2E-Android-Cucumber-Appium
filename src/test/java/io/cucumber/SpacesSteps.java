@@ -42,7 +42,8 @@ public class SpacesSteps {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
         for (Map<String, String> row : rows) {
             String name = row.get("name");
-            String subtitle = row.get("subtitle");
+            // Subtitle can be null
+            String subtitle = row.get("subtitle") != null ? row.get("subtitle") : "";
             world.graphAPI.createSpace(name, subtitle, userName);
         }
     }
@@ -59,7 +60,8 @@ public class SpacesSteps {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
         for (Map<String, String> row : rows) {
             String name = row.get("name");
-            String subtitle = row.get("subtitle");
+            // Subtitle can be null
+            String subtitle = row.get("subtitle") != null ? row.get("subtitle") : "";
             world.graphAPI.disableSpace(name, subtitle);
         }
     }

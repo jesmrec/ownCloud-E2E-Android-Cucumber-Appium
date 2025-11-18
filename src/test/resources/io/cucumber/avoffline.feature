@@ -14,6 +14,7 @@ Feature: Set items as available offline (downloaded and synced)
     @smoke
     Scenario Outline: Set a file as available offline
       Given the following items have been created in Alice account
+        | type   | name   |
         | <type> | <name> |
       When Alice selects to set as av.offline the item <name>
       Then Alice should see the <type> <name> as av.offline
@@ -25,6 +26,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Set a folder as available offline
       Given the following items have been created in Alice account
+        | type   | name                    |
         | folder | <folderName>            |
         | file   | <folderName>/<fileName> |
       When Alice selects to set as av.offline the item <folderName>
@@ -41,6 +43,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Moving an av.offline item to other location does not lose the av.offline condition
       Given the following items have been created in Alice account
+        | type   | name         |
         | file   | <fileName>   |
         | folder | <folderName> |
       When Alice selects to set as av.offline the item <fileName>
@@ -56,6 +59,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Moving a file inside an av.offline folder, turns the file av.offline
       Given the following items have been created in Alice account
+        | type   | name         |
         | file   | <fileName>   |
         | folder | <folderName> |
       When Alice selects to set as av.offline the item <folderName>
@@ -71,6 +75,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Moving a file that is inside an av.offline folder to a non av.offline folder, turns not av.offline
       Given the following items have been created in Alice account
+        | type   | name                    |
         | folder | <folderName>            |
         | file   | <folderName>/<fileName> |
       When Alice selects to set as av.offline the item <folderName>
@@ -89,6 +94,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Update over an av.offline file
       Given the following items have been created in Alice account
+        | type | name       |
         | file | <fileName> |
       When Alice selects to set as av.offline the item <fileName>
       And file <fileName> is modified remotely adding "updated"
@@ -104,6 +110,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Unset a file as available offline
       Given the following items have been created in Alice account
+        | type | name       |
         | file | <fileName> |
       And Alice selects to set as av.offline the item <fileName>
       When Alice selects to unset as av.offline the item <fileName>
@@ -116,6 +123,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Unset a folder as available offline
       Given the following items have been created in Alice account
+        | type   | name         |
         | folder | <folderName> |
       And Alice selects to set as av.offline the item <folderName>
       When Alice selects to unset as av.offline the item <folderName>
@@ -127,6 +135,7 @@ Feature: Set items as available offline (downloaded and synced)
 
     Scenario Outline: Not possible to unset an item as available offline if parent is av. offline
       Given the following items have been created in Alice account
+        | type   | name                    |
         | folder | <folderName>            |
         | file   | <folderName>/<fileName> |
       When Alice selects to set as av.offline the item <folderName>
@@ -144,6 +153,7 @@ Feature: Set items as available offline (downloaded and synced)
     @noci
     Scenario Outline: Available offline shortcut
       Given the following items have been created in Alice account
+        | type   | name         |
         | file   | <fileName>   |
         | folder | <folderName> |
       And Alice selects to set as av.offline the item <fileName>
@@ -157,6 +167,7 @@ Feature: Set items as available offline (downloaded and synced)
 
   Scenario Outline: Remove from available offline shortcut
         Given the following items have been created in Alice account
+          | type | name       |
           | file | <fileName> |
         And Alice selects to set as av.offline the item <fileName>
         When Alice opens the available offline shortcut

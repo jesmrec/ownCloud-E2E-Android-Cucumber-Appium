@@ -9,6 +9,7 @@ Feature: Rename an item
 
   Scenario Outline: Rename an item that is not downloaded
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Rename the <type> <name>
     And Alice sets <newName> as new name
@@ -23,6 +24,7 @@ Feature: Rename an item
   @smoke
   Scenario Outline: Rename a file that is downloaded
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Download the <type> <name>
     And Alice closes the preview
@@ -39,6 +41,7 @@ Feature: Rename an item
 
   Scenario Outline: Rename an item with an existing name
     Given the following items have been created in Alice account
+      | type   | name      |
       | <type> | <name>    |
       | <type> | <newName> |
     When Alice selects to Rename the <type> <name>
@@ -53,6 +56,7 @@ Feature: Rename an item
   @offline @ignore
   Scenario Outline: Rename an item with no connection
     Given the following items have been created in Alice account
+      | type   | name   |
       | <type> | <name> |
     When Alice selects to Rename the <type> <name>
     And the device has no connection
