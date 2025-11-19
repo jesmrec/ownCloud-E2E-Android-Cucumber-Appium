@@ -111,14 +111,14 @@ Feature: Move item
       Given the following items have been created in Alice account
         | type   | name   |
         | <type> | <name> |
-      When Alice selects to Move the file <target>
+      When Alice selects to Move the file <name>
       And Alice selects / as target folder
       Then Alice should see the following error
         | The file exists already in the destination folder |
 
       Examples:
-        | type   | name       | target |
-        | folder | move11.txt | move11 |
+        | type | name       |
+        | file | move11.txt |
 
     Scenario Outline: Move a folder to descendant
       Given the following items have been created in Alice account
