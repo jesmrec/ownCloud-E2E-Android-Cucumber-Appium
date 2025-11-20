@@ -121,7 +121,7 @@ public class SpacesSteps {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
         for (Map<String, String> row : rows) {
             String name = row.get("name");
-            String subtitle = row.get("subtitle");
+            String subtitle = row.get("subtitle") != null ? row.get("subtitle") : "";
             Log.log(Level.FINE, "Checking sense: " + sense + " for space: " + name + " " + subtitle);
             if (sense.isEmpty()) { // positive case
                 assertTrue(world.spacesPage.isSpaceDisplayed(name, subtitle));

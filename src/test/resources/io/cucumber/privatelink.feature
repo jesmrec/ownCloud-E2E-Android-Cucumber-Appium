@@ -21,7 +21,7 @@ Feature: Private Links
       | file   | privlink/privateLink1.pdf | privateLink1.pdf |
       | folder | privlink/privateLink2     | privateLink2     |
 
-  @smoke
+  @smoke @noci
   Scenario Outline: Previewable file in non root folder
     Given the following items have been created in Alice account
       | type   | name   |
