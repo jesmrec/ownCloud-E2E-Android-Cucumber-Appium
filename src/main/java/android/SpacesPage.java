@@ -163,7 +163,7 @@ public class SpacesPage extends CommonPage {
             String spaceNameCard = individualSpace.findElement(By.id(spaceNameId))
                     .getAttribute("text").trim();
             // Get description in the card
-            String spaceSubtitleCard = null;
+            String spaceSubtitleCard = "";
             List<WebElement> spaceSubtitles = individualSpace.findElements(By.id(spaceSubtitleId));
             if (!spaceSubtitles.isEmpty()) {
                 spaceSubtitleCard = spaceSubtitles.get(0).getAttribute("text").trim();
