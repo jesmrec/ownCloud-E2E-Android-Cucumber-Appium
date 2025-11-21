@@ -168,6 +168,10 @@ public class SpacesPage extends CommonPage {
             if (!spaceSubtitles.isEmpty()) {
                 spaceSubtitleCard = spaceSubtitles.get(0).getAttribute("text").trim();
             }
+            Log.log(Level.FINE, "Card: " + spaceNameCard + " - " +
+                    (spaceSubtitleCard.equals("")?"empty":spaceSubtitleCard));
+            Log.log(Level.FINE, "Scenario: " + spaceName + " - " +
+                    (spaceSubtitle.equals("")?"empty":spaceSubtitle));
             spacesInDevice.put(spaceNameCard, spaceSubtitleCard);
         }
         // Check all spaces from the list are in the device
