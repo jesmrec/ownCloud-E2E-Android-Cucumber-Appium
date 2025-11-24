@@ -141,7 +141,7 @@ Feature: Spaces
       Examples:
         | name    | subtitle         | newName     | newSubtitle      | quota  | unit |
         | Space14 | Fourteenth space | Space14 new | Fourth space new | 100    | GB   |
-        | Space15 | Fifteenth space  | Space15 new |                  | 125.75 | GB   |
+        | Space15 | Fifteenth space  | Space15 new | newSub           | 125.75 | GB   |
 
     Scenario Outline: Edit an existing space with quota only
       Given the following spaces have been created in Alice account

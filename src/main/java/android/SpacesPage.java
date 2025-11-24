@@ -157,6 +157,7 @@ public class SpacesPage extends CommonPage {
         List<WebElement> cardsDisplayed = driver.findElements(By.id(cardId));
         HashMap<String, String> spacesInDevice = new HashMap<>();
         for (int i = 0; i < cardsDisplayed.size(); i++) {
+            Log.log(Level.FINE, "Checking space number " + i);
             // We have to double the check because the UI changes making the DOM different
             WebElement individualSpace = driver.findElements(By.id(cardId)).get(i);
             // Get space name in the card
