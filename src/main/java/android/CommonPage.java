@@ -181,8 +181,8 @@ public class CommonPage {
     public void longPress(String text) {
         Log.log(Level.FINE, "Starting long press on element with text: " + text);
         // Find the element using exact text match
-        WebElement element = driver.findElement(AppiumBy.androidUIAutomator(
-                "new UiSelector().text(\"" + text + "\")"));
+        WebElement element = driver.findElement(AppiumBy.xpath(
+                "//android.widget.TextView[@resource-id=\"com.owncloud.android:id/Filename\" and @text=\""+ text +"\"]"));
         Log.log(Level.FINE, "Target element text: " + element.getText());
         Log.log(Level.FINE, "Location: " + element.getLocation());
         // Wait until the element is actually visible and enabled

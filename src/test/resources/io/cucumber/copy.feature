@@ -157,5 +157,5 @@ Feature: Copy item
         | Device is not connected to a network |
 
       Examples:
-        | type | name      | target | space |
-        | file | copy5.txt | /      | Personal     |
+        | type | name      | target | space    |
+        | file | copy5.txt | /      | Personal |
