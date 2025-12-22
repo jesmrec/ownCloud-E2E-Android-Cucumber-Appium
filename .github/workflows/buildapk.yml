@@ -1,16 +1,17 @@
 name: Build apk
 
 on:
-  push:
-    branches:
-      - develop
   workflow_dispatch:
   workflow_call:
+    inputs:
+      build_variant:
+        description: "Variant to build (e.g., qaRelease)"
+        type: string
+        default: "qaRelease"
     outputs:
       artifact-name:
         description: "Generated APK artifact name"
         value: ${{ jobs.build_apk.outputs.artifact-name }}
-
 
 jobs:
 
@@ -46,14 +47,14 @@ jobs:
 
       - name: Build APK
         working-directory: android-app
-        run: ./gradlew clean assembleqaRelease
+        run: ./gradlew clean assemble${{ inputs.build_variant }}
 
       - name: Set artifact name
         id: set-outputs
         run: |
           DATE=$(date +%Y%m%d-%H%M)
-          COMMIT=${GITHUB_SHA::7}
-          NAME="ownCloud-${COMMIT}-${DATE}.apk"
+          COMMIT=$(git rev-parse --short HEAD)
+          NAME="ownCloud${{ inputs.build_variant }}-${COMMIT}-${DATE}.apk"
           cp ./android-app/owncloudApp/build/outputs/apk/qa/release/owncloud_*-qa-release*.apk ./$NAME
           echo "artifact-name=$NAME" >> $GITHUB_OUTPUT
           ls -al .
