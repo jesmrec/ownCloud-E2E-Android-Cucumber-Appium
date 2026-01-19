@@ -76,7 +76,8 @@ Feature: Download a file in the account
       | type | name      |
       | file | text2.txt |
 
-  @smoke
+  @smoke @ignore
+  # https://github.com/owncloud/android/issues/4761
   Scenario Outline: Download an updated file
     Given the following items have been created in Alice account
       | type   | name   |
