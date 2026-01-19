@@ -10,12 +10,11 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -32,6 +31,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import io.appium.java_client.AppiumBy;
@@ -180,34 +180,17 @@ public class CommonPage {
 
     public void longPress(String text) {
         Log.log(Level.FINE, "Starting long press on element with text: " + text);
-        // Find the element using exact text match
-        WebElement element = driver.findElement(AppiumBy.xpath(
-                "//android.widget.TextView[@resource-id=\"com.owncloud.android:id/Filename\" and @text=\""+ text +"\"]"));
-        Log.log(Level.FINE, "Target element text: " + element.getText());
-        Log.log(Level.FINE, "Location: " + element.getLocation());
-        // Wait until the element is actually visible and enabled
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIME));
-        wait.until(driver1 -> element.isDisplayed() && element.isEnabled());
-        // Get the element's location and size to calculate its center
-        Point location = element.getLocation();
-        Dimension size = element.getSize();
-        int centerX = location.getX() + size.getWidth() / 2;
-        int centerY = location.getY() + size.getHeight() / 2;
-        Log.log(Level.FINE, "Pressing at: (" + centerX + ", " + centerY + ")");
-        // Set up the long press gesture using W3C actions
-        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-        Sequence longPress = new Sequence(finger, 1);
-        // Move the finger to the center of the element
-        longPress.addAction(finger.createPointerMove(Duration.ZERO,
-                PointerInput.Origin.viewport(), centerX, centerY));
-        // Touch down (press)
-        longPress.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-        // Hold for 2 seconds
-        longPress.addAction(new Pause(finger, Duration.ofSeconds(2)));
-        // Release (lift up)
-        longPress.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-        // Execute the long press gesture
-        driver.perform(List.of(longPress));
+        WebElement element = driver.findElement(
+                AppiumBy.xpath("//android.widget.TextView[@resource-id=" +
+                        "\"com.owncloud.android:id/Filename\" and @text=\"" + text + "\"]")
+        );
+        driver.executeScript(
+            "mobile: longClickGesture",
+            Map.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "duration", 2000
+            )
+        );
     }
 
     public void tap(int X, int Y) {
