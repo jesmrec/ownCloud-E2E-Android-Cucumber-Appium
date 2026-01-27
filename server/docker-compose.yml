@@ -2,14 +2,13 @@ version: "3.7"
 
 services:
   ocis:
-    image: owncloud/ocis:7.2.0
+    image: owncloud/ocis:$OCIS_VERSION
     ports:
       - 9200:9200
       - 9215:9215
     environment:
       OCIS_INSECURE: "true"
-      OCIS_URL: "https://myServerIP:9200"
-      IDM_CREATE_DEMO_USERS: "true"
+      OCIS_URL: "$BASE_URL"
       IDM_ADMIN_PASSWORD: "admin"
       PROXY_ENABLE_BASIC_AUTH: "true"
       OCIS_PASSWORD_POLICY_MIN_CHARACTERS: "8"
