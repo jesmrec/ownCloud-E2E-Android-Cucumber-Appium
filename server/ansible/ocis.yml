@@ -37,3 +37,5 @@
       args:
         chdir: "{{ remote_dir }}"
         executable: /bin/bash
+      environment:
+        OCIS_PWD: "{{ lookup('env','OCIS_PWD') }}"

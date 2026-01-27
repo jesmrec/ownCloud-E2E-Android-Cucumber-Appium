@@ -10,6 +10,8 @@ help() {
 Usage:
   $0 <BASE_URL> <OCIS_VERSION>
 
+  Required: set the environment variable OCIS_PWD to the admin password
+
 Example:
   $0 https://192.168.1.10:9200 7.3.0
 
@@ -38,14 +40,14 @@ fi
 
 BASE_URL="$1"
 OCIS_VERSION="$2"
-AUTH="-u admin:admin"
+AUTH="-u admin:$OCIS_PWD"
 JSON_HEADER="-H Content-Type:application/json"
 
 #######################################
 # Create oCIS server
 #######################################
 
-OCIS_VERSION="$OCIS_VERSION" BASE_URL="$BASE_URL" docker-compose -f ./docker-compose.yml up -d
+OCIS_VERSION="$OCIS_VERSION" BASE_URL="$BASE_URL" OCIS_PWD="$OCIS_PWD" docker-compose -f ./docker-compose.yml up -d
 
 #######################################
 # Wait for server to be ready

@@ -1,0 +1,67 @@
+name: Create & Provision backend
+
+on:
+
+  workflow_call:
+    inputs:
+      ocis_version:
+        description: 'oCIS version to install'
+        type: string
+        required: true
+      ocis_url:
+        description: 'oCIS url'
+        type: string
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      ocis_url:
+        description: 'oCIS url'
+        type: string
+        required: true
+      ocis_version:
+        description: 'oCIS version to install'
+        type: string
+        required: false
+        default: "latest"
+
+permissions:
+  contents: read
+
+jobs:
+  create_server:
+    name: Create server
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ansible
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # To prevent prompts waiting
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create ansible inventory
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          echo "[ocis_server]" > ./server/ansible/hosts.ini
+          echo "${SSH_HOST} ansible_user=${SSH_USER} ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519" >> ./server/ansible/hosts.ini
+
+      - name: Run provision script
+        env:
+          BASE_URL: ${{ inputs.ocis_url }}
+          OCIS_VERSION: ${{ inputs.ocis_version }}
+          OCIS_PWD: ${{ secrets.OCIS_PWD }}
+        run: |
+          cd ./server/ansible
+          ansible-playbook -i hosts.ini ocis.yml
