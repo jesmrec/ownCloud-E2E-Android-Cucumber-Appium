@@ -1,0 +1,39 @@
+- name: Create and provision oCIS server
+  hosts: ocis_server
+  become: false       # Do not use sudo, run as the SSH user
+  gather_facts: false # To speed up avoiding system info gathering
+
+  # OCIS_VERSION and BASE_URL must be exported as variables
+  vars:
+    remote_dir: "/tmp/ocis"
+    ocis_version: "{{ lookup('env', 'OCIS_VERSION') }}"
+    base_url: "{{ lookup('env', 'BASE_URL') }}"
+
+  tasks:
+    # Create the remote directory if it does not exist, with standard permissions
+    - name: Create remote working directory
+      ansible.builtin.file:
+        path: "{{ remote_dir }}"
+        state: directory
+        mode: "0755"
+
+    # Copy the docker-compose.yml file to the server
+    - name: Upload docker-compose.yml
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../docker-compose.yml"
+        dest: "{{ remote_dir }}/docker-compose.yml"
+        mode: "0755"
+
+    # Copy the server creation/provision script to the server
+    - name: Upload create_server.sh
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../create_server.sh"
+        dest: "{{ remote_dir }}/create_server.sh"
+        mode: "0755"
+
+    # Execute the script in the remote directory, passing oCIS URL and version
+    - name: Run create_server.sh to start and provision oCIS
+      ansible.builtin.shell: ./create_server.sh "{{ base_url }}" "{{ ocis_version }}"
+      args:
+        chdir: "{{ remote_dir }}"
+        executable: /bin/bash
