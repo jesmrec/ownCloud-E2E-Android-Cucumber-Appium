@@ -8,9 +8,16 @@ on:
         description: 'oCIS version to install'
         type: string
         required: true
+    secrets:
       ocis_url:
-        description: 'oCIS url'
-        type: string
+        required: true
+      ssh_host_call:
+        required: true
+      ssh_user_call:
+        required: true
+      ssh_private_key_call:
+        required: true
+      ocis_pwd_call:
         required: true
 
   workflow_dispatch:
@@ -33,6 +40,15 @@ jobs:
     name: Create server
     runs-on: ubuntu-latest
 
+    env:
+
+      OCIS_VERSION: ${{ inputs.ocis_version }}
+      OCIS_URL: ${{ github.event_name == 'workflow_call' && secrets.ocis_url || inputs.ocis_url }}
+      SSH_HOST: ${{ github.event_name == 'workflow_call' && secrets.ssh_host_call || secrets.SSH_HOST }}
+      SSH_USER: ${{ github.event_name == 'workflow_call' && secrets.ssh_user_call || secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ github.event_name == 'workflow_call' && secrets.ssh_private_key_call || secrets.SSH_PRIVATE_KEY }}
+      OCIS_PWD: ${{ github.event_name == 'workflow_call' && secrets.ocis_pwd_call || secrets.OCIS_PWD }}
+
     steps:
       - uses: actions/checkout@v5
 
@@ -44,24 +60,21 @@ jobs:
       - name: Setup SSH key
         run: |
           mkdir -p $HOME/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_ed25519
+          echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_ed25519
           chmod 600 $HOME/.ssh/id_ed25519
           # To prevent prompts waiting
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> $HOME/.ssh/known_hosts
+          ssh-keyscan $SSH_HOST >> $HOME/.ssh/known_hosts
 
       - name: Create ansible inventory
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
         run: |
           echo "[ocis_server]" > ./server/ansible/hosts.ini
-          echo "${SSH_HOST} ansible_user=${SSH_USER} ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519" >> ./server/ansible/hosts.ini
+          echo "ocis ansible_host=$SSH_HOST ansible_user=$SSH_USER ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519" >> ./server/ansible/hosts.ini
 
       - name: Run provision script
         env:
           BASE_URL: ${{ inputs.ocis_url }}
           OCIS_VERSION: ${{ inputs.ocis_version }}
-          OCIS_PWD: ${{ secrets.OCIS_PWD }}
+          OCIS_PWD: ${{ env.OCIS_PWD }}
         run: |
           cd ./server/ansible
           ansible-playbook -i hosts.ini ocis.yml
