@@ -1,36 +1,39 @@
 name: Create & Provision backend
 
 on:
-
   workflow_call:
+    # Inputs required when this workflow is called by another workflow
     inputs:
       ocis_version:
         description: 'oCIS version to install'
         type: string
         required: true
+        default: 'latest'
+    # Secrets required when this workflow is called by another workflow
     secrets:
-      ocis_url:
+      OCIS_URL:
         required: true
-      ssh_host_call:
+      SSH_PRIVATE_KEY:
         required: true
-      ssh_user_call:
+      SSH_HOST:
         required: true
-      ssh_private_key_call:
+      SSH_USER:
         required: true
-      ocis_pwd_call:
+      OCIS_PWD:
         required: true
 
   workflow_dispatch:
+    # Inputs for manual trigger via GitHub UI
     inputs:
-      ocis_url:
-        description: 'oCIS url'
-        type: string
-        required: true
       ocis_version:
         description: 'oCIS version to install'
         type: string
         required: false
         default: "latest"
+      ocis_url:
+        description: 'oCIS URL'
+        type: string
+        required: true
 
 permissions:
   contents: read
@@ -40,41 +43,50 @@ jobs:
     name: Create server
     runs-on: ubuntu-latest
 
+    # All environment variables are derived from either secrets (dispatch) or inputs (call)
     env:
-
       OCIS_VERSION: ${{ inputs.ocis_version }}
-      OCIS_URL: ${{ github.event_name == 'workflow_call' && secrets.ocis_url || inputs.ocis_url }}
-      SSH_HOST: ${{ github.event_name == 'workflow_call' && secrets.ssh_host_call || secrets.SSH_HOST }}
-      SSH_USER: ${{ github.event_name == 'workflow_call' && secrets.ssh_user_call || secrets.SSH_USER }}
-      SSH_PRIVATE_KEY: ${{ github.event_name == 'workflow_call' && secrets.ssh_private_key_call || secrets.SSH_PRIVATE_KEY }}
-      OCIS_PWD: ${{ github.event_name == 'workflow_call' && secrets.ocis_pwd_call || secrets.OCIS_PWD }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      OCIS_PWD: ${{ secrets.OCIS_PWD }}
 
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set BASE_URL
+        run: |
+          # If workflow_call secret exists, use it; otherwise use dispatch input
+          if [ -n "${{ secrets.OCIS_URL }}" ]; then
+            echo "BASE_URL=${{ secrets.OCIS_URL }}" >> $GITHUB_ENV
+          else
+            echo "BASE_URL=${{ inputs.ocis_url }}" >> $GITHUB_ENV
+          fi
 
       - name: Install Ansible
         run: |
+          # Install Ansible on the runner
           sudo apt-get update -qq
           sudo apt-get install -y ansible
 
       - name: Setup SSH key
         run: |
+          # Create SSH directory and save the private key
           mkdir -p $HOME/.ssh
           echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_ed25519
           chmod 600 $HOME/.ssh/id_ed25519
-          # To prevent prompts waiting
-          ssh-keyscan $SSH_HOST >> $HOME/.ssh/known_hosts
+          # Add host to known_hosts to prevent SSH prompt
+          ssh-keyscan -H $SSH_HOST >> $HOME/.ssh/known_hosts
 
-      - name: Create ansible inventory
+      - name: Create Ansible inventory
         run: |
+          # Generate inventory file for the OCIS server
           echo "[ocis_server]" > ./server/ansible/hosts.ini
-          echo "ocis ansible_host=$SSH_HOST ansible_user=$SSH_USER ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519" >> ./server/ansible/hosts.ini
+          echo "${SSH_HOST} ansible_user=${SSH_USER} ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519" >> ./server/ansible/hosts.ini
 
-      - name: Run provision script
-        env:
-          BASE_URL: ${{ inputs.ocis_url }}
-          OCIS_VERSION: ${{ inputs.ocis_version }}
-          OCIS_PWD: ${{ env.OCIS_PWD }}
+      - name: Run provision playbook
         run: |
+          # Navigate to ansible directory and run the OCIS provisioning playbook
           cd ./server/ansible
           ansible-playbook -i hosts.ini ocis.yml

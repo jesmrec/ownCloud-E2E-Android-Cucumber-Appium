@@ -18,10 +18,10 @@ jobs:
       ocis_version: 7.3.0
     secrets:
       ocis_url: ${{ secrets.OC_SERVER_URL }}
-      ssh_host_call: ${{ secrets.SSH_HOST }}
-      ssh_user_call: ${{ secrets.SSH_USER }}
-      ssh_private_key_call: ${{ secrets.SSH_PRIVATE_KEY }}
-      ocis_pwd_call: ${{ secrets.OCIS_PWD }}
+      ssh_host: ${{ secrets.SSH_HOST }}
+      ssh_user: ${{ secrets.SSH_USER }}
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      ocis_pwd: ${{ secrets.OCIS_PWD }}
 
   tests:
     needs:
