@@ -2,6 +2,14 @@ name: Clean up backend
 
 on:
   workflow_call:
+    secrets:
+      SSH_PRIVATE_KEY:
+        required: true
+      SSH_HOST:
+        required: true
+      SSH_USER:
+        required: true
+      OCIS_PWD:
   workflow_dispatch:
 
 permissions:
@@ -21,12 +29,17 @@ jobs:
           sudo apt-get install -y ansible
 
       - name: Setup SSH key
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
+          # Create SSH directory and save the private key
           mkdir -p $HOME/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          # To prevent prompts waiting
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> $HOME/.ssh/known_hosts
+          echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_ed25519
+          chmod 600 $HOME/.ssh/id_ed25519
+          # Add host to known_hosts to prevent SSH prompt
+          ssh-keyscan -H $SSH_HOST >> $HOME/.ssh/known_hosts
 
       - name: Create ansible inventory
         env:

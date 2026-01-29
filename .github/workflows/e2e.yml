@@ -2,6 +2,10 @@ name: E2E tests
 
 on:
   workflow_dispatch:
+    inputs:
+      ocis_version:
+        type: string
+        required: false
   schedule:
     - cron: '30 2 * * 1-5'  # Monday to Friday at 2:30AM
 
@@ -15,13 +19,13 @@ jobs:
   create_ocis:
     uses: ./.github/workflows/ocisbackend.yml
     with:
-      ocis_version: 7.3.0
+      ocis_version: ${{ (inputs.ocis_version != '' && inputs.ocis_version) || vars.OCIS_VERSION }}
     secrets:
       ocis_url: ${{ secrets.OC_SERVER_URL }}
-      ssh_host_call: ${{ secrets.SSH_HOST }}
-      ssh_user_call: ${{ secrets.SSH_USER }}
-      ssh_private_key_call: ${{ secrets.SSH_PRIVATE_KEY }}
-      ocis_pwd_call: ${{ secrets.OCIS_PWD }}
+      ssh_host: ${{ secrets.SSH_HOST }}
+      ssh_user: ${{ secrets.SSH_USER }}
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      ocis_pwd: ${{ secrets.OCIS_PWD }}
 
   tests:
     needs:
@@ -37,4 +41,9 @@ jobs:
   cleanup:
     needs:
       - tests
+    if: always()
     uses: ./.github/workflows/cleanup.yml
+    secrets:
+      ssh_host: ${{ secrets.SSH_HOST }}
+      ssh_user: ${{ secrets.SSH_USER }}
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
