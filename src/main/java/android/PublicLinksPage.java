@@ -155,10 +155,8 @@ public class PublicLinksPage extends CommonPage {
     public void setExpiration(String days) {
         Log.log(Level.FINE, "Starts: Set Expiration date in days: " + days);
         expirationSwitch.click();
-        int defaultExpiration = Integer.valueOf(days);
-        String dateToSet = DateUtils.dateInDaysAndroidFormat(Integer.toString(defaultExpiration));
-        Log.log(Level.FINE, "Days: " + days + ". Days to set: " + defaultExpiration +
-                " Date to set: " + dateToSet);
+        String dateToSet = DateUtils.dateInDaysAndroidFormat(days);
+        Log.log(Level.FINE, "Days: " + days + " Date to set: " + dateToSet);
         if (findListAccesibility(dateToSet).isEmpty()) {
             Log.log(Level.FINE, "Date not found, next page");
             nextButton.click();

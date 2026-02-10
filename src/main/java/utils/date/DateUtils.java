@@ -15,6 +15,9 @@ public class DateUtils {
         NUMERIC // Format: 21/02/2026
     }
 
+    // Returns date after adding the number of days
+    // Input: 12. Output: 27 February 2026
+    // User to set expiration dates in links and space members
     public static String dateInDaysAndroidFormat(String days) {
         Log.log(Level.FINE, "Starts: Turns days in date");
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -27,18 +30,9 @@ public class DateUtils {
         return dateAfterDays;
     }
 
-    public static String dateInDaysShareRequestFormat(String days) {
-        Log.log(Level.FINE, "Starts: Turns days in date fot Share request");
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(Calendar.DAY_OF_YEAR, Integer.valueOf(days));
-        Log.log(Level.FINE, "Date to format: " + gregorianCalendar.getTime());
-        String dateAfterDays = gregorianCalendar.get(Calendar.YEAR) + "-"
-                + "-" + gregorianCalendar.get(Calendar.MONTH) + 1
-                + "-" + formatInt(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
-        Log.log(Level.FINE, "Date formatted: " + dateAfterDays);
-        return dateAfterDays;
-    }
-
+    // Returns date after adding the number of days
+    // Input: 12. Output: 2026-02-11 23:59:59
+    // Used to assert expiration dates in the server
     public static String dateInDaysWithServerFormat(String days) {
         Log.log(Level.FINE, "Starts: Turns days in date with server response format");
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -52,6 +46,9 @@ public class DateUtils {
         return dateAfterDays;
     }
 
+    // Returns date after adding the number of days in the given format
+    // using the available enum types
+    // Used to assert expiration dates in the app
     public static String formatDate(String days, DateFormatType format) {
         Log.log(Level.FINE, "Starts: Build shortDate string");
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -89,15 +86,5 @@ public class DateUtils {
             day = String.valueOf(dateNumber);
         }
         return day;
-    }
-
-    public static int minExpirationDate(int a, int b) {
-        if (a == 0 && b > 0) {
-            return b;
-        }
-        if (a > 0 && b == 0) {
-            return a;
-        }
-        return a <= b ? a : b;
     }
 }

@@ -65,11 +65,9 @@ public class SpaceMembersPage extends CommonPage {
 
     public void setExpirationDate(String days) {
         Log.log(Level.FINE, "Starts: Add expiration date in days " + days);
-        expirationDateSwitch.click();
-        int defaultExpiration = Integer.valueOf(days);
-        String dateToSet = DateUtils.dateInDaysAndroidFormat(Integer.toString(defaultExpiration));
-        Log.log(Level.FINE, "Days: " + days + ". Days to set: " + defaultExpiration +
-                " Date to set: " + dateToSet);
+        expirationDateSwitch.click();;
+        String dateToSet = DateUtils.dateInDaysAndroidFormat(days);
+        Log.log(Level.FINE, "Days: " + days + " Date to set: " + dateToSet);
         if (findListAccesibility(dateToSet).isEmpty()) {
             Log.log(Level.FINE, "Date not found, next page");
             nextButton.click();

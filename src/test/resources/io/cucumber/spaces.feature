@@ -275,4 +275,4 @@ Feature: Spaces
 
       Examples:
         | name    | subtitle          | permissions | expirationDate |
-        | Space25 | Twentyfifth space | Can view    | 5              |
+        | Space25 | Twentyfifth space | Can view    | 25             |
