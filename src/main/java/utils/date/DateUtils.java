@@ -9,6 +9,12 @@ import utils.log.Log;
 
 public class DateUtils {
 
+    // Different date formats in every place
+    public enum DateFormatType {
+        TEXT, // Format: Feb 21, 2026
+        NUMERIC // Format: 21/02/2026
+    }
+
     public static String dateInDaysAndroidFormat(String days) {
         Log.log(Level.FINE, "Starts: Turns days in date");
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -46,16 +52,24 @@ public class DateUtils {
         return dateAfterDays;
     }
 
-    public static String shortDate(String days) {
+    public static String formatDate(String days, DateFormatType format) {
         Log.log(Level.FINE, "Starts: Build shortDate string");
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.add(Calendar.DAY_OF_YEAR, Integer.valueOf(days));
         Log.log(Level.FINE, "Date: " + gregorianCalendar.getTime());
-        String shortDate = getNameMonth(gregorianCalendar.get(Calendar.MONTH)).substring(0, 3)
-                + " " + gregorianCalendar.get(Calendar.DAY_OF_MONTH)
-                + ", " + gregorianCalendar.get(Calendar.YEAR);
-        Log.log(Level.FINE, "Short Date: " + shortDate);
-        return shortDate;
+        String date2return = "";
+        if (format == DateFormatType.TEXT) {
+            date2return = getNameMonth(gregorianCalendar.get(Calendar.MONTH)).substring(0, 3)
+                    + " " + gregorianCalendar.get(Calendar.DAY_OF_MONTH)
+                    + ", " + gregorianCalendar.get(Calendar.YEAR);
+            Log.log(Level.FINE, "Short Date: " + date2return);
+        } else if (format == DateFormatType.NUMERIC) {
+            date2return = String.format("%02d", gregorianCalendar.get(Calendar.DAY_OF_MONTH)) + "/" +
+                    String.format("%02d", gregorianCalendar.get(Calendar.MONTH) + 1) + "/" +
+                    gregorianCalendar.get(Calendar.YEAR) + " 23:59";
+            Log.log(Level.FINE, "Short Date: " + date2return);
+        }
+        return date2return;
     }
 
     private static String getNameMonth(int numMonth) {

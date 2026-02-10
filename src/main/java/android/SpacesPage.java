@@ -69,22 +69,47 @@ public class SpacesPage extends CommonPage {
         return instance;
     }
 
+    public enum MenuItems {
+        MEMBERS("Members"),
+        EDIT("Edit space"),
+        EDIT_IMAGE("Edit image"),
+        DISABLE("Disable space"),
+        ENABLE("Enable space"),
+        DELETE("Delete space");
+
+        private final String label;
+
+        MenuItems(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+    }
+
     public void createSpace (String name, String subtitle, String quota){
         Log.log(Level.FINE, "Starts: Create space " + name);
         createSpace.click();
         fillSpaceInfo(name, subtitle, quota);
     }
 
+    public void openMembers(String spaceName){
+        Log.log(Level.FINE, "Starts: Open members " + spaceName);
+        findUIAutomatorDescription(spaceName + " space menu").click();
+        openMenuOption(MenuItems.MEMBERS.getLabel());
+    }
+
     public void openEditSpace(String spaceName){
         Log.log(Level.FINE, "Starts: Open edit space " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
-        findListUIAutomatorText("Edit space").get(0).click();
+        openMenuOption(MenuItems.EDIT.getLabel());
     }
 
     public void openDisableSpace(String spaceName){
         Log.log(Level.FINE, "Starts: Open disable space " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
-        findListUIAutomatorText("Disable space").get(0).click();
+        openMenuOption(MenuItems.DISABLE.getLabel());
         findListUIAutomatorText("YES").get(0).click();
         waitByTextInvisible(WAIT_TIME, spaceName);
     }
@@ -92,14 +117,14 @@ public class SpacesPage extends CommonPage {
     public void openEnableSpace(String spaceName){
         Log.log(Level.FINE, "Starts: Open enable space " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
-        findListUIAutomatorText("Enable space").get(0).click();
+        openMenuOption(MenuItems.ENABLE.getLabel());
         findListUIAutomatorText("YES").get(0).click();
     }
 
     public void openDeleteSpace(String spaceName){
         Log.log(Level.FINE, "Starts: Open delete space " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
-        findListUIAutomatorText("Delete space").get(0).click();
+        openMenuOption(MenuItems.DELETE.getLabel());
         findListUIAutomatorText("YES").get(0).click();
         waitByIdInvisible(WAIT_TIME, cardId);
     }
@@ -138,7 +163,7 @@ public class SpacesPage extends CommonPage {
     public void openEditSpaceImage(String spaceName){
         Log.log(Level.FINE, "Starts: Open edit space image " + spaceName);
         findUIAutomatorDescription(spaceName + " space menu").click();
-        findListUIAutomatorText("Edit image").get(0).click();
+        openMenuOption(MenuItems.EDIT_IMAGE.getLabel());
     }
 
     public void typeSearch(String pattern) {
@@ -186,5 +211,10 @@ public class SpacesPage extends CommonPage {
         String displayedUnit = quotaUnit.getAttribute("text");
         Log.log(Level.FINE, "Displayed: " + displayedQuota + " " + displayedUnit);
         return (value.equals(displayedQuota) && unit.equals(displayedUnit));
+    }
+
+    private void openMenuOption(String option) {
+        Log.log(Level.FINE, "Starts: open menu option: " + option);
+        findListUIAutomatorText(option).get(0).click();
     }
 }

@@ -6,10 +6,14 @@
 
 package io.cucumber;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,7 +23,9 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import utils.date.DateUtils;
 import utils.entities.OCSpace;
+import utils.entities.OCSpaceMember;
 import utils.log.Log;
 import utils.log.StepLogger;
 
@@ -33,6 +39,11 @@ public class SpacesSteps {
 
     @ParameterType("(?: (enabled|disabled))?")
     public String spaceStatus(String s) {
+        return s == null ? "" : s;
+    }
+
+    @ParameterType("Can view|Can edit|Can manage")
+    public String permissionType(String s) {
         return s == null ? "" : s;
     }
 
@@ -115,6 +126,23 @@ public class SpacesSteps {
         world.documentProviderPage.selectImageToUpload(fileName);
     }
 
+    @When("Alice adds {word} to the space {word} with")
+    public void add_member_with_permissions(String userName, String spaceName, DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openMembers(spaceName);
+        world.spacesMembers.addMember(userName);
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (key) {
+                case "permission" -> world.spacesMembers.setPermission(value);
+                case "expirationDate" -> world.spacesMembers.setExpirationDate(value);
+            }
+        }
+        world.spacesMembers.inviteMember();
+    }
+
     @Then("Alice should{typePosNeg} see the following spaces")
     public void user_should_see_following_spaces(String sense, DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
@@ -167,7 +195,7 @@ public class SpacesSteps {
         for (Map<String, String> row : rows) {
             String name = row.get("name");
             String subtitle = row.get("subtitle");
-            String id = world.graphAPI.getSpaceIdFromName(name, subtitle);
+            String id = world.graphAPI.getSpaceIdFromNameAndDescription(name, subtitle);
             assertTrue(world.filesAPI.itemExist(id, "/.space/" + fileName));
         }
     }
@@ -181,6 +209,41 @@ public class SpacesSteps {
         String unit = values.get("unit");
         user_edit_space(spaceName);
         assertTrue(world.spacesPage.isQuotaDisplayed(quota, unit));
+    }
+
+    @Then("{word} should be member of the space {word} with")
+    public void is_user_member(String userName, String spaceName, DataTable table) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        // Get member from backend
+        OCSpaceMember member = world.graphAPI.getMemberOfSpace(spaceName, userName);
+        Log.log(Level.FINE, "Member from backend: " + member.getDisplayName() +
+                " " + member.getPermission() +
+                " " + member.getExpirationDate());
+        //world.spacesPage.openMembers(spaceName);
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (key) {
+                case "permission" -> {
+                    // Local validation
+                    assertTrue(world.spacesMembers.isUserMember(userName, value));
+                    // Remote validation
+                    assertTrue(member.getPermission().equals(value));
+                    }
+                case "expirationDate" -> {
+                    // Local validation
+                    assertTrue(world.spacesMembers.isExpirationDateCorrect(value));
+                    // Remote validation
+                    String dateRemote = member.getExpirationDate().substring(0, 10) + " 23:59:59";
+                    String formattedDate = DateUtils.dateInDaysWithServerFormat(value);
+                    Log.log(Level.FINE, "Days: " + value);
+                    Log.log(Level.FINE, "Date in server: " + dateRemote);
+                    Log.log(Level.FINE, "Date in local: " + formattedDate);
+                    assertEquals(formattedDate, dateRemote);
+                }
+            }
+        }
     }
 
     private void handleSpace(DataTable table, String operation){

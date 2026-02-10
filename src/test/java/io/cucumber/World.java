@@ -21,6 +21,7 @@ import android.RemoveDialogPage;
 import android.SearchShareePage;
 import android.SharePage;
 import android.ShortcutDialogPage;
+import android.SpaceMembersPage;
 import android.SpacesPage;
 import android.UploadsPage;
 
@@ -51,6 +52,7 @@ public class World {
     public ShortcutDialogPage shortcutDialogPage = ShortcutDialogPage.getInstance();
     public DevicePage devicePage = DevicePage.getInstance();
     public ConflictPage conflictPage = ConflictPage.getInstance();
+    public SpaceMembersPage spacesMembers = SpaceMembersPage.getInstance();
 
     //APIs to call
     public ShareAPI shareAPI = ShareAPI.getInstance();

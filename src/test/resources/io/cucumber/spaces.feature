@@ -236,3 +236,43 @@ Feature: Spaces
       Examples:
         | name    | subtitle          |
         | Space21 | Twentyfirst space |
+
+  @spacemembership
+  Rule: Space Membership
+
+    Scenario Outline: Add a member to a space
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And Alice selects the spaces view
+      When Alice selects the spaces view
+      And Alice adds Bob to the space <name> with
+        | permission | <permissions> |
+      Then Bob should be member of the space <name> with
+        | description | <subtitle>    |
+        | permission  | <permissions> |
+
+      Examples:
+        | name    | subtitle           | permissions |
+        | Space22 | Twentysecond space | Can view    |
+        | Space23 | Twentythird space  | Can edit    |
+        | Space24 | Twentyfourth space | Can manage  |
+
+    @expiration
+    Scenario Outline: Add a member to a space with expiration date
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And Alice selects the spaces view
+      When Alice selects the spaces view
+      And Alice adds Bob to the space <name> with
+        | permission     | <permissions>    |
+        | expirationDate | <expirationDate> |
+      Then Bob should be member of the space <name> with
+        | description    | <subtitle>       |
+        | permission     | <permissions>    |
+        | expirationDate | <expirationDate> |
+
+      Examples:
+        | name    | subtitle          | permissions | expirationDate |
+        | Space25 | Twentyfifth space | Can view    | 5              |

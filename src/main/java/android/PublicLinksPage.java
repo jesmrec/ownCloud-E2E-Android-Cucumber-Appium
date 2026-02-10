@@ -172,7 +172,7 @@ public class PublicLinksPage extends CommonPage {
         boolean switchEnabled;
         boolean dateCorrect = false;
         int expiration = Integer.parseInt(days);
-        String shortDate = DateUtils.shortDate(Integer.toString(expiration));
+        String shortDate = DateUtils.formatDate(Integer.toString(expiration), DateUtils.DateFormatType.TEXT);
         Log.log(Level.FINE, "Date to check: " + shortDate + " Expiration: " + expiration);
         switchEnabled = parseIntBool(expirationSwitch.getAttribute("checked"));
         Log.log(Level.FINE, "SwitchEnabled -> " + switchEnabled);
