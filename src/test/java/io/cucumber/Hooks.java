@@ -34,6 +34,9 @@ public class Hooks {
         this.world = world;
     }
 
+    private String base = "adb shell content call --uri content://com.owncloud.android.test.preferences " +
+            "--method set_boolean --extra value:b:false --arg ";
+
     @Before
     public void setup(Scenario scenario) {
         Log.log(Level.FINE, "START SCENARIO EXECUTION: " + scenario.getName());
@@ -45,7 +48,7 @@ public class Hooks {
 
     @After
     public void tearDown(Scenario scenario)
-            throws IOException, ParserConfigurationException, SAXException {
+            throws IOException, ParserConfigurationException, SAXException, InterruptedException {
         AndroidManager.getDriver().terminateApp(
                 LocProperties.getProperties().getProperty("appPackage"));
         cleanUp();
@@ -54,6 +57,11 @@ public class Hooks {
                 .replace(".feature", "");
         boolean saveVideo = scenario.isFailed();
         CommonPage.stopRecording(scenario.getName(), featureName, saveVideo);
+        //Disable settings
+        if (scenario.getSourceTagNames().contains("@hidden") || scenario.getSourceTagNames().contains("@spaces")) {
+            Runtime.getRuntime().exec(base + "show_hidden_files").waitFor();
+            Runtime.getRuntime().exec(base + "show_disabled_spaces").waitFor();
+        }
         Log.log(Level.FINE, "END SCENARIO EXECUTION: " + scenario.getName() + "\n\n");
     }
 

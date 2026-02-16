@@ -40,3 +40,16 @@ Feature: List of files is correctly retrieved from server.
       When Alice refreshes the list
       And the newFile2.txt has been deleted remotely
       Then Alice should not see "newFile2.txt" in the filelist anymore
+
+  @hidden
+  Rule: Hidden files
+
+    Scenario: Hidden files are shown in the list
+      Given the following settings have been set
+        | setting           | value |
+        | show_hidden_files | true  |
+      And the following items have been created in Alice account
+        | type | name        |
+        | file | .hiddenFile |
+      When Alice refreshes the list
+      Then Alice should see ".hiddenFile" in the filelist

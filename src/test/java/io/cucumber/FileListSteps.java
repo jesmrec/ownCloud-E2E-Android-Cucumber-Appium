@@ -102,6 +102,22 @@ public class FileListSteps {
         world.fileListPage.setConnectionDown();
     }
 
+    @Given("the following settings have been set")
+    public void settings_status(DataTable table) throws IOException, InterruptedException {
+        StepLogger.logCurrentStep(Level.FINE);
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            String setting = row.get("setting");
+            String value = row.get("value");
+            Log.log(Level.FINE, setting + " " + value);
+            String command = "adb shell content call --uri content://com.owncloud.android.test.preferences " +
+                    "--method set_boolean --arg \"" + setting + "\" --extra value:b:" + value;
+            int exitCode = Runtime.getRuntime().exec(command).waitFor();
+            // 0 if correct
+            Log.log(Level.FINE, "Exit code of adb command: " + exitCode);
+        }
+    }
+
     @When("Alice selects to set as av.offline the item {word}")
     public void user_selects_to_set_as_avoffline_item(String itemName) {
         StepLogger.logCurrentStep(Level.FINE);
