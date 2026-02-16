@@ -201,9 +201,11 @@ Feature: Spaces
         | name    | subtitle         |
         | Space19 | Nineteenth space |
 
-    @ignore
     Scenario Outline: Enable a disabled space
-      Given the following spaces have been created in Alice account
+      Given the following settings have been set
+        | setting              | value |
+        | show_disabled_spaces | true  |
+      And the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
       And the following spaces are disabled in server
@@ -219,9 +221,11 @@ Feature: Spaces
         | name    | subtitle        |
         | Space20 | Twentieth space |
 
-    @ignore
     Scenario Outline: Delete a disabled space
-      Given the following spaces have been created in Alice account
+      Given the following settings have been set
+        | setting              | value |
+        | show_disabled_spaces | true  |
+      And the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
       And the following spaces are disabled in server
