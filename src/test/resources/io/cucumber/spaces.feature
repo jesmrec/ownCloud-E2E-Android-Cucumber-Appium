@@ -7,6 +7,9 @@ Feature: Spaces
 
   Background: User is logged in
     Given user Alice is logged
+    And the following settings have been set
+      | setting              | value |
+      | show_disabled_spaces | true  |
 
   @listspace
   Rule: List correct spaces
@@ -18,7 +21,7 @@ Feature: Spaces
         | <name1> | <subtitle1> |
         | <name2> | <subtitle2> |
       When Alice selects the spaces view
-      Then Alice should see the following spaces
+      Then Alice should see the following enabled spaces
         | name    | subtitle    |
         | <name1> | <subtitle1> |
         | <name2> | <subtitle2> |
@@ -36,7 +39,7 @@ Feature: Spaces
         | name    | subtitle    |
         | <name2> | <subtitle2> |
       And Alice refreshes the list
-      Then Alice should see the following spaces
+      Then Alice should see the following enabled spaces
         | name    | subtitle    |
         | <name1> | <subtitle1> |
         | <name2> | <subtitle2> |
@@ -55,10 +58,10 @@ Feature: Spaces
         | name    | subtitle    |
         | <name1> | <subtitle1> |
       And Alice refreshes the list
-      Then Alice should see the following spaces
+      Then Alice should see the following enabled spaces
         | name    | subtitle    |
         | <name2> | <subtitle2> |
-      But Alice should not see the following spaces
+      But Alice should see the following disabled spaces
         | name    | subtitle    |
         | <name1> | <subtitle1> |
 
@@ -75,7 +78,7 @@ Feature: Spaces
       And Alice selects the spaces view
       When Alice filters the list using Space8
       And Alice refreshes the list
-      Then Alice should see the following spaces
+      Then Alice should see the following enabled spaces
         | name    | subtitle    |
         | <name2> | <subtitle2> |
       But Alice should not see the following spaces
@@ -102,7 +105,7 @@ Feature: Spaces
         | subtitle | <subtitle> |
         | quota    | <quota>    |
         | unit     | <unit>     |
-      Then Alice should see the following spaces
+      And Alice should see the following enabled spaces
         | name   | subtitle   |
         | <name> | <subtitle> |
 
@@ -126,7 +129,7 @@ Feature: Spaces
         | name     | <newName>     |
         | subtitle | <newSubtitle> |
         | quota    | <quota>       |
-      Then Alice should see the following spaces
+      Then Alice should see the following enabled spaces
         | name      | subtitle      |
         | <newName> | <newSubtitle> |
       But Alice should not see the following spaces
@@ -193,7 +196,10 @@ Feature: Spaces
         | <name> | <subtitle> |
       When Alice selects the spaces view
       And Alice disables the space <name>
-      Then Alice should not see the following spaces
+      Then Alice should see the following disabled spaces
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And the following spaces are disabled in server
         | name   | subtitle   |
         | <name> | <subtitle> |
 
@@ -202,10 +208,7 @@ Feature: Spaces
         | Space19 | Nineteenth space |
 
     Scenario Outline: Enable a disabled space
-      Given the following settings have been set
-        | setting              | value |
-        | show_disabled_spaces | true  |
-      And the following spaces have been created in Alice account
+      Given the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
       And the following spaces are disabled in server
@@ -213,7 +216,7 @@ Feature: Spaces
         | <name> | <subtitle> |
       When Alice selects the spaces view
       And Alice enables the space <name>
-      Then Alice should see the following spaces
+      Then Alice should see the following enabled spaces
         | name   | subtitle   |
         | <name> | <subtitle> |
 
@@ -222,10 +225,7 @@ Feature: Spaces
         | Space20 | Twentieth space |
 
     Scenario Outline: Delete a disabled space
-      Given the following settings have been set
-        | setting              | value |
-        | show_disabled_spaces | true  |
-      And the following spaces have been created in Alice account
+      Given the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
       And the following spaces are disabled in server

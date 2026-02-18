@@ -143,8 +143,8 @@ public class SpacesSteps {
         world.spacesMembers.inviteMember();
     }
 
-    @Then("Alice should{typePosNeg} see the following spaces")
-    public void user_should_see_following_spaces(String sense, DataTable table) {
+    @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
+    public void user_should_see_following_spaces(String sense, String status, DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
         for (Map<String, String> row : rows) {
@@ -152,9 +152,9 @@ public class SpacesSteps {
             String subtitle = row.get("subtitle") != null ? row.get("subtitle") : "";
             Log.log(Level.FINE, "Checking sense: " + sense + " for space: " + name + " " + subtitle);
             if (sense.isEmpty()) { // positive case
-                assertTrue(world.spacesPage.isSpaceDisplayed(name, subtitle));
-            } else if (sense.equals(" not")) { // negative case
-                assertFalse(world.spacesPage.isSpaceDisplayed(name, subtitle));
+                assertTrue(world.spacesPage.isSpaceDisplayed(name, subtitle, status));
+            } else if (sense.equals(" not")) { // negative case, status does not matter
+                assertFalse(world.spacesPage.isSpaceDisplayed(name, subtitle, ""));
             }
         }
     }

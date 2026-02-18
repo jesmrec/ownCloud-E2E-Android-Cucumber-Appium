@@ -111,7 +111,6 @@ public class SpacesPage extends CommonPage {
         findUIAutomatorDescription(spaceName + " space menu").click();
         openMenuOption(MenuItems.DISABLE.getLabel());
         findListUIAutomatorText("YES").get(0).click();
-        waitByTextInvisible(WAIT_TIME, spaceName);
     }
 
     public void openEnableSpace(String spaceName){
@@ -176,8 +175,8 @@ public class SpacesPage extends CommonPage {
         deviceSpacesList.get(0).click();
     }
 
-    public boolean isSpaceDisplayed(String spaceName, String spaceSubtitle) {
-        Log.log(Level.FINE, "Starts: check if space " + spaceName + " is visible");
+    public boolean isSpaceDisplayed(String spaceName, String spaceSubtitle, String status) {
+        Log.log(Level.FINE, "Starts: check if space " + spaceName + " is " + status);
         // Loop to check every space in the device
         List<WebElement> cardsDisplayed = driver.findElements(By.id(cardId));
         HashMap<String, String> spacesInDevice = new HashMap<>();
@@ -193,6 +192,10 @@ public class SpacesPage extends CommonPage {
             List<WebElement> spaceSubtitles = individualSpace.findElements(By.id(spaceSubtitleId));
             if (!spaceSubtitles.isEmpty()) {
                 spaceSubtitleCard = spaceSubtitles.get(0).getAttribute("text").trim();
+            }
+            if (status.equals("disabled")){
+                if (individualSpace.findElements(By.id("com.owncloud.android:id/spaces_list_item_disabled_label")).isEmpty())
+                    continue;
             }
             Log.log(Level.FINE, "Card: " + spaceNameCard + " - " +
                     (spaceSubtitleCard.equals("")?"empty":spaceSubtitleCard));
