@@ -111,10 +111,16 @@ public class FileListSteps {
             String value = row.get("value");
             Log.log(Level.FINE, setting + " " + value);
             String command = "adb shell content call --uri content://com.owncloud.android.test.preferences " +
-                    "--method set_boolean --arg \"" + setting + "\" --extra value:b:" + value;
+                    "--method set_boolean --arg " + setting + " --extra value:b:" + value;
+            Log.log(Level.FINE, "Command: " + command);
             int exitCode = Runtime.getRuntime().exec(command).waitFor();
             // 0 if correct
             Log.log(Level.FINE, "Exit code of adb command: " + exitCode);
+            // Reopen app to apply settings changes
+            String forceStop = "adb shell am force-stop com.owncloud.android";
+            Runtime.getRuntime().exec(forceStop).waitFor();
+            String startApp = "adb shell monkey -p com.owncloud.android 1";
+            Runtime.getRuntime().exec(startApp).waitFor();
         }
     }
 

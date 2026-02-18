@@ -41,7 +41,6 @@ Feature: List of files is correctly retrieved from server.
       And the newFile2.txt has been deleted remotely
       Then Alice should not see "newFile2.txt" in the filelist anymore
 
-  @hidden
   Rule: Hidden files
 
     Scenario: Hidden files are shown in the list
