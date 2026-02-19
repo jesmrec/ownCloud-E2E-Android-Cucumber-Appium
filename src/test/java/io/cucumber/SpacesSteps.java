@@ -11,9 +11,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -144,15 +141,31 @@ public class SpacesSteps {
     }
 
     @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
-    public void user_should_see_following_spaces(String sense, String status, DataTable table) {
+    public void user_should_see_following_spaces(String sense, String status, DataTable table)
+            throws IOException {
         StepLogger.logCurrentStep(Level.FINE);
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        List<OCSpace> spaces = world.graphAPI.getMySpaces();
         for (Map<String, String> row : rows) {
-            String name = row.get("name");
-            String subtitle = row.get("subtitle") != null ? row.get("subtitle") : "";
+            String name = row.get("name").trim();
+            String subtitle = row.get("subtitle") != null ? row.get("subtitle").trim() : "";
             Log.log(Level.FINE, "Checking sense: " + sense + " for space: " + name + " " + subtitle);
             if (sense.isEmpty()) { // positive case
+                // Local validation
                 assertTrue(world.spacesPage.isSpaceDisplayed(name, subtitle, status));
+                // Remote validation
+                boolean found = false;
+                Log.log(Level.FINE, "Checking the remote contains the local");
+                for (OCSpace space : spaces) {
+                    Log.log(Level.FINE, "Local: " + name + " " + subtitle);
+                    Log.log(Level.FINE, "Checking space: " + space.getName() + " " + space.getDescription());
+                    if (space.getName().trim().equals(name) && space.getDescription().trim().equals(subtitle)) {
+                        Log.log(Level.FINE, "Found!!");
+                                found = true;
+                        break;
+                    }
+                }
+                assertTrue(found);
             } else if (sense.equals(" not")) { // negative case, status does not matter
                 assertFalse(world.spacesPage.isSpaceDisplayed(name, subtitle, ""));
             }
@@ -229,7 +242,7 @@ public class SpacesSteps {
                     // Local validation
                     assertTrue(world.spacesMembers.isUserMember(userName, value));
                     // Remote validation
-                    assertTrue(member.getPermission().equals(value));
+                    assertEquals(member.getPermission(), value);
                     }
                 case "expirationDate" -> {
                     // Local validation

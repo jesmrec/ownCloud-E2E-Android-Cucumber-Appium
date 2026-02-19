@@ -253,8 +253,7 @@ Feature: Spaces
       And Alice adds Bob to the space <name> with
         | permission | <permissions> |
       Then Bob should be member of the space <name> with
-        | description | <subtitle>    |
-        | permission  | <permissions> |
+        | permission | <permissions> |
 
       Examples:
         | name    | subtitle           | permissions |
