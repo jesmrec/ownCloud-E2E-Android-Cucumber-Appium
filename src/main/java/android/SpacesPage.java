@@ -51,9 +51,14 @@ public class SpacesPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
     private WebElement searchInput;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/member_item_layout")
+    private List<WebElement> listMembers;
+
     private final String spaceNameId = "com.owncloud.android:id/spaces_list_item_name";
     private final String cardId = "com.owncloud.android:id/spaces_list_item_card";
     private final String spaceSubtitleId = "com.owncloud.android:id/spaces_list_item_subtitle";
+    private final String memberNameId = "com.owncloud.android:id/member_name";
+    private final String removeMemberId = "com.owncloud.android:id/remove_member_button";
 
     public static SpacesPage instance;
 
@@ -175,6 +180,19 @@ public class SpacesPage extends CommonPage {
         deviceSpacesList.get(0).click();
     }
 
+    public void removeMember(String userName) {
+        Log.log(Level.FINE, "Starts: remove member " + userName);
+        for (WebElement member : listMembers) {
+            WebElement nameElement = member.findElement(By.id(memberNameId));
+            String memberName = nameElement.getText();
+            if (memberName.contains(userName)) {
+                member.findElement(By.id(removeMemberId)).click();
+                findListUIAutomatorText("YES").get(0).click();
+                break;
+            }
+        }
+    }
+
     public boolean isSpaceDisplayed(String spaceName, String spaceSubtitle, String status) {
         Log.log(Level.FINE, "Starts: check if space " + spaceName + " is " + status);
         // Loop to check every space in the device
@@ -214,6 +232,18 @@ public class SpacesPage extends CommonPage {
         String displayedUnit = quotaUnit.getAttribute("text");
         Log.log(Level.FINE, "Displayed: " + displayedQuota + " " + displayedUnit);
         return (value.equals(displayedQuota) && unit.equals(displayedUnit));
+    }
+
+    public boolean isMemberOfSpace(String userName, String spaceName) {
+        Log.log(Level.FINE, "Starts: check if member of space: " + userName + " " + spaceName);
+        for (WebElement member : listMembers) {
+            WebElement nameElement = member.findElement(By.id(memberNameId));
+            String memberName = nameElement.getText();
+            if (memberName.contains(userName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void openMenuOption(String option) {

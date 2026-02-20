@@ -14,8 +14,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import utils.entities.OCSpace;
 import utils.entities.OCSpaceMember;
+import utils.entities.OCSpacePermission;
 import utils.log.Log;
 import utils.parser.OCMemberJSONHandler;
+import utils.parser.OCUserJSONHandler;
 
 public class GraphAPI extends CommonAPI {
 
@@ -23,6 +25,7 @@ public class GraphAPI extends CommonAPI {
     private final String drives = "drives/";
     private final String myDrives = "me/drives/";
     private final String members = "/graph/v1beta1/drives/";
+    private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static GraphAPI instance;
 
@@ -73,7 +76,6 @@ public class GraphAPI extends CommonAPI {
     private RequestBody createBodySpace(String name, String description) {
         Log.log(Level.FINE, "BODY SPACE: Name: " + name + " . Description: " + description);
         String json = "{\"name\":\" " + name + " \",\"driveType\":\"project\", \"description\":\" " + description + " \"}";
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, json);
         return body;
     }
@@ -153,20 +155,72 @@ public class GraphAPI extends CommonAPI {
     }
 
     public OCSpaceMember getMemberOfSpace(String spaceName, String userName) throws IOException {
-        Log.log(Level.FINE, "Get member of space: " + spaceName + " user: " + " userName");
+        Log.log(Level.FINE, "Get member of space: " + spaceName + " user: " + userName);
         String spaceId = getSpaceIdFromName(spaceName);
         String url = urlServer + members + spaceId + "/root/permissions";
         Log.log(Level.FINE, "URL: " + url);
         Request request = getRequest(url);
         Response response = httpClient.newCall(request).execute();
-        OCMemberJSONHandler handler = new OCMemberJSONHandler();
-        List<OCSpaceMember> spaceMembers =  handler.parse(response.body().string());
+        List<OCSpaceMember> spaceMembers =  OCMemberJSONHandler.parse(response.body().string());
         for (OCSpaceMember member : spaceMembers){
+            Log.log(Level.FINE, "Checking " + member.getDisplayName());
             if (member.getDisplayName().equals(userName)) {
                 return member;
             }
         }
         return null;
+    }
+
+    private OCSpaceMember getUserIdFromName(String userName) throws IOException {
+        Log.log(Level.FINE, "Get OCMember from name: " + userName);
+        String url = urlServer + graphPath + "users?%24search=%22" + userName + "%22&%24orderby=displayName";
+        Log.log(Level.FINE, "URL: " + url);
+        Request request = getRequest(url);
+        Response response = httpClient.newCall(request).execute();
+        return OCUserJSONHandler.parse(response.body().string());
+    }
+
+    private String getPermissionId(String spaceId, String permissionName) throws IOException {
+        Log.log(Level.FINE, "Get id of permission: " + permissionName);
+        String url = urlServer + members + spaceId + "/root/permissions";
+        Log.log(Level.FINE, "URL: " + url);
+        Request request = getRequest(url);
+        Response response = httpClient.newCall(request).execute();
+        List<OCSpacePermission> spacePermissions =  OCMemberJSONHandler.parsePermissions(response.body().string());
+        for (OCSpacePermission permission : spacePermissions){
+            if (permission.getPermissionName().equals(permissionName)) {
+                Log.log(Level.FINE, "Found Permission: " + permission.getPermissionName() + " :" + permission.getPermissionId());
+                return permission.getPermissionId();
+            }
+        }
+        return "";
+    }
+
+    public void addMemberToSpace(String userName, String permission, String spaceName) throws IOException {
+        Log.log(Level.FINE, "Add user: " + userName + " to space: " + spaceName
+                + " with permission "  + permission);
+        String spaceId = getSpaceIdFromName(spaceName);
+        String permissionId = getPermissionId(spaceId, permission);
+        String userId = getUserIdFromName(userName).getId();
+        String url = urlServer + members + spaceId + "/root/invite";
+        Log.log(Level.FINE, "URL: " + url);
+        String json = "{"
+                + "\"recipients\": ["
+                + "  {"
+                + "    \"@libre.graph.recipient.type\": \"user\","
+                + "    \"objectId\": \"" + userId + "\""
+                + "  }"
+                + "],"
+                + "\"roles\": ["
+                + "  \"" + permissionId + "\""
+                + "]"
+                + "}";
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = postRequest(url, body, "Alice");
+        Response response = httpClient.newCall(request).execute();
+        Log.log(Level.FINE, "Response Code: " + response.code());
+        Log.log(Level.FINE, "Response Body: " + response.body().string());
+        response.close();
     }
 
     //Move to parser space

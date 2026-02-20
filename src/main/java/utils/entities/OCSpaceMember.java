@@ -15,6 +15,8 @@ public class  OCSpaceMember {
         this.expirationDate = expirationDate;
     }
 
+    public OCSpaceMember(){}
+
     public String getId() {
         return id;
     }
