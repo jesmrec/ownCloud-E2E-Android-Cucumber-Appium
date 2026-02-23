@@ -17,6 +17,7 @@ import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -63,7 +64,9 @@ public class SpacesSteps {
         for (Map<String, String> row : rows) {
             String userName = row.get("user");
             String permission = row.get("permission");
-            world.graphAPI.addMemberToSpace(userName, permission, spaceName);
+            String expDate = row.get("expirationDate");
+            String expirationDate = (expDate == null) ? "" : expDate.trim();
+            world.graphAPI.addMemberToSpace(spaceName, userName, permission, expirationDate);
         }
     }
 
@@ -158,6 +161,23 @@ public class SpacesSteps {
         world.spacesPage.removeMember(userName);
     }
 
+    @And("Alice edits {word} from the space {word} with the following fields")
+    public void edit_member_space(String userName, String spaceName, DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openMembers(spaceName);
+        world.spacesPage.openEditMember(userName);
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (key) {
+                case "permission" -> world.spacesMembers.setPermission(value);
+                case "expirationDate" -> world.spacesMembers.setExpirationDate(value);
+            }
+        }
+        world.spacesMembers.inviteMember();
+    }
+
     @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
     public void user_should_see_following_spaces(String sense, String status, DataTable table)
             throws IOException {
@@ -250,7 +270,6 @@ public class SpacesSteps {
         Log.log(Level.FINE, "Member from backend: " + member.getDisplayName() +
                 " " + member.getPermission() +
                 " " + member.getExpirationDate());
-        //world.spacesPage.openMembers(spaceName);
         Map<String, String> fields = table.asMap(String.class, String.class);
         for (Map.Entry<String, String> entry : fields.entrySet()) {
             String key = entry.getKey();
@@ -266,12 +285,17 @@ public class SpacesSteps {
                     // Local validation
                     assertTrue(world.spacesMembers.isExpirationDateCorrect(value));
                     // Remote validation
-                    String dateRemote = member.getExpirationDate().substring(0, 10) + " 23:59:59";
-                    String formattedDate = DateUtils.dateInDaysWithServerFormat(value);
-                    Log.log(Level.FINE, "Days: " + value);
-                    Log.log(Level.FINE, "Date in server: " + dateRemote);
-                    Log.log(Level.FINE, "Date in local: " + formattedDate);
-                    assertEquals(formattedDate, dateRemote);
+                    Log.log(Level.FINE, "Remote date: " + member.getExpirationDate());
+                    if (value != null) {
+                        String dateRemote = member.getExpirationDate().substring(0, 10) + " 23:59:59";
+                        String formattedDate = DateUtils.dateInDaysWithServerFormat(value);
+                        Log.log(Level.FINE, "Days: " + value);
+                        Log.log(Level.FINE, "Date in server: " + dateRemote);
+                        Log.log(Level.FINE, "Date in local: " + formattedDate);
+                        assertEquals(formattedDate, dateRemote);
+                    } else {
+                        assertEquals(null, member.getExpirationDate());
+                    }
                 }
             }
         }

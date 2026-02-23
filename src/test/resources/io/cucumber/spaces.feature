@@ -278,16 +278,37 @@ Feature: Spaces
         | name    | subtitle          | permissions | expirationDate |
         | Space25 | Twentyfifth space | Can view    | 25             |
 
+    Scenario Outline: Edit a member from a space
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      And the following users are members of the space <name>
+        | user | permission          | expirationDate      |
+        | Bob  | <initialPermission> | <initialExpiration> |
+      When Alice selects the spaces view
+      And Alice edits Bob from the space <name> with the following fields
+        | permission     | <permissions>    |
+        | expirationDate | <expirationDate> |
+      Then Bob should be member of the space <name> with
+        | permission     | <permissions>    |
+        | expirationDate | <expirationDate> |
+
+      Examples:
+        | name    | subtitle            | initialPermission | initialExpiration | permissions | expirationDate |
+        | Space26 | Twentyfifth space   | Can view          | 12                | Can edit    | 30             |
+        | Space27 | Twentyseventh space | Can manage        |                   | Can edit    | 10             |
+        | Space28 | Twentyeighth space  | Can edit          | 20                | Can manage  |                |
+
     Scenario: Remove a member from a space
       Given the following spaces have been created in Alice account
         | name    | subtitle          |
-        | Space26 | Twentysixth space |
-      And the following users are members of the space Space26
+        | Space29 | Twentyninth space |
+      And the following users are members of the space Space29
         | user    | permission |
         | Bob     | Can view   |
         | Charles | Can edit   |
       When Alice selects the spaces view
-      And Alice removes Bob from the space Space26
-      Then Bob should not be member of the space Space26
-      And Charles should be member of the space Space26 with
+      And Alice removes Bob from the space Space29
+      Then Bob should not be member of the space Space29
+      And Charles should be member of the space Space29 with
         | permission | Can edit |

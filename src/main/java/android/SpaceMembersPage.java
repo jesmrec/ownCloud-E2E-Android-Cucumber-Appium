@@ -23,6 +23,9 @@ public class SpaceMembersPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/member_name")
     private List<WebElement> searchMemberList;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/expiration_date_layout")
+    private WebElement expirationDateLayout;
+
     @AndroidFindBy(id = "com.owncloud.android:id/expiration_date_switch")
     private WebElement expirationDateSwitch;
 
@@ -65,15 +68,20 @@ public class SpaceMembersPage extends CommonPage {
 
     public void setExpirationDate(String days) {
         Log.log(Level.FINE, "Starts: Add expiration date in days " + days);
-        expirationDateSwitch.click();;
-        String dateToSet = DateUtils.dateInDaysAndroidFormat(days);
-        Log.log(Level.FINE, "Days: " + days + " Date to set: " + dateToSet);
-        if (findListAccesibility(dateToSet).isEmpty()) {
-            Log.log(Level.FINE, "Date not found, next page");
-            nextButton.click();
+        // To normalize null values
+        days = normalizeOptional(days);
+        boolean isSwitchOn = "true".equals(expirationDateSwitch.getAttribute("checked"));
+        Log.log(Level.FINE, "Switch state: " + isSwitchOn);
+        boolean hasDays = days != null;
+        if (!isSwitchOn && hasDays) { // Switch it on and set days
+            expirationDateSwitch.click();
+            selectExpirationDate(days);
+        } else if (isSwitchOn && hasDays) { // Just set days
+            expirationDateLayout.click();
+            selectExpirationDate(days);
+        } else if (isSwitchOn && !hasDays) { // Switch it off
+            expirationDateSwitch.click();
         }
-        findAccesibility(dateToSet).click();
-        okButton.click();
     }
 
     public void inviteMember() {
@@ -102,14 +110,36 @@ public class SpaceMembersPage extends CommonPage {
     public boolean isExpirationDateCorrect(String days) {
         Log.log(Level.FINE, "Starts: check expiration date: " + days);
         boolean dateCorrect;
-        int expiration = Integer.parseInt(days);
-        // Get date from number of days
-        String expDate = DateUtils.formatDate(Integer.toString(expiration), DateUtils.DateFormatType.NUMERIC);
-        WebElement expirationDate = findId("com.owncloud.android:id/expiration_date");
-        Log.log(Level.FINE, "Date to check: " + expDate + " Expiration: " + expiration);
-        Log.log(Level.FINE, "Expiration date: " + expirationDate.getText());
-        dateCorrect = expirationDate.getText().equals(expDate);
-        return dateCorrect;
+        int expiration = days==null ? 0 : Integer.parseInt(days);
+        List<WebElement> expirationDate = findListId("com.owncloud.android:id/expiration_date");
+        if (expiration != 0) { // Checking existing expiration date
+            // Get date from number of days
+            String expDate = DateUtils.formatDate(Integer.toString(expiration), DateUtils.DateFormatType.NUMERIC);
+            Log.log(Level.FINE, "Date to check: " + expDate + " Expiration: " + expiration);
+            Log.log(Level.FINE, "Expiration date: " + expirationDate.get(0).getText());
+            dateCorrect = expirationDate.get(0).getText().equals(expDate);
+            return dateCorrect;
+        } else { // No expiration date
+            return expirationDate.isEmpty();
+        }
     }
 
+    private void selectExpirationDate(String days) {
+        Log.log(Level.FINE, "Starts: select expiration date: " + days);
+        String dateToSet = DateUtils.dateInDaysAndroidFormat(days);
+        Log.log(Level.FINE, "Date to set: " + dateToSet);
+        if (findListAccesibility(dateToSet).isEmpty()) {
+            Log.log(Level.FINE, "Date not found, next page");
+            nextButton.click();
+        }
+        findAccesibility(dateToSet).click();
+        okButton.click();
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null)
+            return null;
+        String v = value.trim();
+        return v.isEmpty() ? null : v;
+    }
 }

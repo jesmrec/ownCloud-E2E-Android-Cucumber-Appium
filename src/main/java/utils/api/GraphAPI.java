@@ -12,6 +12,7 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import utils.date.DateUtils;
 import utils.entities.OCSpace;
 import utils.entities.OCSpaceMember;
 import utils.entities.OCSpacePermission;
@@ -196,25 +197,37 @@ public class GraphAPI extends CommonAPI {
         return "";
     }
 
-    public void addMemberToSpace(String userName, String permission, String spaceName) throws IOException {
+    public void addMemberToSpace(String spaceName, String userName, String permission
+            , String expirationDate) throws IOException {
         Log.log(Level.FINE, "Add user: " + userName + " to space: " + spaceName
-                + " with permission "  + permission);
+                + " with permission "  + permission + " and expiration: " + expirationDate);
         String spaceId = getSpaceIdFromName(spaceName);
         String permissionId = getPermissionId(spaceId, permission);
         String userId = getUserIdFromName(userName).getId();
+        boolean hasExpiration = expirationDate != null && !expirationDate.trim().isEmpty();
         String url = urlServer + members + spaceId + "/root/invite";
         Log.log(Level.FINE, "URL: " + url);
-        String json = "{"
-                + "\"recipients\": ["
-                + "  {"
-                + "    \"@libre.graph.recipient.type\": \"user\","
-                + "    \"objectId\": \"" + userId + "\""
-                + "  }"
-                + "],"
-                + "\"roles\": ["
-                + "  \"" + permissionId + "\""
-                + "]"
-                + "}";
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        if (hasExpiration) {
+            String expirationFormatted = DateUtils.daysToUTCForExpiration(expirationDate);
+            Log.log(Level.FINE, "Formatted date: " + expirationFormatted);
+            jsonBuilder.append("\"expirationDateTime\": \"")
+                .append(expirationFormatted)
+                .append("\",");
+        }
+        jsonBuilder.append("\"recipients\": [")
+            .append("  {")
+            .append("    \"@libre.graph.recipient.type\": \"user\",")
+            .append("    \"objectId\": \"").append(userId).append("\"")
+            .append("  }")
+            .append("],")
+            .append("\"roles\": [")
+            .append("  \"").append(permissionId).append("\"")
+            .append("]")
+            .append("}");
+        String json = jsonBuilder.toString();
+        Log.log(Level.FINE, "Body: " + json);
         RequestBody body = RequestBody.create(JSON, json);
         Request request = postRequest(url, body, "Alice");
         Response response = httpClient.newCall(request).execute();

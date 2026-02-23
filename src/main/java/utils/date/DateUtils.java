@@ -1,8 +1,10 @@
 package utils.date;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.logging.Level;
 
@@ -64,5 +66,10 @@ public class DateUtils {
         }
         Log.log(Level.FINE, "Short Date: " + result);
         return result;
+    }
+
+    public static String daysToUTCForExpiration (String days){
+        Instant expirationInstant = Instant.now().plus(Integer.parseInt(days.trim()), ChronoUnit.DAYS);
+        return DateTimeFormatter.ISO_INSTANT.format(expirationInstant);
     }
 }

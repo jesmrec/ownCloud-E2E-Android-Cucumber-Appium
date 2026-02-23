@@ -59,6 +59,7 @@ public class SpacesPage extends CommonPage {
     private final String spaceSubtitleId = "com.owncloud.android:id/spaces_list_item_subtitle";
     private final String memberNameId = "com.owncloud.android:id/member_name";
     private final String removeMemberId = "com.owncloud.android:id/remove_member_button";
+    private final String editMemberId = "com.owncloud.android:id/edit_member_button";
 
     public static SpacesPage instance;
 
@@ -178,6 +179,18 @@ public class SpacesPage extends CommonPage {
 
     public void openSpace(String spaceName) {
         deviceSpacesList.get(0).click();
+    }
+
+    public void openEditMember(String userName){
+        Log.log(Level.FINE, "Starts: edit member " + userName);
+        for (WebElement member : listMembers) {
+            WebElement nameElement = member.findElement(By.id(memberNameId));
+            String memberName = nameElement.getText();
+            if (memberName.contains(userName)) {
+                member.findElement(By.id(editMemberId)).click();
+                break;
+            }
+        }
     }
 
     public void removeMember(String userName) {
