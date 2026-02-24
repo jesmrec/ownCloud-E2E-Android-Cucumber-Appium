@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -51,6 +52,7 @@ public class CommonPage {
     protected static AndroidDriver driver = AndroidManager.getDriver();
     protected static final int WAIT_TIME = 7;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    private static boolean recordingStarted = false;
 
     public CommonPage() {
     }
@@ -303,26 +305,41 @@ public class CommonPage {
     }
 
     public static void startRecording() {
-        AndroidStartScreenRecordingOptions androidStartScreenRecordingOptions =
-                new AndroidStartScreenRecordingOptions();
-        androidStartScreenRecordingOptions.withBitRate(2000000);
-        androidStartScreenRecordingOptions.withVideoSize("360x640");
-        driver.startRecordingScreen(androidStartScreenRecordingOptions);
+        try {
+            AndroidStartScreenRecordingOptions androidStartScreenRecordingOptions =
+                    new AndroidStartScreenRecordingOptions();
+            androidStartScreenRecordingOptions.withBitRate(2000000);
+            androidStartScreenRecordingOptions.withVideoSize("360x640");
+            driver.startRecordingScreen(androidStartScreenRecordingOptions);
+            recordingStarted = true;
+        } catch (Exception e) { // In case the recording fails, scenario result is not affected
+            recordingStarted = false;
+            Log.log(Level.FINE, "Screen recording not initiated. Error:  " + e.getMessage());
+        }
     }
 
     public static void stopRecording(String filename, String featureName, boolean failed) {
-        String base64String = driver.stopRecordingScreen();
-        byte[] data = Base64.decodeBase64(base64String);
-        if (failed) { // If the test failed, save the video
-            createFeatureFolder(featureName);
-            String destinationPath = "video/" + featureName + "/" + filename + "_" +
-                    sdf.format(new Timestamp(System.currentTimeMillis()).getTime()) + ".mp4";
-            Path path = Paths.get(destinationPath);
-            try {
-                Files.write(path, data);
-            } catch (IOException e) {
-                Log.log(Level.FINE, e.getMessage());
+        if (!recordingStarted) return;
+        try {
+            String base64String = driver.stopRecordingScreen();
+            byte[] data = Base64.decodeBase64(base64String);
+            if (failed) { // If the test failed, save the video
+                createFeatureFolder(featureName);
+                String destinationPath = "video/" + featureName + "/" + filename + "_" +
+                        sdf.format(new Timestamp(System.currentTimeMillis()).getTime()) + ".mp4";
+                Path path = Paths.get(destinationPath);
+                try {
+                    Files.write(path, data);
+                } catch (IOException e) {
+                    Log.log(Level.FINE, e.getMessage());
+                }
             }
+        } catch (WebDriverException wde) { // In case the recording fails, scenario result is not affected
+            Log.log(Level.FINE, "Error when stopping screen recording: " + wde.getMessage());
+            recordingStarted = false;
+        } catch (Exception e) {
+            Log.log(Level.FINE, "Error saving video: " + e.getMessage());
+            recordingStarted = false;
         }
     }
 

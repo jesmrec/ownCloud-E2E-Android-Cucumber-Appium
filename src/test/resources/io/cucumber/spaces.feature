@@ -7,9 +7,6 @@ Feature: Spaces
 
   Background: User is logged in
     Given user Alice is logged
-    And the following settings have been set
-      | setting              | value |
-      | show_disabled_spaces | true  |
 
   @listspace
   Rule: List correct spaces
@@ -53,6 +50,9 @@ Feature: Spaces
         | name    | subtitle    |
         | <name1> | <subtitle1> |
         | <name2> | <subtitle2> |
+      And the following settings have been set
+        | setting              | value |
+        | show_disabled_spaces | true  |
       And Alice selects the spaces view
       When the following spaces are disabled in server
         | name    | subtitle    |
@@ -194,6 +194,9 @@ Feature: Spaces
       Given the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
+      And the following settings have been set
+        | setting              | value |
+        | show_disabled_spaces | true  |
       When Alice selects the spaces view
       And Alice disables the space <name>
       Then Alice should see the following disabled spaces
@@ -211,6 +214,9 @@ Feature: Spaces
       Given the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
+      And the following settings have been set
+        | setting              | value |
+        | show_disabled_spaces | true  |
       And the following spaces are disabled in server
         | name   | subtitle   |
         | <name> | <subtitle> |
@@ -228,6 +234,9 @@ Feature: Spaces
       Given the following spaces have been created in Alice account
         | name   | subtitle   |
         | <name> | <subtitle> |
+      And the following settings have been set
+        | setting              | value |
+        | show_disabled_spaces | true  |
       And the following spaces are disabled in server
         | name   | subtitle   |
         | <name> | <subtitle> |
