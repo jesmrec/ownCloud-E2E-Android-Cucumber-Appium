@@ -249,6 +249,7 @@ public class SpacesPage extends CommonPage {
 
     public boolean isMemberOfSpace(String userName, String spaceName) {
         Log.log(Level.FINE, "Starts: check if member of space: " + userName + " " + spaceName);
+        waitById(WAIT_TIME, listMembers.get(0));
         for (WebElement member : listMembers) {
             WebElement nameElement = member.findElement(By.id(memberNameId));
             String memberName = nameElement.getText();

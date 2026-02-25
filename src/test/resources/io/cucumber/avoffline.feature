@@ -165,17 +165,17 @@ Feature: Set items as available offline (downloaded and synced)
         | folderName | fileName     |
         | ao10folder | ao10file.pdf |
 
-  Scenario Outline: Remove from available offline shortcut
-        Given the following items have been created in Alice account
-          | type | name       |
-          | file | <fileName> |
-        And Alice selects to set as av.offline the item <fileName>
-        When Alice opens the available offline shortcut
-        And Alice selects to unset as av.offline the item <fileName>
-        Then Alice should not see <fileName> in the offline list
-        And Alice should see the following message
-          | No available offline files |
+    Scenario Outline: Remove from available offline shortcut
+      Given the following items have been created in Alice account
+        | type | name       |
+        | file | <fileName> |
+      And Alice selects to set as av.offline the item <fileName>
+      When Alice opens the available offline shortcut
+      And Alice selects to unset as av.offline the item <fileName>
+      Then Alice should not see <fileName> in the offline list
+      And Alice should see the following message
+        | No available offline files |
 
-        Examples:
-          | fileName     |
-          | ao11file.txt |
+      Examples:
+        | fileName     |
+        | ao11file.txt |
