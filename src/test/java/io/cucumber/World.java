@@ -52,7 +52,7 @@ public class World {
     public ShortcutDialogPage shortcutDialogPage = ShortcutDialogPage.getInstance();
     public DevicePage devicePage = DevicePage.getInstance();
     public ConflictPage conflictPage = ConflictPage.getInstance();
-    public SpaceMembersPage spacesMembers = SpaceMembersPage.getInstance();
+    public SpaceMembersPage spacesMembersPage = SpaceMembersPage.getInstance();
 
     //APIs to call
     public ShareAPI shareAPI = ShareAPI.getInstance();

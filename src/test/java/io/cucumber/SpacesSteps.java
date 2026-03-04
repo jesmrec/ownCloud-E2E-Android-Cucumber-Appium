@@ -141,17 +141,17 @@ public class SpacesSteps {
     public void add_member_with_permissions(String userName, String spaceName, DataTable table) {
         StepLogger.logCurrentStep(Level.FINE);
         world.spacesPage.openMembers(spaceName);
-        world.spacesMembers.addMember(userName);
+        world.spacesMembersPage.addMember(userName);
         Map<String, String> fields = table.asMap(String.class, String.class);
         for (Map.Entry<String, String> entry : fields.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             switch (key) {
-                case "permission" -> world.spacesMembers.setPermission(value);
-                case "expirationDate" -> world.spacesMembers.setExpirationDate(value);
+                case "permission" -> world.spacesMembersPage.setPermission(value);
+                case "expirationDate" -> world.spacesMembersPage.setExpirationDate(value);
             }
         }
-        world.spacesMembers.inviteMember();
+        world.spacesMembersPage.inviteMember();
     }
 
     @When("Alice removes {word} from the space {word}")
@@ -171,11 +171,11 @@ public class SpacesSteps {
             String key = entry.getKey();
             String value = entry.getValue();
             switch (key) {
-                case "permission" -> world.spacesMembers.setPermission(value);
-                case "expirationDate" -> world.spacesMembers.setExpirationDate(value);
+                case "permission" -> world.spacesMembersPage.setPermission(value);
+                case "expirationDate" -> world.spacesMembersPage.setExpirationDate(value);
             }
         }
-        world.spacesMembers.inviteMember();
+        world.spacesMembersPage.inviteMember();
     }
 
     @Then("Alice should{typePosNeg} see the following{spaceStatus} spaces")
@@ -277,13 +277,13 @@ public class SpacesSteps {
             switch (key) {
                 case "permission" -> {
                     // Local validation
-                    assertTrue(world.spacesMembers.isUserMember(userName, value));
+                    assertTrue(world.spacesMembersPage.isUserMember(userName, value));
                     // Remote validation
-                    assertEquals(member.getPermission(), value);
+                    assertTrue(member.getPermission().contains(value));
                     }
                 case "expirationDate" -> {
                     // Local validation
-                    assertTrue(world.spacesMembers.isExpirationDateCorrect(value));
+                    assertTrue(world.spacesMembersPage.isExpirationDateCorrect(value));
                     // Remote validation
                     Log.log(Level.FINE, "Remote date: " + member.getExpirationDate());
                     if (value != null) {

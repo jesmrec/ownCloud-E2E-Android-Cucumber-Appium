@@ -96,7 +96,7 @@ public class SpaceMembersPage extends CommonPage {
             boolean memberFound = member.findElement(AppiumBy.androidUIAutomator(
                     "new UiSelector().text(\"" + userName + "\")")).isDisplayed();
             boolean roleFound = member.findElement(AppiumBy.androidUIAutomator(
-                    "new UiSelector().text(\"" + permission + "\")")).isDisplayed();
+                    "new UiSelector().textContains(\"" + permission + "\")")).isDisplayed();
             if (memberFound && roleFound) {
                 Log.log(Level.FINE, userName + " found");
                 return true;

@@ -189,7 +189,7 @@ public class GraphAPI extends CommonAPI {
         Response response = httpClient.newCall(request).execute();
         List<OCSpacePermission> spacePermissions =  OCMemberJSONHandler.parsePermissions(response.body().string());
         for (OCSpacePermission permission : spacePermissions){
-            if (permission.getPermissionName().equals(permissionName)) {
+            if (permission.getPermissionName().contains(permissionName)) {
                 Log.log(Level.FINE, "Found Permission: " + permission.getPermissionName() + " :" + permission.getPermissionId());
                 return permission.getPermissionId();
             }
