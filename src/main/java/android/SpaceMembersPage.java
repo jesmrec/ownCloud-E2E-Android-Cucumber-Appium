@@ -20,6 +20,9 @@ public class SpaceMembersPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
     private WebElement searchMember;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/permissions_title")
+    private WebElement permissionsTitle;
+
     @AndroidFindBy(id = "com.owncloud.android:id/member_name")
     private List<WebElement> searchMemberList;
 
@@ -63,6 +66,7 @@ public class SpaceMembersPage extends CommonPage {
     }
 
     public void setPermission(String permission) {
+        waitById(WAIT_TIME, permissionsTitle);
         findUIAutomatorText(permission).click();
     }
 
