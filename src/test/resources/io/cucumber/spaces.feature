@@ -287,6 +287,8 @@ Feature: Spaces
         | name    | subtitle          | permissions | expirationDate |
         | Space25 | Twentyfifth space | Can view    | 25             |
 
+    # Needs https://github.com/owncloud/android/issues/4793 fixed
+    @ignore
     Scenario Outline: Edit a member from a space
       Given the following spaces have been created in Alice account
         | name   | subtitle   |
