@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ex
-npm install -g appium@3.1.0
+npm install -g appium@latest
 appium -v
 appium driver install uiautomator2@latest
 appium --allow-insecure='*:adb_shell' --allow-cors --log-level debug &>/dev/null &
