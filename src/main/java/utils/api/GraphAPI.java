@@ -14,6 +14,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import utils.date.DateUtils;
 import utils.entities.OCSpace;
+import utils.entities.OCSpaceLink;
 import utils.entities.OCSpaceMember;
 import utils.entities.OCSpacePermission;
 import utils.log.Log;
@@ -162,13 +163,33 @@ public class GraphAPI extends CommonAPI {
         Log.log(Level.FINE, "URL: " + url);
         Request request = getRequest(url);
         Response response = httpClient.newCall(request).execute();
-        List<OCSpaceMember> spaceMembers =  OCMemberJSONHandler.parse(response.body().string());
+        List<OCSpaceMember> spaceMembers =  OCMemberJSONHandler.parseMembers(response.body().string());
         for (OCSpaceMember member : spaceMembers){
             Log.log(Level.FINE, "Checking " + member.getDisplayName());
             if (member.getDisplayName().equals(userName)) {
                 return member;
             }
         }
+        return null;
+    }
+
+    public OCSpaceLink getLinkOfSpace(String spaceName, String linkName) throws IOException {
+        Log.log(Level.FINE, "Get links of space: " + spaceName);
+        String spaceId = getSpaceIdFromName(spaceName);
+        String url = urlServer + members + spaceId + "/root/permissions";
+        Log.log(Level.FINE, "URL: " + url);
+        Request request = getRequest(url);
+        Response response = httpClient.newCall(request).execute();
+        List<OCSpaceLink> spaceLinks =  OCMemberJSONHandler.parseLinks(response.body().string());
+        Log.log(Level.FINE, "Links found: " + spaceLinks.size());
+        for (OCSpaceLink link : spaceLinks){
+            Log.log(Level.FINE, "Checking " + link.getLinkName());
+            if (link.getLinkName().equals(linkName)) {
+                Log.log(Level.FINE, "Link found!!: " + link.getLinkName() + " " + link.getPermission());
+                return link;
+            }
+        }
+        Log.log(Level.FINE, "Link not found!!");
         return null;
     }
 

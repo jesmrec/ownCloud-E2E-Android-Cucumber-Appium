@@ -10,19 +10,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.openqa.selenium.WebElement;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utils.date.DateUtils;
 import utils.entities.OCSpace;
+import utils.entities.OCSpaceLink;
 import utils.entities.OCSpaceMember;
 import utils.log.Log;
 import utils.log.StepLogger;
@@ -152,6 +157,25 @@ public class SpacesSteps {
             }
         }
         world.spacesMembersPage.inviteMember();
+    }
+
+    @When("Alice creates a new link to the space {word} with")
+    public void create_new_link(String spaceName, DataTable table) {
+        StepLogger.logCurrentStep(Level.FINE);
+        world.spacesPage.openMembers(spaceName);
+        world.spacesMembersPage.addLink();
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (key) {
+                case "name" -> world.spacesMembersPage.setName(value);
+                case "permission" -> world.spacesMembersPage.setPermission(value);
+                case "password" -> world.spacesMembersPage.setPassword();
+                case "expirationDate" -> world.spacesMembersPage.setExpirationDate(value);
+            }
+        }
+        world.spacesMembersPage.createLink();
     }
 
     @When("Alice removes {word} from the space {word}")
@@ -317,5 +341,53 @@ public class SpacesSteps {
         } else if (operation.equals("create")) {
             world.spacesPage.createSpace(name, subtitle, quota);
         }
+    }
+
+    @Then("Alice should see the link {word} on {word} with")
+    public void is_link_created(String linkName, String spaceName, DataTable table) throws IOException {
+        StepLogger.logCurrentStep(Level.FINE);
+        // Get member from backend
+        OCSpaceLink linkBackend = world.graphAPI.getLinkOfSpace(spaceName, linkName);
+        Log.log(Level.FINE, "Link in backend: name: " + linkBackend.getLinkName() +
+                " permission: " + linkBackend.getPermission() +
+                " expirationDate: " + linkBackend.getExpirationDate());
+        String name = linkName;
+        String permission = "";
+        String expirationDate = "";
+        Map<String, String> fields = table.asMap(String.class, String.class);
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (key) {
+                case "permission" -> {
+                    permission = value;
+                }
+                case "expirationDate" -> {
+                    expirationDate = value;
+                }
+            }
+        }
+        Log.log(Level.FINE, "Link from scenario: name: " + name +
+                " permission: " + permission +
+                " expirationDate: " + expirationDate);
+        // Local assertion
+        assertTrue(world.spacesMembersPage.isLinkCreated(name, permission, expirationDate));
+        // Remote assertion
+        assertTrue(linkBackend.getLinkName().equals(name)
+                && linkBackend.getPermission().equals(getLinkPermissionDisplayName(permission))
+                && ((expirationDate == null || expirationDate.isEmpty())
+                ? linkBackend.getExpirationDate() == null
+                : linkBackend.getExpirationDate().startsWith(
+                DateUtils.dateInDaysWithServerFormat(expirationDate).substring(0, 10)
+        )));
+    }
+
+    private String getLinkPermissionDisplayName(String permission) {
+        return switch (permission) {
+            case "Can view" -> "view";
+            case "Can edit" -> "edit";
+            case "Secret file drop" -> "createOnly";
+            default -> "";
+        };
     }
 }

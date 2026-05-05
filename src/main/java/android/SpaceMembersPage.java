@@ -17,8 +17,23 @@ public class SpaceMembersPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/add_member_button")
     private WebElement addMember;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/add_public_link_button")
+    private WebElement addLink;
+
     @AndroidFindBy(id = "com.owncloud.android:id/search_src_text")
     private WebElement searchMember;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/public_link_name_edit_text")
+    private WebElement linkName;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/set_password_button")
+    private WebElement setPassword;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/generate_password_button")
+    private WebElement generateRandomPassword;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/set_password_button")
+    private WebElement submitPassword;
 
     @AndroidFindBy(id = "com.owncloud.android:id/permissions_title")
     private WebElement permissionsTitle;
@@ -35,8 +50,14 @@ public class SpaceMembersPage extends CommonPage {
     @AndroidFindBy(id = "com.owncloud.android:id/invite_member_button")
     private WebElement inviteMember;
 
+    @AndroidFindBy(id = "com.owncloud.android:id/create_public_link_button")
+    private WebElement createLink;
+
     @AndroidFindBy(id = "com.owncloud.android:id/member_item_layout")
     private List<WebElement> memberList;
+
+    @AndroidFindBy(id = "com.owncloud.android:id/public_link_item_layout")
+    private List<WebElement> linkList;
 
     @AndroidFindBy(id = "android:id/next")
     private WebElement nextButton;
@@ -65,9 +86,25 @@ public class SpaceMembersPage extends CommonPage {
         searchMemberList.get(0).click();
     }
 
+    public void addLink() {
+        Log.log(Level.FINE, "Starts: Add Link ");
+        addLink.click();
+    }
+
+    public void setName(String linkName) {
+        waitById(WAIT_TIME, permissionsTitle);
+        this.linkName.sendKeys(linkName);
+    }
+
     public void setPermission(String permission) {
         waitById(WAIT_TIME, permissionsTitle);
         findUIAutomatorText(permission).click();
+    }
+
+    public void setPassword(){
+        setPassword.click();
+        generateRandomPassword.click();
+        submitPassword.click();
     }
 
     public void setExpirationDate(String days) {
@@ -89,8 +126,15 @@ public class SpaceMembersPage extends CommonPage {
     }
 
     public void inviteMember() {
-        Log.log(Level.FINE, "Starts: Invite member");
+        Log.log(Level.FINE, "Starts: Invite member with button");
         inviteMember.click();
+    }
+
+    public void createLink(){
+        Log.log(Level.FINE, "Starts: Create Link with button");
+        createLink.click();
+        //Wait till link is created and appears in the list
+        waitById(WAIT_TIME, addLink);
     }
 
     public boolean isUserMember(String userName, String permission) {
@@ -109,6 +153,37 @@ public class SpaceMembersPage extends CommonPage {
             }
         }
         return false;
+    }
+
+    public boolean isLinkCreated(String linkName, String permission, String expirationDate) {
+        Log.log(Level.FINE, "Starts: Check Link: " + linkName);
+        WebElement link = getLinkByName(linkName);
+        boolean permissionCorrect = false;
+        boolean expirationDateCorrect = true;
+        if (link != null) {
+            Log.log(Level.FINE, "Link found in UI: " + linkName);
+            permissionCorrect = link.findElement(AppiumBy.androidUIAutomator(
+                    "new UiSelector().text(\"" + permission + "\")")).isDisplayed();
+            if (expirationDate != "") {
+                String expDate = DateUtils.formatDate(expirationDate, DateUtils.DateFormatType.NUMERIC);
+                Log.log(Level.FINE, "Expiration date to check: " + expDate);
+                expirationDateCorrect = link.findElement(AppiumBy.androidUIAutomator(
+                        "new UiSelector().textContains(\"" + expDate + "\")")).isDisplayed();
+            }
+            Log.log(Level.FINE, "Permission correct: " + permissionCorrect);
+        }
+        return permissionCorrect && expirationDateCorrect;
+    }
+
+    private WebElement getLinkByName(String linkName){
+        Log.log(Level.FINE, "Starts: Check Link: " + linkName);
+        for (WebElement link : linkList) {
+            if (link.findElement(AppiumBy.androidUIAutomator(
+                    "new UiSelector().text(\"" + linkName + "\")")).isDisplayed()){
+                return link;
+            }
+        }
+        return null;
     }
 
     public boolean isExpirationDateCorrect(String days) {

@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
+import utils.entities.OCSpaceLink;
 import utils.entities.OCSpaceMember;
 import utils.entities.OCSpacePermission;
+import utils.log.Log;
 
 public class OCMemberJSONHandler {
 
@@ -28,7 +31,7 @@ public class OCMemberJSONHandler {
         return permissionList;
     }
 
-    public static List<OCSpaceMember> parse(String jsonText) {
+    public static List<OCSpaceMember> parseMembers(String jsonText) {
         JSONObject root = new JSONObject(jsonText);
 
         // 1. Mapping roles
@@ -74,6 +77,34 @@ public class OCMemberJSONHandler {
 
             OCSpaceMember m = new OCSpaceMember(userId, userType, displayName, permission, expirationDate);
             result.add(m);
+        }
+        return result;
+    }
+
+    public static List<OCSpaceLink> parseLinks(String jsonText) {
+        Log.log(Level.FINE, "Parsing links from JSON: " + jsonText);
+        JSONObject root = new JSONObject(jsonText);
+
+        List<OCSpaceLink> result = new ArrayList<>();
+        JSONArray values = root.getJSONArray("value");
+
+        for (int i = 0; i < values.length(); i++) {
+            JSONObject item = values.getJSONObject(i);
+
+            // ignore non-links
+            if (item.has("grantedToV2")) {
+                continue;
+            }
+
+            String expirationDate = item.optString("expirationDateTime", null);
+            boolean hasPassword = item.optBoolean("hasPassword");
+            String id = item.optString("id", null);
+            JSONObject linkAttributes = item.getJSONObject("link");
+            String linkName = linkAttributes.optString("@libre.graph.displayName");
+            String permission = linkAttributes.optString("type");
+
+            OCSpaceLink link = new OCSpaceLink(id, linkName, permission, expirationDate, hasPassword);
+            result.add(link);
         }
         return result;
     }

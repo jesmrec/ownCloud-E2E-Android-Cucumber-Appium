@@ -287,8 +287,6 @@ Feature: Spaces
         | name    | subtitle          | permissions | expirationDate |
         | Space25 | Twentyfifth space | Can view    | 25             |
 
-    # Needs https://github.com/owncloud/android/issues/4793 fixed
-    @ignore
     Scenario Outline: Edit a member from a space
       Given the following spaces have been created in Alice account
         | name   | subtitle   |
@@ -323,3 +321,42 @@ Feature: Spaces
       Then Bob should not be member of the space Space29
       And Charles should be member of the space Space29 with
         | permission | Can edit |
+
+  @spacelinks
+  Rule: Space Links
+
+    Scenario Outline: Add a link with name and permissions to a space
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      When Alice selects the spaces view
+      And Alice creates a new link to the space <name> with
+        | name       | <linkName>    |
+        | permission | <permissions> |
+        | password   |               |
+      Then Alice should see the link <linkName> on <name> with
+        | permission | <permissions>  |
+
+      Examples:
+        | name    | subtitle           | permissions       | linkName   |
+        | Space22 | Twentysecond space | Can view          | Link22     |
+        | Space23 | Twentythird space  | Can edit          | Link23     |
+        | Space24 | Twentyfourth space | Secret file drop  | Link24     |
+
+    Scenario Outline: Add a link with expiration date to a space
+      Given the following spaces have been created in Alice account
+        | name   | subtitle   |
+        | <name> | <subtitle> |
+      When Alice selects the spaces view
+      And Alice creates a new link to the space <name> with
+        | name           | <linkName>       |
+        | permission     | <permissions>    |
+        | password       |                  |
+        | expirationDate | <expirationDate> |
+      Then Alice should see the link <linkName> on <name> with
+        | permission     | <permissions>    |
+        | expirationDate | <expirationDate> |
+
+      Examples:
+        | name    | subtitle           | permissions       | linkName   | expirationDate |
+        | Space25 | Twentyfifth space  | Can view          | Link25     | 28             |
